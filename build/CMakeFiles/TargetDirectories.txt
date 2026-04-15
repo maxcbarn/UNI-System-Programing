@@ -1,0 +1,3 @@
+/home/Max/PS/build/CMakeFiles/App.dir
+/home/Max/PS/build/CMakeFiles/edit_cache.dir
+/home/Max/PS/build/CMakeFiles/rebuild_cache.dir
