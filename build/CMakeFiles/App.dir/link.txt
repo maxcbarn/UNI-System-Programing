@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/App.dir/link.d CMakeFiles/App.dir/src/FunctionalUnit.cpp.o CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o CMakeFiles/App.dir/src/main.cpp.o CMakeFiles/App.dir/src/memory/Memory.cpp.o CMakeFiles/App.dir/src/memory/Registers.cpp.o -o App
