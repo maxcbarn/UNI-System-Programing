@@ -72,10 +72,38 @@ include CMakeFiles/App.dir/flags.make
 CMakeFiles/App.dir/codegen:
 .PHONY : CMakeFiles/App.dir/codegen
 
+CMakeFiles/App.dir/src/FunctionalUnit.cpp.o: CMakeFiles/App.dir/flags.make
+CMakeFiles/App.dir/src/FunctionalUnit.cpp.o: /home/Max/PS/src/FunctionalUnit.cpp
+CMakeFiles/App.dir/src/FunctionalUnit.cpp.o: CMakeFiles/App.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Max/PS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/App.dir/src/FunctionalUnit.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/App.dir/src/FunctionalUnit.cpp.o -MF CMakeFiles/App.dir/src/FunctionalUnit.cpp.o.d -o CMakeFiles/App.dir/src/FunctionalUnit.cpp.o -c /home/Max/PS/src/FunctionalUnit.cpp
+
+CMakeFiles/App.dir/src/FunctionalUnit.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/App.dir/src/FunctionalUnit.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Max/PS/src/FunctionalUnit.cpp > CMakeFiles/App.dir/src/FunctionalUnit.cpp.i
+
+CMakeFiles/App.dir/src/FunctionalUnit.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/App.dir/src/FunctionalUnit.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Max/PS/src/FunctionalUnit.cpp -o CMakeFiles/App.dir/src/FunctionalUnit.cpp.s
+
+CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o: CMakeFiles/App.dir/flags.make
+CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o: /home/Max/PS/src/adressingTypes/AdressingTypes.cpp
+CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o: CMakeFiles/App.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Max/PS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o -MF CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o.d -o CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o -c /home/Max/PS/src/adressingTypes/AdressingTypes.cpp
+
+CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Max/PS/src/adressingTypes/AdressingTypes.cpp > CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.i
+
+CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Max/PS/src/adressingTypes/AdressingTypes.cpp -o CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.s
+
 CMakeFiles/App.dir/src/main.cpp.o: CMakeFiles/App.dir/flags.make
 CMakeFiles/App.dir/src/main.cpp.o: /home/Max/PS/src/main.cpp
 CMakeFiles/App.dir/src/main.cpp.o: CMakeFiles/App.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Max/PS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/App.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Max/PS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/App.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/App.dir/src/main.cpp.o -MF CMakeFiles/App.dir/src/main.cpp.o.d -o CMakeFiles/App.dir/src/main.cpp.o -c /home/Max/PS/src/main.cpp
 
 CMakeFiles/App.dir/src/main.cpp.i: cmake_force
@@ -86,18 +114,54 @@ CMakeFiles/App.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/App.dir/src/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Max/PS/src/main.cpp -o CMakeFiles/App.dir/src/main.cpp.s
 
+CMakeFiles/App.dir/src/memory/Memory.cpp.o: CMakeFiles/App.dir/flags.make
+CMakeFiles/App.dir/src/memory/Memory.cpp.o: /home/Max/PS/src/memory/Memory.cpp
+CMakeFiles/App.dir/src/memory/Memory.cpp.o: CMakeFiles/App.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Max/PS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/App.dir/src/memory/Memory.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/App.dir/src/memory/Memory.cpp.o -MF CMakeFiles/App.dir/src/memory/Memory.cpp.o.d -o CMakeFiles/App.dir/src/memory/Memory.cpp.o -c /home/Max/PS/src/memory/Memory.cpp
+
+CMakeFiles/App.dir/src/memory/Memory.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/App.dir/src/memory/Memory.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Max/PS/src/memory/Memory.cpp > CMakeFiles/App.dir/src/memory/Memory.cpp.i
+
+CMakeFiles/App.dir/src/memory/Memory.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/App.dir/src/memory/Memory.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Max/PS/src/memory/Memory.cpp -o CMakeFiles/App.dir/src/memory/Memory.cpp.s
+
+CMakeFiles/App.dir/src/memory/Registers.cpp.o: CMakeFiles/App.dir/flags.make
+CMakeFiles/App.dir/src/memory/Registers.cpp.o: /home/Max/PS/src/memory/Registers.cpp
+CMakeFiles/App.dir/src/memory/Registers.cpp.o: CMakeFiles/App.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Max/PS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/App.dir/src/memory/Registers.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/App.dir/src/memory/Registers.cpp.o -MF CMakeFiles/App.dir/src/memory/Registers.cpp.o.d -o CMakeFiles/App.dir/src/memory/Registers.cpp.o -c /home/Max/PS/src/memory/Registers.cpp
+
+CMakeFiles/App.dir/src/memory/Registers.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/App.dir/src/memory/Registers.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Max/PS/src/memory/Registers.cpp > CMakeFiles/App.dir/src/memory/Registers.cpp.i
+
+CMakeFiles/App.dir/src/memory/Registers.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/App.dir/src/memory/Registers.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Max/PS/src/memory/Registers.cpp -o CMakeFiles/App.dir/src/memory/Registers.cpp.s
+
 # Object files for target App
 App_OBJECTS = \
-"CMakeFiles/App.dir/src/main.cpp.o"
+"CMakeFiles/App.dir/src/FunctionalUnit.cpp.o" \
+"CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o" \
+"CMakeFiles/App.dir/src/main.cpp.o" \
+"CMakeFiles/App.dir/src/memory/Memory.cpp.o" \
+"CMakeFiles/App.dir/src/memory/Registers.cpp.o"
 
 # External object files for target App
 App_EXTERNAL_OBJECTS =
 
+App: CMakeFiles/App.dir/src/FunctionalUnit.cpp.o
+App: CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o
 App: CMakeFiles/App.dir/src/main.cpp.o
+App: CMakeFiles/App.dir/src/memory/Memory.cpp.o
+App: CMakeFiles/App.dir/src/memory/Registers.cpp.o
 App: CMakeFiles/App.dir/build.make
 App: CMakeFiles/App.dir/compiler_depend.ts
 App: CMakeFiles/App.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/Max/PS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable App"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/Max/PS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable App"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/App.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

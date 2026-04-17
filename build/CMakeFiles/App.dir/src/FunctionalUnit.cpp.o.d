@@ -1,6 +1,7 @@
-CMakeFiles/App.dir/src/main.cpp.o: /home/Max/PS/src/main.cpp \
- /usr/include/stdc-predef.h /home/Max/PS/include/memory/Memory.hpp \
- /usr/include/c++/15/vector /usr/include/c++/15/bits/requires_hosted.h \
+CMakeFiles/App.dir/src/FunctionalUnit.cpp.o: \
+ /home/Max/PS/src/FunctionalUnit.cpp /usr/include/stdc-predef.h \
+ /home/Max/PS/include/FunctionalUnit.hpp \
+ /home/Max/PS/include/SystemArchitecture.hpp /usr/include/c++/15/cstdint \
  /usr/include/c++/15/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/os_defines.h \
@@ -10,6 +11,14 @@ CMakeFiles/App.dir/src/main.cpp.o: /home/Max/PS/src/main.cpp \
  /usr/include/gnu/stubs-64.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/cpu_defines.h \
  /usr/include/c++/15/pstl/pstl_config.h \
+ /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h \
+ /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
+ /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+ /usr/include/bits/time64.h /usr/include/bits/wchar.h \
+ /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
+ /usr/include/bits/stdint-least.h /usr/include/c++/15/limits \
+ /home/Max/PS/include/memory/Memory.hpp /usr/include/c++/15/vector \
+ /usr/include/c++/15/bits/requires_hosted.h \
  /usr/include/c++/15/bits/stl_algobase.h \
  /usr/include/c++/15/bits/functexcept.h \
  /usr/include/c++/15/bits/exception_defines.h \
@@ -49,13 +58,5 @@ CMakeFiles/App.dir/src/main.cpp.o: /home/Max/PS/src/main.cpp \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stddef.h \
  /usr/include/c++/15/bits/uses_allocator.h \
  /usr/include/c++/15/bits/uses_allocator_args.h /usr/include/c++/15/tuple \
- /home/Max/PS/include/SystemArchitecture.hpp /usr/include/c++/15/cstdint \
- /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h \
- /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
- /usr/include/bits/types.h /usr/include/bits/typesizes.h \
- /usr/include/bits/time64.h /usr/include/bits/wchar.h \
- /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
- /usr/include/bits/stdint-least.h /usr/include/c++/15/limits \
- /home/Max/PS/include/memory/Registers.hpp \
- /home/Max/PS/include/FunctionalUnit.hpp \
- /home/Max/PS/include/SystemArchitecture.hpp
+ /home/Max/PS/include/SystemArchitecture.hpp \
+ /home/Max/PS/include/memory/Registers.hpp

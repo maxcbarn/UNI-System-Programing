@@ -130,6 +130,54 @@ App/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/build
 .PHONY : App/fast
 
+src/FunctionalUnit.o: src/FunctionalUnit.cpp.o
+.PHONY : src/FunctionalUnit.o
+
+# target to build an object file
+src/FunctionalUnit.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/FunctionalUnit.cpp.o
+.PHONY : src/FunctionalUnit.cpp.o
+
+src/FunctionalUnit.i: src/FunctionalUnit.cpp.i
+.PHONY : src/FunctionalUnit.i
+
+# target to preprocess a source file
+src/FunctionalUnit.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/FunctionalUnit.cpp.i
+.PHONY : src/FunctionalUnit.cpp.i
+
+src/FunctionalUnit.s: src/FunctionalUnit.cpp.s
+.PHONY : src/FunctionalUnit.s
+
+# target to generate assembly for a file
+src/FunctionalUnit.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/FunctionalUnit.cpp.s
+.PHONY : src/FunctionalUnit.cpp.s
+
+src/adressingTypes/AdressingTypes.o: src/adressingTypes/AdressingTypes.cpp.o
+.PHONY : src/adressingTypes/AdressingTypes.o
+
+# target to build an object file
+src/adressingTypes/AdressingTypes.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o
+.PHONY : src/adressingTypes/AdressingTypes.cpp.o
+
+src/adressingTypes/AdressingTypes.i: src/adressingTypes/AdressingTypes.cpp.i
+.PHONY : src/adressingTypes/AdressingTypes.i
+
+# target to preprocess a source file
+src/adressingTypes/AdressingTypes.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.i
+.PHONY : src/adressingTypes/AdressingTypes.cpp.i
+
+src/adressingTypes/AdressingTypes.s: src/adressingTypes/AdressingTypes.cpp.s
+.PHONY : src/adressingTypes/AdressingTypes.s
+
+# target to generate assembly for a file
+src/adressingTypes/AdressingTypes.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.s
+.PHONY : src/adressingTypes/AdressingTypes.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -154,6 +202,54 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/memory/Memory.o: src/memory/Memory.cpp.o
+.PHONY : src/memory/Memory.o
+
+# target to build an object file
+src/memory/Memory.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/memory/Memory.cpp.o
+.PHONY : src/memory/Memory.cpp.o
+
+src/memory/Memory.i: src/memory/Memory.cpp.i
+.PHONY : src/memory/Memory.i
+
+# target to preprocess a source file
+src/memory/Memory.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/memory/Memory.cpp.i
+.PHONY : src/memory/Memory.cpp.i
+
+src/memory/Memory.s: src/memory/Memory.cpp.s
+.PHONY : src/memory/Memory.s
+
+# target to generate assembly for a file
+src/memory/Memory.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/memory/Memory.cpp.s
+.PHONY : src/memory/Memory.cpp.s
+
+src/memory/Registers.o: src/memory/Registers.cpp.o
+.PHONY : src/memory/Registers.o
+
+# target to build an object file
+src/memory/Registers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/memory/Registers.cpp.o
+.PHONY : src/memory/Registers.cpp.o
+
+src/memory/Registers.i: src/memory/Registers.cpp.i
+.PHONY : src/memory/Registers.i
+
+# target to preprocess a source file
+src/memory/Registers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/memory/Registers.cpp.i
+.PHONY : src/memory/Registers.cpp.i
+
+src/memory/Registers.s: src/memory/Registers.cpp.s
+.PHONY : src/memory/Registers.s
+
+# target to generate assembly for a file
+src/memory/Registers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/memory/Registers.cpp.s
+.PHONY : src/memory/Registers.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -163,9 +259,21 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... App"
+	@echo "... src/FunctionalUnit.o"
+	@echo "... src/FunctionalUnit.i"
+	@echo "... src/FunctionalUnit.s"
+	@echo "... src/adressingTypes/AdressingTypes.o"
+	@echo "... src/adressingTypes/AdressingTypes.i"
+	@echo "... src/adressingTypes/AdressingTypes.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/memory/Memory.o"
+	@echo "... src/memory/Memory.i"
+	@echo "... src/memory/Memory.s"
+	@echo "... src/memory/Registers.o"
+	@echo "... src/memory/Registers.i"
+	@echo "... src/memory/Registers.s"
 .PHONY : help
 
 

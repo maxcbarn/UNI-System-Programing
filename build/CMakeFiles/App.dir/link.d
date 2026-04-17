@@ -2,7 +2,11 @@ App: \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o \
+  CMakeFiles/App.dir/src/FunctionalUnit.cpp.o \
+  CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o \
   CMakeFiles/App.dir/src/main.cpp.o \
+  CMakeFiles/App.dir/src/memory/Memory.cpp.o \
+  CMakeFiles/App.dir/src/memory/Registers.cpp.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/libstdc++.so \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libm.so \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libm.so \
@@ -37,7 +41,15 @@ App: \
 
 /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o:
 
+CMakeFiles/App.dir/src/FunctionalUnit.cpp.o:
+
+CMakeFiles/App.dir/src/adressingTypes/AdressingTypes.cpp.o:
+
 CMakeFiles/App.dir/src/main.cpp.o:
+
+CMakeFiles/App.dir/src/memory/Memory.cpp.o:
+
+CMakeFiles/App.dir/src/memory/Registers.cpp.o:
 
 /usr/lib/gcc/x86_64-redhat-linux/15/libstdc++.so:
 
