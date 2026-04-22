@@ -38,5 +38,19 @@ enum REGISTERS_ESP {
     IY
 };
 
+enum FLAGS {
+    CARRY = 0b00000001,
+    ADD_SUBTRACT = 0b00000010,
+    PARITY_OVERFLOW = 0b00000100,
+    X = 0b00001000,
+    HALF_CARRY = 0b00010000,
+    Y = 0b00100000,
+    ZERO = 0b01000000,
+    SIGN = 0b10000000
+};
+
+int TwoComplementViwer( Word data );
+int TwoComplementViwer( DoubleWord data );
+bool EvenParity( Word value );
 
 #endif

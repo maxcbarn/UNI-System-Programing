@@ -89,3 +89,11 @@ bool Registers::DecreaseStackPtr() {
         return true;
     }
 }
+
+void Registers::AddFlag( FLAGS flag ) {
+    this->flag = this->flag | flag;
+}
+
+void Registers::ClearFlag( FLAGS flag ) {
+    this->flag = this->flag & ~flag;
+}

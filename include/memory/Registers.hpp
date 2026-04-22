@@ -13,9 +13,8 @@ class Registers {
         Adress startStack = MEM_SIZE_BYTES, endStack = MEM_SIZE_BYTES - 512; 
         vector< Word > generalUse8b;
         vector< DoubleWord > generalUse16b;
-        Word accumulator;
-        Word flag;
-        DoubleWord stackPtr = MEM_SIZE_BYTES;
+        Word accumulator = 0, flag = 0;
+        DoubleWord stackPtr = MEM_SIZE_BYTES, programCounter = 0, indexX = 0, indexY = 0;
         Registers();
         inline static Registers * registers = nullptr;
     public:
@@ -33,6 +32,8 @@ class Registers {
         Adress GetStackPtr();
         bool IncreaseStackPtr();
         bool DecreaseStackPtr();
+        void AddFlag( FLAGS flag );
+        void ClearFlag( FLAGS flag );
 };
 
 
