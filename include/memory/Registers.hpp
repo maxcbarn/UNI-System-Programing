@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include "SystemArchitecture.hpp"
+#include <string>
 
 
 using namespace std;
@@ -24,7 +25,7 @@ class Registers {
         Word ReadFrom16bRegisterLow( REGISTERS_16b registerEnum );
         Word ReadFrom16bRegisterHigh( REGISTERS_16b registerEnum );
         void WriteToAccumulator( Word data );
-        Word ReadToAccumulator();
+        Word ReadFromAccumulator();
         Word ReadFrom8bRegister( REGISTERS_8b registerEnum );
         void WriteTo16bRegister( REGISTERS_16b registerEnum , DoubleWord data );
         void WriteTo16bRegisterLow( REGISTERS_16b registerEnum , Word data );
@@ -34,6 +35,7 @@ class Registers {
         bool DecreaseStackPtr();
         void AddFlag( FLAGS flag );
         void ClearFlag( FLAGS flag );
+        string FlagsToTerminal();
 };
 
 

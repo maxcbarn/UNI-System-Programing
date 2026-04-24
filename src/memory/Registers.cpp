@@ -42,7 +42,7 @@ void Registers::WriteToAccumulator( Word data ) {
     accumulator = data;
 }
 
-Word Registers::ReadToAccumulator() {
+Word Registers::ReadFromAccumulator() {
     return accumulator;
 }
 
@@ -96,4 +96,46 @@ void Registers::AddFlag( FLAGS flag ) {
 
 void Registers::ClearFlag( FLAGS flag ) {
     this->flag = this->flag & ~flag;
+}
+
+string Registers::FlagsToTerminal() {
+    string ans = "FLAGS VALUES\n";
+
+    if( FLAGS::SIGN & flag ) {
+        ans += "SIGN-TRUE\n";
+    } else {
+        ans += "SIGN-FALSE\n";
+    }
+
+    if( FLAGS::ZERO & flag ) {
+        ans += "ZERO-TRUE\n";
+    } else {
+        ans += "ZERO-FALSE\n";
+    }
+
+    if( FLAGS::HALF_CARRY & flag ) {
+        ans += "HALF_CARRY-TRUE\n";
+    } else {
+        ans += "HALF_CARRY-FALSE\n";
+    }
+
+    if( FLAGS::PARITY_OVERFLOW & flag ) {
+        ans += "PARITY_OVERFLOW-TRUE\n";
+    } else {
+        ans += "PARITY_OVERFLOW-FALSE\n";
+    }
+
+    if( FLAGS::ADD_SUBTRACT & flag ) {
+        ans += "ADD_SUBTRACT-TRUE\n";
+    } else {
+        ans += "ADD_SUBTRACT-FALSE\n";
+    }
+
+    if( FLAGS::CARRY & flag ) {
+        ans += "CARRY-TRUE\n";
+    } else {
+        ans += "CARRY-FALSE\n";
+    }
+
+    return ans;
 }
