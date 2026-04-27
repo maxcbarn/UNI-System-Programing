@@ -21,6 +21,8 @@ class Implicit : public AdressingTypes {
         void Nop() override;
         void PushStack( InputAdressingTypes * input ) override;
         void PopStack( InputAdressingTypes * input ) override;
+        Word EncodeInstruction( DecodedInstruction * instruction ) override;
+        DecodedInstruction DecodeInstruction( Word instruction ) override;
 };
 
 #endif

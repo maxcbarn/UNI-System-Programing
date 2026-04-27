@@ -1,12 +1,14 @@
 // make print input, instruction, data, result and flags
-#include "Implicit.hpp"
+#include "adressingTypes/Implicit.hpp"
 #include "FunctionalUnit.hpp"
 #include "memory/Registers.hpp"
 #include <iostream>
+#include "adressingTypes/InputAdressingTypes.hpp"
+#include "adressingTypes/AdressingTypes.hpp"
 
 using namespace std;
 
-Implicit::Implicit() {
+Implicit::Implicit() : AdressingTypes() {
 
 }
 
@@ -14,6 +16,13 @@ Implicit::~Implicit() {
 
 }
 
+DecodedInstruction Implicit::DecodeInstruction( Word instruction ) {
+    return DecodedInstruction(); 
+}
+
+Word Implicit::EncodeInstruction( DecodedInstruction * instruction ) {
+    return 0;
+}
 
 void Implicit::Add( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();

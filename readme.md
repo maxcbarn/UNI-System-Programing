@@ -49,11 +49,11 @@ Files And What They Do:
 
 - AdressingTypesFactory.hpp & AdressingTypesFactory.cpp - factory for creating the adressing types accordingly to what is going to be used, all the parameters are a struct pointer that will be converted to the type that we want that is a specialized struct, so that we override functions and not overload for better flow, it's a factory and a singleton.
 
-- AdressingTypes.hpp & AdressingTypes.cpp - This is the base class of the adpaters that will treat the adressing types, it will define the functions that the adressing types has to implement, they will call the functional unit, get the values and store the values accordingly, it's a adapter (not finished) (Ld and Jp instructions not done)
+- AdressingTypes.hpp & AdressingTypes.cpp - This is the base class of the adpaters that will treat the adressing types, it will define the functions that the adressing types has to implement, they will call the functional unit, get the values and store the values accordingly, decode and encode instructions, it's a adapter (not finished) (Ld and Jp instructions not done)
   - Direct.hpp & Direct.cpp - (not implemented)
   - Implicit.hpp & Implicit.cpp - (not implemented)
   - Indexed.hpp & Indexed.cpp - (not implemented)
   - InddirectRegister.hpp & InddirectRegister.cpp - (not implemented)
   - Direct.hpp & Direct.cpp - (not finished)(Ld and Jp instructions not done)
 
-- Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, decode and encode instructions, it's a singleton (not finished)
+- Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton (not finished)

@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <limits>
+#include <vector>
 
 #define MEM_SIZE_BYTES numeric_limits<uint16_t>::max()
 
@@ -63,6 +64,14 @@ enum INSTRUCTIONS {
     PUSH,
     POP
 };
+
+
+struct DecodedInstruction {
+    INSTRUCTIONS instruction;
+    vector< REGISTERS_8b > registers8b; // first one is the first on the instruction and so on
+    vector< REGISTERS_16b > registers16b; // first one is the first on the instruction and so on
+};
+
 
 int TwoComplementViwer( Word data );
 int TwoComplementViwer( DoubleWord data );

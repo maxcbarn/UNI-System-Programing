@@ -31,18 +31,9 @@ void Processor::Initialize( INPUTADRESSINGTYPES adressingTypes ) {
 }
 
 bool Processor::NextInstruction() {
-
+    return false;
 }
 
 void Processor::LoadProgram() {
 
 }
-
-void Processor::DecodeInstruction() {
-
-}
-
-void Processor::EncodeInstruction() {
-
-}
-

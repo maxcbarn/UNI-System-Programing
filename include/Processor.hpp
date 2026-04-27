@@ -17,8 +17,6 @@ class Processor {
         static Processor * GetProcessor();
         void Halt();
         void Initialize( INPUTADRESSINGTYPES adressingTypes );
-        void DecodeInstruction();
-        void EncodeInstruction();
         bool NextInstruction();
         void LoadProgram();
 };
