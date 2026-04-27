@@ -14,12 +14,12 @@ using Adress = uint16_t;
 
 #define QUANTITY_8b_REGISTERS 6
 enum REGISTERS_8b {
-    B = 0,
-    C = 1, 
-    D = 2,
-    E = 3,
-    H = 4,
-    L = 5
+    B,
+    C, 
+    D,
+    E,
+    H,
+    L
 };
 
 #define QUANTITY_16b_REGISTERS 4
@@ -47,6 +47,21 @@ enum FLAGS {
     Y = 0b00100000,
     ZERO = 0b01000000,
     SIGN = 0b10000000
+};
+
+enum INSTRUCTIONS {
+    NOP,
+    HLT,
+    ADD,
+    SUB,
+    AND,
+    OR,
+    XOR,
+    CP,
+    INC,
+    DEC,
+    PUSH,
+    POP
 };
 
 int TwoComplementViwer( Word data );

@@ -30,6 +30,11 @@ Memory * Memory::GetMemory() {
     return memoryPtr;
 }
 
+void Memory::ResetMemory() {
+    delete memoryPtr;
+    memoryPtr = new Memory();
+}
+
 Word Memory::ReadMemory( Adress adress ) {
     pair< size_t , size_t > matrixPositon = adressToMem( adress , sqrMatrixSize );
     return memory[matrixPositon.first][matrixPositon.second];

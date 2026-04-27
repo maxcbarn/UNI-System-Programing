@@ -21,6 +21,7 @@ class Registers {
     public:
         ~Registers();
         static Registers * GetRegisters();
+        static void ResetRegisters();
         void WriteTo8bRegister( REGISTERS_8b registerEnum , Word data );
         Word ReadFrom16bRegisterLow( REGISTERS_16b registerEnum );
         Word ReadFrom16bRegisterHigh( REGISTERS_16b registerEnum );

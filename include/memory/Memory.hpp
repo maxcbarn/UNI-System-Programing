@@ -18,6 +18,7 @@ class Memory {
     public:
         ~Memory();
         static Memory * GetMemory();
+        static void ResetMemory();
         Word ReadMemory( Adress adress );
         void ModifyMemory( Adress adress , Word word );
 };

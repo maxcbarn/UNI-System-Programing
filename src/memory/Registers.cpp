@@ -24,6 +24,12 @@ Registers * Registers::GetRegisters() {
     return registers;
 }
 
+
+void Registers::ResetRegisters() {
+    delete registers;
+    registers = new Registers();
+}
+
 void Registers::WriteTo8bRegister( REGISTERS_8b registerEnum , Word data ) {
     generalUse8b[( int )registerEnum] = data;
 
