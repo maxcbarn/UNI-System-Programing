@@ -27,6 +27,7 @@ class Registers {
         void WriteToAccumulator( Word data );
         Word ReadFromAccumulator();
         Word ReadFrom8bRegister( REGISTERS_8b registerEnum );
+        DoubleWord ReadFrom16bRegister( REGISTERS_16b registerEnum );
         void WriteTo16bRegister( REGISTERS_16b registerEnum , DoubleWord data );
         void WriteTo16bRegisterLow( REGISTERS_16b registerEnum , Word data );
         void WriteTo16bRegisterHigh( REGISTERS_16b registerEnum , Word data );

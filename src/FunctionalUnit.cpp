@@ -56,33 +56,27 @@ Word FunctionalUnit::Add( Word data1 , Word data2 ) {
     } else {
         regs->ClearFlag( FLAGS::CARRY );
     }
-
     if( result == 0 ) {
         regs->AddFlag( FLAGS::ZERO );
     } else {
         regs->ClearFlag( FLAGS::ZERO );
     }
-
     if( result & 0x80 ) {
         regs->AddFlag( FLAGS::SIGN );
     } else {
         regs->ClearFlag( FLAGS::SIGN );
     }
-
     if( ( ( data1 & 0x0F ) + ( data2 & 0x0F ) ) > 0x0F ) {
         regs->AddFlag( FLAGS::HALF_CARRY );
     } else {
         regs->ClearFlag( FLAGS::HALF_CARRY );
     }
-
     if( ( ~( data1 ^ data2 ) & ( data1 ^ result ) & 0x80 ) != 0 ) {
         regs->AddFlag( FLAGS::PARITY_OVERFLOW );
     } else {
         regs->ClearFlag( FLAGS::PARITY_OVERFLOW );
     }
-
     regs->ClearFlag( FLAGS::ADD_SUBTRACT );
-
     return result;
 }
 

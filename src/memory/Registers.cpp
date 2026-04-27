@@ -38,6 +38,10 @@ Word Registers::ReadFrom16bRegisterHigh( REGISTERS_16b registerEnum ) {
     return ( Word )(generalUse16b[( int )registerEnum] >> 8);
 }
 
+DoubleWord Registers::ReadFrom16bRegister( REGISTERS_16b registerEnum ) {
+    return ( DoubleWord )generalUse16b[( int )registerEnum];
+}
+
 void Registers::WriteToAccumulator( Word data ) {
     accumulator = data;
 }
