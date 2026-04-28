@@ -9,6 +9,8 @@ Registers::Registers() {
     accumulator = 0;
     flag = 0;
     pc = 0;
+    stackPtr = 0xFFFF;  
+    endStack = 0xF000;  
     generalUse8b = vector< Word >( QUANTITY_8b_REGISTERS , 0 );
     generalUse16b = vector< DoubleWord >( QUANTITY_16b_REGISTERS , 0 );
 }
