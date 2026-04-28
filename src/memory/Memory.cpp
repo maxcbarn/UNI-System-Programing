@@ -36,8 +36,10 @@ void Memory::ResetMemory() {
 }
 
 Word Memory::ReadMemory( Adress adress ) {
+    if (adress >= MEM_SIZE_BYTES) return 0; 
     pair< size_t , size_t > matrixPositon = adressToMem( adress , sqrMatrixSize );
     return memory[matrixPositon.first][matrixPositon.second];
+    
 }
 
 
