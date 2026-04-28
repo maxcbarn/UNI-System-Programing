@@ -21,10 +21,19 @@ struct InputImplicit : public InputAdressingTypes {
     REGISTERS_16b register16b;
 };
 
+struct InputDirect : public InputAdressingTypes {
+    Adress address;       
+    REGISTERS_16b register16b;  
+};
 
+struct InputImediate : public InputAdressingTypes {
+    Word value;           
+    REGISTERS_16b register16b; 
+};
 
-
-
+struct InputIndirectRegister : public InputAdressingTypes {
+    REGISTERS_16b register16b; 
+};
 
 
 
