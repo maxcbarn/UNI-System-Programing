@@ -254,7 +254,8 @@ Word FunctionalUnit::Xor( Word data1 , Word data2 ) {
 void FunctionalUnit::Cp( Word data1 , Word data2 ) {
     Registers * regs = Registers::GetRegisters();
     Word result = data1 - data2;
-    if( result & 0x10000000 ) {
+    //if( result & 0x10000000 )
+     if( result & 0x80 ) {
         regs->AddFlag(FLAGS::SIGN);
     } else {
         regs->ClearFlag(FLAGS::SIGN);
