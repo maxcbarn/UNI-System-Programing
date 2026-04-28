@@ -4,6 +4,8 @@
 
 using namespace std;
 
+Memory* Memory::memoryPtr = nullptr;
+
 auto adressToMem = []( Adress adress , size_t sqrMatrixSize ) {
     return make_pair< size_t , size_t >( adress / sqrMatrixSize , adress % sqrMatrixSize );
 };
