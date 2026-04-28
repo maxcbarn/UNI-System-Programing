@@ -126,3 +126,18 @@ Word Imediate::EncodeInstruction( DecodedInstruction * instruction ) {
 DecodedInstruction Imediate::DecodeInstruction( Word instruction ) {
     return DecodedInstruction();
 }  
+
+void Imediate::Ld( InputAdressingTypes * input ) {
+    Registers * regs = Registers::GetRegisters();
+    Word value = ((InputImediate*)input)->value;
+    REGISTERS_8b dest = ((InputImediate*)input)->register8b;
+    
+    cout << "LD INSTRUCTION" << endl;
+    cout << "LOADING VALUE: " << TwoComplementViwer( value ) << " INTO REGISTER" << endl;
+    
+    if(dest == REGISTERS_8b::A) {
+        regs->WriteToAccumulator(value);
+    } else {
+        regs->WriteTo8bRegister(dest, value);
+    }
+}
