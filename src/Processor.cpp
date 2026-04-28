@@ -44,6 +44,9 @@ bool Processor::NextInstruction() {
     return true;
 }
 
-void Processor::LoadProgram() {
-
+void Processor::LoadProgram(const std::vector<Word>& program, Adress startAdress) {
+    Memory* mem = Memory::GetMemory();
+    for (size_t i = 0; i < program.size(); ++i) {
+        mem->ModifyMemory(startAdress + i, program[i]);
+    }
 }
