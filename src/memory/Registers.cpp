@@ -8,6 +8,7 @@ using namespace std;
 Registers::Registers() {
     accumulator = 0;
     flag = 0;
+    pc = 0;
     generalUse8b = vector< Word >( QUANTITY_8b_REGISTERS , 0 );
     generalUse16b = vector< DoubleWord >( QUANTITY_16b_REGISTERS , 0 );
 }
