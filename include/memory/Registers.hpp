@@ -42,6 +42,7 @@ class Registers {
         void AddFlag( FLAGS flag );
         void ClearFlag( FLAGS flag );
         string FlagsToTerminal();
+        Adress GetStartMemory();
 };
 
 

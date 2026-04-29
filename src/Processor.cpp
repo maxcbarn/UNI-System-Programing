@@ -49,7 +49,7 @@ bool Processor::NextInstruction() {
             adressingTypes->Nop();
             break;
         case HLT:
-            cout << "HLT not implemented" << endl;
+            adressingTypes->Halt();
             break;
         case ADD:
             adressingTypes->Add( input );

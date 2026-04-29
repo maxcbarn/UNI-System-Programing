@@ -51,19 +51,17 @@ Files And What They Do:
 
 - Memory.hpp & Memory.cpp - Defines the memory and how to acess, it's a singleton;
 
-- Registers.hpp & Registers.cpp - Defines the registers and how to acess, it's a singleton; (not finished)(pc, indexs)
+- Registers.hpp & Registers.cpp - Defines the registers and how to acess, it's a singleton; (not finished)(indexs)
 
-- FunctionalUnit.hpp & FunctionalUnit.cpp - The functional unit of the system, will recive de data and return data, it will be generic and other class called AdressingTypes will implement how to treat diferent adressint types, it's a singleton; (not finished)(operations, flags)
+- FunctionalUnit.hpp & FunctionalUnit.cpp - The functional unit of the system, will recive de data and return data, it will be generic and other class called AdressingTypes will implement how to treat diferent adressint types, it's a singleton; (Done)
 
-- InstructionDispatcher.hpp & InstructionDispatcher.cpp - Dispaches instructions retrivin values from registers and calling the functional unit, it's a singleton (not finished)
+- AdressingTypesFactory.hpp & AdressingTypesFactory.cpp - factory for creating the adressing types accordingly to what is going to be used, all the parameters are a struct pointer that will be converted to the type that we want that is a specialized struct, so that we override functions and not overload for better flow, it's a factory and a singleton. (Done)
 
-- AdressingTypesFactory.hpp & AdressingTypesFactory.cpp - factory for creating the adressing types accordingly to what is going to be used, all the parameters are a struct pointer that will be converted to the type that we want that is a specialized struct, so that we override functions and not overload for better flow, it's a factory and a singleton.
+- AdressingTypes.hpp & AdressingTypes.cpp - This is the base class of the adpaters that will treat the adressing types, it will define the functions that the adressing types has to implement, they will call the functional unit, get the values and store the values accordingly, decode and encode instructions, it's a adapter (Done)
+  - Direct.hpp & Direct.cpp - (not finished)
+  - Implicit.hpp & Implicit.cpp - (not finished)
+  - Indexed.hpp & Indexed.cpp - (not finished)
+  - InddirectRegister.hpp & InddirectRegister.cpp - (not finished)
+  - Direct.hpp & Direct.cpp - (not finished)
 
-- AdressingTypes.hpp & AdressingTypes.cpp - This is the base class of the adpaters that will treat the adressing types, it will define the functions that the adressing types has to implement, they will call the functional unit, get the values and store the values accordingly, decode and encode instructions, it's a adapter (not finished) (Ld and Jp instructions not done)
-  - Direct.hpp & Direct.cpp - (not implemented)
-  - Implicit.hpp & Implicit.cpp - (not implemented)
-  - Indexed.hpp & Indexed.cpp - (not implemented)
-  - InddirectRegister.hpp & InddirectRegister.cpp - (not implemented)
-  - Direct.hpp & Direct.cpp - (not finished)(Ld and Jp instructions not done)
-
-- Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton (not finished)
+- Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton (Done)

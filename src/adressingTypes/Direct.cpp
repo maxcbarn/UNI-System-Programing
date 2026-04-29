@@ -16,6 +16,38 @@ Direct::~Direct() {
 
 }
 
+void Direct::Jump( InputAdressingTypes * input ) {
+
+}
+
+void Direct::JumpOffset( InputAdressingTypes * input ) {
+
+}
+
+void Direct::Call( InputAdressingTypes * input ) {
+
+}
+
+void Direct::Return( InputAdressingTypes * input ) {
+
+}
+
+void Direct::LoadRegisterToResgister( InputAdressingTypes * input ) {
+
+}
+
+void Direct::LoadValueToRegister( InputAdressingTypes * input ) {
+
+}
+
+void Direct::LoadRegisterToMemory( InputAdressingTypes * input ) {
+
+}
+
+void Direct::LoadMemoryToRegister( InputAdressingTypes * input ) {
+
+}
+
 InputAdressingTypes * Direct::MakeInput( DecodedInstruction * instruction ) {
     return ( InputAdressingTypes * ) new InputDirect{};
 }
@@ -147,11 +179,6 @@ void Direct::Cp( InputAdressingTypes * input ) {
     FunctionalUnit::GetFunctionalUnit()->Cp(regs->ReadFromAccumulator(), memValue);
 
     cout << regs->FlagsToTerminal();
-}
-
-void Direct::Nop() {
-    cout << "NOP INSTRUCTION (Direct)" << endl;
-    FunctionalUnit::GetFunctionalUnit()->Nop();
 }
 
 void Direct::PushStack( InputAdressingTypes * input ) {

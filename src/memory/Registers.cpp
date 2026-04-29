@@ -16,6 +16,10 @@ Registers::~Registers() {
 
 }
 
+Adress Registers::GetStartMemory() {
+    return startMemory;
+}
+
 void Registers::SetProgramSize( size_t size ) {
     endProgram = size;
     startMemory = endProgram + 1;

@@ -13,22 +13,23 @@ using Word = uint8_t;
 using DoubleWord = uint16_t;
 using Adress = uint16_t;
 
-#define QUANTITY_8b_REGISTERS 6
+#define QUANTITY_8b_REGISTERS 7
 enum REGISTERS_8b {
-    B,
-    C, 
-    D,
-    E,
-    H,
-    L
+    A = 0b00000001,
+    B = 0b00000010,
+    C = 0b00000100,
+    D = 0b00001000,
+    E = 0b00010000,
+    H = 0b00100000,
+    L = 0b01000000
 };
 
 #define QUANTITY_16b_REGISTERS 4
 enum REGISTERS_16b {
-    AF,
-    BC,
-    DE,
-    Hl
+    AF = 0b00000001,
+    BC = 0b00000010,
+    DE = 0b00000100,
+    Hl = 0b00001000
 };
 
 #define QUANTITY_ESP_REGISTERS 4
@@ -51,18 +52,26 @@ enum FLAGS {
 };
 
 enum INSTRUCTIONS {
-    NOP,
-    HLT,
-    ADD,
-    SUB,
-    AND,
-    OR,
-    XOR,
-    CP,
-    INC,
-    DEC,
-    PUSH,
-    POP
+    NOP = 0b00000000,
+    HLT = 0b00000001,
+    ADD = 0b00000010,
+    SUB = 0b00000011,
+    AND = 0b00000100,
+    OR = 0b00000101,
+    XOR = 0b00000110,
+    CP = 0b00000111,
+    INC = 0b00001000,
+    DEC = 0b00001001,
+    PUSH = 0b00001010,
+    POP = 0b00001011,
+    JP = 0b00001100,
+    JPOFFSET = 0b00001101,
+    CALL = 0b00001110,
+    RET = 0b00001111,
+    LDREGTOREG = 0b00010000,
+    LDVALTOREG = 0b00010001,
+    LDREGTOMEM = 0b00010010, // In reality is a store, strange architecture
+    LDMEMTOREG = 0b00010011, // real load from memory
 };
 
 

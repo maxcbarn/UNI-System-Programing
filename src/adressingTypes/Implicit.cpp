@@ -32,6 +32,38 @@ vector<Word> Implicit::EncodeInstruction( DecodedInstruction * instruction ) {
     return {};
 }   
 
+void Implicit::Jump( InputAdressingTypes * input ) {
+
+}
+
+void Implicit::JumpOffset( InputAdressingTypes * input ) {
+
+}
+
+void Implicit::Call( InputAdressingTypes * input ) {
+
+}
+
+void Implicit::Return( InputAdressingTypes * input ) {
+
+}
+
+void Implicit::LoadRegisterToResgister( InputAdressingTypes * input ) {
+
+}
+
+void Implicit::LoadValueToRegister( InputAdressingTypes * input ) {
+
+}
+
+void Implicit::LoadRegisterToMemory( InputAdressingTypes * input ) {
+
+}
+
+void Implicit::LoadMemoryToRegister( InputAdressingTypes * input ) {
+
+}
+
 void Implicit::Add( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
@@ -117,12 +149,7 @@ void Implicit::Cp( InputAdressingTypes * input ) {
     FunctionalUnit::GetFunctionalUnit()->Cp( regs->ReadFromAccumulator() , regs->ReadFrom8bRegister( register8b ) );
     cout << regs->FlagsToTerminal();
 }
- 
-void Implicit::Nop() {
-    cout << "NOP INSTRUCTION" << endl;
-    FunctionalUnit::GetFunctionalUnit()->Nop();
-}
- 
+
 void Implicit::PushStack( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "PUSH INSTRUCTION" << endl;

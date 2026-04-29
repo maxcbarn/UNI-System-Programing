@@ -12,6 +12,36 @@ FunctionalUnit::~FunctionalUnit() {
 
 }
 
+void FunctionalUnit::Jump( Adress address ) {
+    Registers::GetRegisters()->SetProgramCounter( address );
+}
+
+void FunctionalUnit::JumpOffset( Adress offset ) {
+    Registers * regs = Registers::GetRegisters();
+    Adress newAddress = regs->GetProgramCounter() + offset;
+    regs->SetProgramCounter( newAddress );
+}
+
+void FunctionalUnit::Call( Adress address ) {
+    PushStack( Registers::GetRegisters()->GetProgramCounter() );
+    Jump( address );
+}
+
+void FunctionalUnit::Return() {
+    PopStack( Registers::GetRegisters()->GetProgramCounter() );
+    Jump( Registers::GetRegisters()->ReadFrom16bRegister( AF ) );
+}
+
+
+Word FunctionalUnit::Load( Adress address ) {
+    return Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetStartMemory() + address );
+}
+
+void FunctionalUnit::Store( Adress address , Word data ) {
+    Memory::GetMemory()->ModifyMemory( Registers::GetRegisters()->GetStartMemory() + address , data );
+}
+
+
 FunctionalUnit * FunctionalUnit::GetFunctionalUnit() {
     if( functionalUnit != nullptr ) {
         return functionalUnit;
@@ -27,8 +57,15 @@ void FunctionalUnit::PushStack( REGISTERS_16b registerEnum ) {
     memory->ModifyMemory( registers->GetStackPtr() , registers->ReadFrom16bRegisterLow( registerEnum ) );
     registers->DecreaseStackPtr();
     memory->ModifyMemory( registers->GetStackPtr() , registers->ReadFrom16bRegisterHigh( registerEnum ) );
-    memory = nullptr;
-    registers = nullptr;
+}
+
+void FunctionalUnit::PushStack( DoubleWord data ) {
+    Memory * memory = Memory::GetMemory();
+    Registers * registers = Registers::GetRegisters();
+    registers->DecreaseStackPtr();
+    memory->ModifyMemory( registers->GetStackPtr() , ( Word )( data & 0x00FF ) );
+    registers->DecreaseStackPtr();
+    memory->ModifyMemory( registers->GetStackPtr() , ( Word )( data >> 8 ) );
 }
 
 void FunctionalUnit::PopStack( REGISTERS_16b registerEnum ) {
@@ -38,9 +75,16 @@ void FunctionalUnit::PopStack( REGISTERS_16b registerEnum ) {
     registers->IncreaseStackPtr();
     registers->WriteTo16bRegisterLow( registerEnum , memory->ReadMemory( registers->GetStackPtr() ) );
     registers->IncreaseStackPtr();
-    memory = nullptr;
-    registers = nullptr;
 }   
+
+void FunctionalUnit::PopStack( DoubleWord data ) {
+    Memory * memory = Memory::GetMemory();
+    Registers * registers = Registers::GetRegisters();
+    registers->WriteTo16bRegisterHigh( AF , ( Word )( data >> 8 ) );
+    registers->IncreaseStackPtr();
+    registers->WriteTo16bRegisterLow( AF , ( Word )( data & 0x00FF ) );
+    registers->IncreaseStackPtr();
+}
 
 void FunctionalUnit::Nop() {
     return;

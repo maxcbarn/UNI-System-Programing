@@ -24,6 +24,39 @@ size_t Imediate::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
     return 0;
 }
 
+void Imediate::Jump( InputAdressingTypes * input ) {
+
+}
+
+void Imediate::JumpOffset( InputAdressingTypes * input ) {
+
+}
+
+void Imediate::Call( InputAdressingTypes * input ) {
+
+}
+
+void Imediate::Return( InputAdressingTypes * input ) {
+
+}
+
+void Imediate::LoadRegisterToResgister( InputAdressingTypes * input ) {
+
+}
+
+void Imediate::LoadValueToRegister( InputAdressingTypes * input ) {
+
+}
+
+void Imediate::LoadRegisterToMemory( InputAdressingTypes * input ) {
+
+}
+
+void Imediate::LoadMemoryToRegister( InputAdressingTypes * input ) {
+
+}
+
+
 void Imediate::Add( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     Word value = ((InputImediate*)input)->value;
@@ -104,11 +137,6 @@ void Imediate::Cp( InputAdressingTypes * input ) {
     cout << "ACCUMULATOR VALUE: " << TwoComplementViwer( regs->ReadFromAccumulator() ) << " | INPUT VALUE: " << TwoComplementViwer( value ) << endl;
     FunctionalUnit::GetFunctionalUnit()->Cp( regs->ReadFromAccumulator() , value );
     cout << regs->FlagsToTerminal();
-}
-
-void Imediate::Nop() {
-    cout << "NOP INSTRUCTION" << endl;
-    FunctionalUnit::GetFunctionalUnit()->Nop();
 }
 
 void Imediate::PushStack( InputAdressingTypes * input ) {

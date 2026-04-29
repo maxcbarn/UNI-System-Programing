@@ -16,6 +16,38 @@ IndirectRegister::~IndirectRegister() {
 
 }
 
+void IndirectRegister::Jump( InputAdressingTypes * input ) {
+
+}
+
+void IndirectRegister::JumpOffset( InputAdressingTypes * input ) {
+
+}
+
+void IndirectRegister::Call( InputAdressingTypes * input ) {
+
+}
+
+void IndirectRegister::Return( InputAdressingTypes * input ) {
+
+}
+
+void IndirectRegister::LoadRegisterToResgister( InputAdressingTypes * input ) {
+
+}
+
+void IndirectRegister::LoadValueToRegister( InputAdressingTypes * input ) {
+
+}
+
+void IndirectRegister::LoadRegisterToMemory( InputAdressingTypes * input ) {
+
+}
+
+void IndirectRegister::LoadMemoryToRegister( InputAdressingTypes * input ) {
+
+}
+
 void IndirectRegister::Add( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     REGISTERS_16b register16b = ( ( InputIndirectRegister * )input )->register16b;
@@ -116,11 +148,6 @@ void IndirectRegister::Cp( InputAdressingTypes * input ) {
     cout << "ACCUMULATOR VALUE: " << TwoComplementViwer( regs->ReadFromAccumulator() ) << " | MEMORY[" << address << "]: " << TwoComplementViwer( memValue ) << endl;
     FunctionalUnit::GetFunctionalUnit()->Cp( regs->ReadFromAccumulator() , memValue );
     cout << regs->FlagsToTerminal();
-}
-
-void IndirectRegister::Nop() {
-    cout << "NOP INSTRUCTION" << endl;
-    FunctionalUnit::GetFunctionalUnit()->Nop();
 }
 
 void IndirectRegister::PushStack( InputAdressingTypes * input ) {

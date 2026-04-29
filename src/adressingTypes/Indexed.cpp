@@ -14,6 +14,38 @@ size_t Indexed::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
     return 0;
 }
 
+void Indexed::Jump( InputAdressingTypes * input ) {
+
+}
+
+void Indexed::JumpOffset( InputAdressingTypes * input ) {
+
+}
+
+void Indexed::Call( InputAdressingTypes * input ) {
+
+}
+
+void Indexed::Return( InputAdressingTypes * input ) {
+
+}
+
+void Indexed::LoadRegisterToResgister( InputAdressingTypes * input ) {
+
+}
+
+void Indexed::LoadValueToRegister( InputAdressingTypes * input ) {
+
+}
+
+void Indexed::LoadRegisterToMemory( InputAdressingTypes * input ) {
+
+}
+
+void Indexed::LoadMemoryToRegister( InputAdressingTypes * input ) {
+
+}
+
 void Indexed::Add( InputAdressingTypes * input ) {
 
 }
@@ -43,10 +75,6 @@ void Indexed::Xor( InputAdressingTypes * input ) {
 }
 
 void Indexed::Cp( InputAdressingTypes * input ) {
-
-}
-
-void Indexed::Nop() {
 
 }
 

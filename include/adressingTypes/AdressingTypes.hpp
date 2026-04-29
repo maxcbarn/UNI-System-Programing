@@ -20,7 +20,16 @@ class AdressingTypes {
         virtual void Or( InputAdressingTypes * input ) = 0;
         virtual void Xor( InputAdressingTypes * input ) = 0;
         virtual void Cp( InputAdressingTypes * input ) = 0;
-        virtual void Nop() = 0;
+        void Nop();
+        void Halt();
+        virtual void Jump( InputAdressingTypes * input ) = 0;
+        virtual void JumpOffset( InputAdressingTypes * input ) = 0;
+        virtual void Call( InputAdressingTypes * input ) = 0;
+        virtual void Return( InputAdressingTypes * input ) = 0;
+        virtual void LoadRegisterToResgister( InputAdressingTypes * input ) = 0;
+        virtual void LoadValueToRegister( InputAdressingTypes * input ) = 0;
+        virtual void LoadRegisterToMemory( InputAdressingTypes * input ) = 0;
+        virtual void LoadMemoryToRegister( InputAdressingTypes * input ) = 0;
         virtual void PushStack( InputAdressingTypes * input ) = 0;
         virtual void PopStack( InputAdressingTypes * input ) = 0;
         virtual vector<Word> EncodeInstruction( DecodedInstruction * instruction ) = 0;
