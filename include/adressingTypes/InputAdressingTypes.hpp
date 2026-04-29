@@ -35,6 +35,10 @@ struct InputIndirectRegister : public InputAdressingTypes {
     REGISTERS_16b register16b; 
 };
 
+struct InputIndexed : public InputAdressingTypes {
+
+};
+
 
 
 

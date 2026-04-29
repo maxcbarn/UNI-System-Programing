@@ -23,7 +23,17 @@ build/App
 
 User header guards please, use the enums and struct already defined, and if need create new ones repeting the style of the already implemented.
 
+
 # Implementation
+
+## Instructions
+
+| opcode | 0......n ( Registers or Imediate Values in Differente words )
+
+The first word is the opcode of the instruction, decode it to know how many more words would have to be writen, it changes depending on the adressin type.
+
+
+## Others
 
 Word of 8 bits
 

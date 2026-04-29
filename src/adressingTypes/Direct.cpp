@@ -16,6 +16,14 @@ Direct::~Direct() {
 
 }
 
+InputAdressingTypes * Direct::MakeInput( DecodedInstruction * instruction ) {
+    return ( InputAdressingTypes * ) new InputDirect{};
+}
+
+size_t Direct::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
+    return 0;
+}
+
 
 void Direct::Add( InputAdressingTypes * input ) {
     Registers* regs = Registers::GetRegisters();
@@ -166,8 +174,8 @@ void Direct::PopStack( InputAdressingTypes * input ) {
     cout << "RESULT REGISTER VALUE: " << TwoComplementViwer(regs->ReadFrom16bRegister(register16b)) << endl;
 }
 
-Word Direct::EncodeInstruction( DecodedInstruction * instruction ) {
-    return 0;
+vector<Word> Direct::EncodeInstruction( DecodedInstruction * instruction ) {
+    return {};
 }
 
 DecodedInstruction Direct::DecodeInstruction( Word instruction ) {

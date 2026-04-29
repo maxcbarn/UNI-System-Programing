@@ -11,11 +11,11 @@ using namespace std;
 
 class Registers {
     private:
-        Adress startStack = MEM_SIZE_BYTES, endStack = MEM_SIZE_BYTES - 512; 
+        Adress startStack = MEM_SIZE_BYTES, endStack = MEM_SIZE_BYTES - 512, programCounter = 0, endProgram = 0, startMemory = 0; 
         vector< Word > generalUse8b;
         vector< DoubleWord > generalUse16b;
         Word accumulator = 0, flag = 0;
-        DoubleWord stackPtr = MEM_SIZE_BYTES, programCounter = 0, indexX = 0, indexY = 0;
+        DoubleWord stackPtr = MEM_SIZE_BYTES, indexX = 0, indexY = 0;
         Registers();
         inline static Registers * registers = nullptr;
     public:
@@ -35,6 +35,10 @@ class Registers {
         Adress GetStackPtr();
         bool IncreaseStackPtr();
         bool DecreaseStackPtr();
+        void IncreaseProgramCounter();
+        void SetProgramCounter( Adress adress );
+        void SetProgramSize( size_t size );
+        Adress GetProgramCounter();
         void AddFlag( FLAGS flag );
         void ClearFlag( FLAGS flag );
         string FlagsToTerminal();

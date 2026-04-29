@@ -16,6 +16,14 @@ Imediate::~Imediate() {
 
 }
 
+InputAdressingTypes * Imediate::MakeInput( DecodedInstruction * instruction ) {
+    return ( InputAdressingTypes * ) new InputImediate{};
+}
+
+size_t Imediate::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
+    return 0;
+}
+
 void Imediate::Add( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     Word value = ((InputImediate*)input)->value;
@@ -119,8 +127,8 @@ void Imediate::PopStack( InputAdressingTypes * input ) {
     cout << "RESULT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom16bRegister( register16b ) ) << endl;
 }
 
-Word Imediate::EncodeInstruction( DecodedInstruction * instruction ) {
-    return 0;
+vector<Word> Imediate::EncodeInstruction( DecodedInstruction * instruction ) {
+    return {};
 }
 
 DecodedInstruction Imediate::DecodeInstruction( Word instruction ) {

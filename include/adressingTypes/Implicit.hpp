@@ -5,6 +5,8 @@
 #include "AdressingTypes.hpp"
 #include "adressingTypes/InputAdressingTypes.hpp"
 
+using namespace std;
+
 class Implicit : public AdressingTypes {
     private:
     public: 
@@ -21,8 +23,10 @@ class Implicit : public AdressingTypes {
         void Nop() override;
         void PushStack( InputAdressingTypes * input ) override;
         void PopStack( InputAdressingTypes * input ) override;
-        Word EncodeInstruction( DecodedInstruction * instruction ) override;
+        vector<Word> EncodeInstruction( DecodedInstruction * instruction ) override;
         DecodedInstruction DecodeInstruction( Word instruction ) override;
+        InputAdressingTypes * MakeInput( DecodedInstruction * instruction ) override;
+        size_t GetInstructionWordQuantity( INSTRUCTIONS instruction ) override;
 };
 
 #endif

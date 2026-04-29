@@ -4,6 +4,8 @@
 #include "SystemArchitecture.hpp"
 #include "adressingTypes/InputAdressingTypes.hpp"
 
+using namespace std;
+
 class AdressingTypes {
     private:
     
@@ -21,8 +23,10 @@ class AdressingTypes {
         virtual void Nop() = 0;
         virtual void PushStack( InputAdressingTypes * input ) = 0;
         virtual void PopStack( InputAdressingTypes * input ) = 0;
-        virtual Word EncodeInstruction( DecodedInstruction * instruction ) = 0;
+        virtual vector<Word> EncodeInstruction( DecodedInstruction * instruction ) = 0;
         virtual DecodedInstruction DecodeInstruction( Word instruction ) = 0;
+        virtual InputAdressingTypes * MakeInput( DecodedInstruction * instruction ) = 0;
+        virtual size_t GetInstructionWordQuantity( INSTRUCTIONS instruction ) = 0;
 };
 
 #endif

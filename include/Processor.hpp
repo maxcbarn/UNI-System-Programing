@@ -4,6 +4,7 @@
 #include "adressingTypes/AdressingTypes.hpp"
 #include "adressingTypes/InputAdressingTypes.hpp"
 
+using namespace std;
 
 class Processor {
     private:
@@ -18,7 +19,8 @@ class Processor {
         void Halt();
         void Initialize( INPUTADRESSINGTYPES adressingTypes );
         bool NextInstruction();
-        void LoadProgram();
+        void LoadProgram( vector<Word> program );
+        vector<Word> ReadParameter( size_t wordQuantity );
 };
 
 

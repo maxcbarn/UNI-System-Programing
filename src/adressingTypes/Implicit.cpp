@@ -16,13 +16,21 @@ Implicit::~Implicit() {
 
 }
 
+InputAdressingTypes * Implicit::MakeInput( DecodedInstruction * instruction ) {
+    return ( InputAdressingTypes * ) new InputImplicit{};
+}
+
+size_t Implicit::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
+    return 0;
+}
+
 DecodedInstruction Implicit::DecodeInstruction( Word instruction ) {
     return DecodedInstruction(); 
 }
-
-Word Implicit::EncodeInstruction( DecodedInstruction * instruction ) {
-    return 0;
-}
+    
+vector<Word> Implicit::EncodeInstruction( DecodedInstruction * instruction ) {
+    return {};
+}   
 
 void Implicit::Add( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();

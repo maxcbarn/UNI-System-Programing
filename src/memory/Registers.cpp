@@ -16,6 +16,27 @@ Registers::~Registers() {
 
 }
 
+void Registers::SetProgramSize( size_t size ) {
+    endProgram = size;
+    startMemory = endProgram + 1;
+}
+
+void Registers::IncreaseProgramCounter() {
+    if( programCounter >= endProgram ) {
+        cout << "PROGRAM COUNTER OUT OF BOUNDS" << endl;
+    } else {
+        programCounter++;
+    }
+}
+
+void Registers::SetProgramCounter( Adress adress ) {
+    programCounter = adress;
+}
+
+Adress Registers::GetProgramCounter() {
+    return programCounter;
+}
+
 Registers * Registers::GetRegisters() {
     if ( registers != nullptr ) {
         return registers;

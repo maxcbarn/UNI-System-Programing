@@ -70,6 +70,7 @@ struct DecodedInstruction {
     INSTRUCTIONS instruction;
     vector< REGISTERS_8b > registers8b; // first one is the first on the instruction and so on
     vector< REGISTERS_16b > registers16b; // first one is the first on the instruction and so on
+    vector< Word > imediateValue; // first one is the first on the instruction and so on
 };
 
 

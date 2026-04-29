@@ -10,6 +10,10 @@ Indexed::~Indexed() {
 
 }
 
+size_t Indexed::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
+    return 0;
+}
+
 void Indexed::Add( InputAdressingTypes * input ) {
 
 }
@@ -54,10 +58,14 @@ void Indexed::PopStack( InputAdressingTypes * input ) {
 
 }
 
-Word Indexed::EncodeInstruction( DecodedInstruction * instruction ) {
-    return 0;
+vector<Word> Indexed::EncodeInstruction( DecodedInstruction * instruction ) {
+    return {};
 }
 
 DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
     return DecodedInstruction();
 }  
+
+InputAdressingTypes * Indexed::MakeInput( DecodedInstruction * instruction ) {
+    return ( InputAdressingTypes * ) new InputIndexed{};
+}

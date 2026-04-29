@@ -139,10 +139,18 @@ void IndirectRegister::PopStack( InputAdressingTypes * input ) {
     cout << "RESULT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom16bRegister( register16b ) ) << endl;
 }
 
-Word IndirectRegister::EncodeInstruction( DecodedInstruction * instruction ) {
+size_t IndirectRegister::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
     return 0;
+}
+
+vector<Word> IndirectRegister::EncodeInstruction( DecodedInstruction * instruction ) {
+    return {};
 }
 
 DecodedInstruction IndirectRegister::DecodeInstruction( Word instruction ) {
     return DecodedInstruction();
 }  
+
+InputAdressingTypes * IndirectRegister::MakeInput( DecodedInstruction * instruction ) {
+    return ( InputAdressingTypes * ) new InputIndirectRegister{};
+}
