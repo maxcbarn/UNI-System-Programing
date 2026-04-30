@@ -6,7 +6,7 @@
 #include "SystemArchitecture.hpp"
 #include <string>
 
-
+// Teste de Commit para o GitHub
 using namespace std;
 
 class Registers {
