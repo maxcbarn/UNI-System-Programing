@@ -127,9 +127,10 @@ void Indexed::Xor( InputAdressingTypes * input ) {
 }
 
 void Indexed::Cp( InputAdressingTypes * input ) {
-
+    Registers * regs = Registers::GetRegisters();
+    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
+    FunctionalUnit::GetFunctionalUnit()->Cp(regs->ReadFromAccumulator(), memValue);
 }
-
 void Indexed::PushStack( InputAdressingTypes * input ) {
 
 }
