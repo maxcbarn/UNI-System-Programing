@@ -172,7 +172,7 @@ DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
             break;
     }
 */
-    return decodedInstruction;
+    return DecodedInstruction;
 } 
 
 InputAdressingTypes * Indexed::MakeInput( DecodedInstruction * instruction ) {
