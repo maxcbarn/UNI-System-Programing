@@ -4,7 +4,6 @@
 #include "FunctionalUnit.hpp"
 #include "memory/Registers.hpp"
 #include "memory/Memory.hpp"
-#include <iostream>
 
 using namespace std;
 
