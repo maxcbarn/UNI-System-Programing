@@ -4,6 +4,7 @@
 #include <iostream>
 #include "adressingTypes/InputAdressingTypes.hpp"
 #include "adressingTypes/AdressingTypes.hpp"
+#include "memory/Memory.hpp"
 
 using namespace std;
 
@@ -17,43 +18,112 @@ Imediate::~Imediate() {
 }
 
 InputAdressingTypes * Imediate::MakeInput( DecodedInstruction * instruction ) {
-    return ( InputAdressingTypes * ) new InputImediate{};
+    InputImediate * input = new InputImediate{};
+    switch ( instruction->instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            input->value = instruction->imediateValue[ 0 ];
+            break;
+        case JP:
+        case JPOFFSET:
+        case CALL:
+            input->address = instruction->adresses[ 0 ];
+            break;
+        case LDVALTOREG:
+            input->register8b_dest = instruction->registers8b[ 0 ];
+            input->value = instruction->imediateValue[ 0 ];
+            break;
+        case PUSH:
+        case POP:
+            input->register16b = instruction->registers16b[ 0 ];
+            break;
+        default:
+            break;
+    }
+    return ( InputAdressingTypes * ) input;
 }
 
 size_t Imediate::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
-    return 0;
+    switch ( instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            return 2;
+        case JP:
+        case JPOFFSET:
+        case CALL:
+            return 3; 
+        case RET:
+        case NOP:
+        case HLT:
+            return 1;
+        case LDVALTOREG:
+            return 3; 
+        case PUSH:
+        case POP:
+            return 3; 
+        default:
+            return 0;
+    }
 }
 
 void Imediate::Jump( InputAdressingTypes * input ) {
-
+    Adress address = ( ( InputImediate * ) input )->address;
+    cout << "JP nn INSTRUCTION (Imediate)" << endl;
+    cout << "TARGET ADDRESS: 0x" << hex << address << dec << endl;
+    FunctionalUnit::GetFunctionalUnit()->Jump( address );
 }
 
 void Imediate::JumpOffset( InputAdressingTypes * input ) {
-
+    Adress offset = ( ( InputImediate * ) input )->address;
+    cout << "JR nn INSTRUCTION (Imediate)" << endl;
+    cout << "OFFSET: " << TwoComplementViwer( offset ) << endl;
+    FunctionalUnit::GetFunctionalUnit()->JumpOffset( offset );
 }
 
 void Imediate::Call( InputAdressingTypes * input ) {
-
+    Adress address = ( ( InputImediate * ) input )->address;
+    cout << "CALL nn INSTRUCTION (Imediate)" << endl;
+    cout << "TARGET ADDRESS: 0x" << hex << address << dec << endl;
+    FunctionalUnit::GetFunctionalUnit()->Call( address );
 }
 
 void Imediate::Return( InputAdressingTypes * input ) {
-
+    cout << "RET INSTRUCTION (Imediate)" << endl;
+    FunctionalUnit::GetFunctionalUnit()->Return();
 }
 
 void Imediate::LoadRegisterToResgister( InputAdressingTypes * input ) {
-
+    // not applicable in immediate mode
 }
 
 void Imediate::LoadValueToRegister( InputAdressingTypes * input ) {
-
+    Registers * regs = Registers::GetRegisters();
+    REGISTERS_8b dest = ( ( InputImediate * ) input )->register8b_dest;
+    Word value = ( ( InputImediate * ) input )->value;
+    cout << "LD r, n INSTRUCTION (Imediate)" << endl;
+    cout << "IMMEDIATE VALUE: " << TwoComplementViwer( value ) << endl;
+    regs->WriteTo8bRegister( dest, value );
+    cout << "RESULT: " << TwoComplementViwer( regs->ReadFrom8bRegister( dest ) ) << endl;
 }
 
 void Imediate::LoadRegisterToMemory( InputAdressingTypes * input ) {
-
+    // not applicable in immediate mode
 }
 
 void Imediate::LoadMemoryToRegister( InputAdressingTypes * input ) {
-
+    // not applicable in immediate mode
 }
 
 
@@ -156,9 +226,86 @@ void Imediate::PopStack( InputAdressingTypes * input ) {
 }
 
 vector<Word> Imediate::EncodeInstruction( DecodedInstruction * instruction ) {
-    return {};
+    vector<Word> encodedInstruction;
+    encodedInstruction.push_back( ( Word ) instruction->instruction );
+    switch ( instruction->instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            encodedInstruction.push_back( ( Word ) instruction->imediateValue[ 0 ] );
+            break;
+        case JP:
+        case JPOFFSET:
+        case CALL:
+            encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] >> 8 ) );
+            break;
+        case LDVALTOREG:
+            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->imediateValue[ 0 ] );
+            break;
+        case PUSH:
+        case POP:
+            encodedInstruction.push_back( ( Word ) instruction->registers16b[ 0 ] );
+            break;
+        case RET:
+        case NOP:
+        case HLT:
+            break;
+        default:
+            break;
+    }
+    return encodedInstruction;
 }
 
 DecodedInstruction Imediate::DecodeInstruction( Word instruction ) {
-    return DecodedInstruction();
+    DecodedInstruction decodedInstruction;
+    decodedInstruction.instruction = ( INSTRUCTIONS ) instruction;
+    switch ( ( INSTRUCTIONS ) instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.imediateValue.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            break;
+        case JP:
+        case JPOFFSET:
+        case CALL:
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.adresses.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.adresses[ 0 ] |= ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 );
+            break;
+        case LDVALTOREG:
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.imediateValue.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            break;
+        case PUSH:
+        case POP:
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b.push_back( ( REGISTERS_16b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b[ 0 ] = ( REGISTERS_16b )( ( int )decodedInstruction.registers16b[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
+            break;
+            break;
+        case RET:
+        case NOP:
+        case HLT:
+            break;
+        default:
+            break;
+    }
+    return decodedInstruction;
 }  

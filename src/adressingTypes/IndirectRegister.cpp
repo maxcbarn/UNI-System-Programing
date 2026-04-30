@@ -17,35 +17,53 @@ IndirectRegister::~IndirectRegister() {
 }
 
 void IndirectRegister::Jump( InputAdressingTypes * input ) {
-
+    // not applicable in indirect register mode
 }
 
 void IndirectRegister::JumpOffset( InputAdressingTypes * input ) {
-
+    // not applicable in indirect register mode
 }
 
 void IndirectRegister::Call( InputAdressingTypes * input ) {
-
+    // not applicable in indirect register mode
 }
 
 void IndirectRegister::Return( InputAdressingTypes * input ) {
-
+    // not applicable in indirect register mode
 }
 
 void IndirectRegister::LoadRegisterToResgister( InputAdressingTypes * input ) {
-
+    // not applicable in indirect register mode
 }
 
 void IndirectRegister::LoadValueToRegister( InputAdressingTypes * input ) {
-
+    // not applicable in indirect register mode
 }
 
 void IndirectRegister::LoadRegisterToMemory( InputAdressingTypes * input ) {
+    Registers * regs = Registers::GetRegisters();
+    REGISTERS_8b src = ( ( InputIndirectRegister * ) input )->register8b;
+    REGISTERS_16b register16b = ( ( InputIndirectRegister * ) input )->register16b;
+    Adress address = regs->ReadFrom16bRegister( register16b );
+    Word value = regs->ReadFrom8bRegister( src );
+    cout << "LD (rr), r INSTRUCTION (IndirectRegister)" << endl;
+    cout << "SOURCE REGISTER VALUE: " << TwoComplementViwer( value ) << endl;
+    cout << "TARGET ADDRESS (" << register16b << "): 0x" << hex << address << dec << endl;
+    FunctionalUnit::GetFunctionalUnit()->Store( address, value );
+    cout << "STORED: " << TwoComplementViwer( value ) << endl;
 
 }
 
 void IndirectRegister::LoadMemoryToRegister( InputAdressingTypes * input ) {
-
+    Registers * regs = Registers::GetRegisters();
+    REGISTERS_8b dest = ( ( InputIndirectRegister * ) input )->register8b_dest;
+    REGISTERS_16b register16b = ( ( InputIndirectRegister * ) input )->register16b;
+    Adress address = regs->ReadFrom16bRegister( register16b );
+    cout << "LD r, (rr) INSTRUCTION (IndirectRegister)" << endl;
+    cout << "SOURCE ADDRESS (" << register16b << "): 0x" << hex << address << dec << endl;
+    Word value = FunctionalUnit::GetFunctionalUnit()->Load( address );
+    regs->WriteTo8bRegister( dest, value );
+    cout << "RESULT: " << TwoComplementViwer( regs->ReadFrom8bRegister( dest ) ) << endl;
 }
 
 void IndirectRegister::Add( InputAdressingTypes * input ) {
@@ -167,17 +185,148 @@ void IndirectRegister::PopStack( InputAdressingTypes * input ) {
 }
 
 size_t IndirectRegister::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
-    return 0;
+    switch ( instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            return 3; 
+        case LDREGTOMEM:
+        case LDMEMTOREG:
+            return 4; 
+        case PUSH:
+        case POP:
+            return 3; 
+        case RET:
+        case NOP:
+        case HLT:
+            return 1;
+        default:
+            return 0;
+    }
 }
 
 vector<Word> IndirectRegister::EncodeInstruction( DecodedInstruction * instruction ) {
-    return {};
+    vector<Word> encodedInstruction;
+    encodedInstruction.push_back( ( Word ) instruction->instruction );
+    switch ( instruction->instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] >> 8 ) );
+            break;
+        case LDREGTOMEM:
+            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
+            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] >> 8 ) );
+            break;
+        case LDMEMTOREG:
+            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
+            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] >> 8 ) );
+            break;
+        case PUSH:
+        case POP:
+            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] >> 8 ) );
+            break;
+        case RET:
+        case NOP:
+        case HLT:
+            break;
+        default:
+            break;
+    }
+    return encodedInstruction;
 }
 
 DecodedInstruction IndirectRegister::DecodeInstruction( Word instruction ) {
-    return DecodedInstruction();
+    DecodedInstruction decodedInstruction;
+    decodedInstruction.instruction = ( INSTRUCTIONS ) instruction;
+    switch ( ( INSTRUCTIONS ) instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b.push_back( ( REGISTERS_16b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b[ 0 ] = ( REGISTERS_16b )( ( int )decodedInstruction.registers16b[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
+            break;
+        case LDREGTOMEM:
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b.push_back( ( REGISTERS_16b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b[ 0 ] = ( REGISTERS_16b )( ( int )decodedInstruction.registers16b[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
+            break;
+        case LDMEMTOREG:
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b.push_back( ( REGISTERS_16b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b[ 0 ] = ( REGISTERS_16b )( ( int )decodedInstruction.registers16b[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
+            break;
+        case PUSH:
+        case POP:
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b.push_back( ( REGISTERS_16b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b[ 0 ] = ( REGISTERS_16b )( ( int )decodedInstruction.registers16b[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
+            break;
+        case RET:
+        case NOP:
+        case HLT:
+            break;
+        default:
+            break;
+    }
+    return decodedInstruction;
 }  
 
 InputAdressingTypes * IndirectRegister::MakeInput( DecodedInstruction * instruction ) {
-    return ( InputAdressingTypes * ) new InputIndirectRegister{};
+    InputIndirectRegister * input = new InputIndirectRegister{};
+    switch ( instruction->instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            input->register16b = instruction->registers16b[ 0 ];
+            break;
+        case LDREGTOMEM:
+            input->register8b = instruction->registers8b[ 0 ];
+            input->register16b = instruction->registers16b[ 0 ];
+            break;
+        case LDMEMTOREG:
+            input->register8b_dest = instruction->registers8b[ 0 ];
+            input->register16b = instruction->registers16b[ 0 ];
+            break;
+        case PUSH:
+        case POP:
+            input->register16b = instruction->registers16b[ 0 ];
+            break;
+        default:
+            break;
+    }
+    return ( InputAdressingTypes * ) input;
 }

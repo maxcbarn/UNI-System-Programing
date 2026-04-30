@@ -25,17 +25,24 @@ struct InputImplicit : public InputAdressingTypes {
 };
 
 struct InputDirect : public InputAdressingTypes {
-    Adress address;       
-    REGISTERS_16b register16b;  
+    REGISTERS_8b register8b;
+    REGISTERS_8b register8b_dest;
+    REGISTERS_16b register16b;
+    Adress address;
+    Word imediate;
 };
 
 struct InputImediate : public InputAdressingTypes {
-    Word value;           
-    REGISTERS_16b register16b; 
+    Word value;
+    REGISTERS_8b register8b_dest;
+    REGISTERS_16b register16b;
+    Adress address;
 };
 
 struct InputIndirectRegister : public InputAdressingTypes {
-    REGISTERS_16b register16b; 
+    REGISTERS_16b register16b;
+    REGISTERS_8b register8b;
+    REGISTERS_8b register8b_dest;
 };
 
 struct InputIndexed : public InputAdressingTypes {
