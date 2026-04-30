@@ -100,7 +100,9 @@ void Indexed::Sub( InputAdressingTypes * input ) {
 }
 
 void Indexed::Inc( InputAdressingTypes * input ) {
-
+    Adress addr = CalculateAddress(input);
+    Word val = Memory::GetMemory()->ReadMemory(addr);
+    Memory::GetMemory()->ModifyMemory(addr, FunctionalUnit::GetFunctionalUnit()->Inc(val));
 }
 
 void Indexed::Dec( InputAdressingTypes * input ) {
