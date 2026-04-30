@@ -85,6 +85,7 @@ bool Processor::NextInstruction() {
             cout << "INSTRUCTION NOT FOUND" << endl;
             break;
     }
+    delete input;
     return true;
 }
 

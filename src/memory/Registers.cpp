@@ -1,7 +1,10 @@
 #include "memory/Registers.hpp"
 #include "SystemArchitecture.hpp"
 #include "memory/Memory.hpp"
+#include "Processor.hpp"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -18,7 +21,7 @@ Adress Registers::GetStartMemory() {
     return startMemory;
 }
 
-void Registers::SetProgramSize( size_t size ) {
+void Registers::SetProgramSize( size_t size ) {;
     endProgram = size;
     startMemory = endProgram + 1;
 }
@@ -26,6 +29,7 @@ void Registers::SetProgramSize( size_t size ) {
 void Registers::IncreaseProgramCounter() {
     if( programCounter >= endProgram ) {
         cout << "PROGRAM COUNTER OUT OF BOUNDS" << endl;
+        Processor::GetProcessor()->Halt();  
     } else {
         programCounter++;
     }
@@ -117,6 +121,7 @@ Adress Registers::GetStackPtr() {
 bool Registers::IncreaseStackPtr() {
    if( ( MEM_SIZE_BYTES - stackPtr ) < 1 ) {
         cout << "STACK UNDERFLOW" << endl;
+        Processor::GetProcessor()->Halt();  
         return false;
     } else {
         stackPtr += 1;
@@ -127,6 +132,7 @@ bool Registers::IncreaseStackPtr() {
 bool Registers::DecreaseStackPtr() {
     if( ( stackPtr - 1 ) < endStack ) {
         cout << "STACK OVERFLOW" << endl;
+        Processor::GetProcessor()->Halt();  
         return false;
     } else {
         stackPtr -= 1;
@@ -143,43 +149,29 @@ void Registers::ClearFlag( FLAGS flag ) {
 }
 
 string Registers::FlagsToTerminal() {
-    string ans = "FLAGS VALUES\n";
+    std::ostringstream oss;
 
-    if( FLAGS::SIGN & flag ) {
-        ans += "SIGN-TRUE\n";
-    } else {
-        ans += "SIGN-FALSE\n";
-    }
+    const int W = 16;
 
-    if( FLAGS::ZERO & flag ) {
-        ans += "ZERO-TRUE\n";
-    } else {
-        ans += "ZERO-FALSE\n";
-    }
+    oss << std::left
+        << "|" << std::setw(W) << "SIGN"
+        << "|" << std::setw(W) << "ZERO"
+        << "|" << std::setw(W) << "HALF_CARRY"
+        << "|" << std::setw(W) << "PARITY_OVERFLOW"
+        << "|" << std::setw(W) << "ADD_SUBTRACT"
+        << "|" << std::setw(W) << "CARRY"
+        << "|\n";
 
-    if( FLAGS::HALF_CARRY & flag ) {
-        ans += "HALF_CARRY-TRUE\n";
-    } else {
-        ans += "HALF_CARRY-FALSE\n";
-    }
+    oss << std::string(W * 6 + 7, '-') << "\n";
 
-    if( FLAGS::PARITY_OVERFLOW & flag ) {
-        ans += "PARITY_OVERFLOW-TRUE\n";
-    } else {
-        ans += "PARITY_OVERFLOW-FALSE\n";
-    }
+    oss << "|"
+        << std::setw(W) << ((FLAGS::SIGN & flag) ? 1 : 0)
+        << "|" << std::setw(W) << ((FLAGS::ZERO & flag) ? 1 : 0)
+        << "|" << std::setw(W) << ((FLAGS::HALF_CARRY & flag) ? 1 : 0)
+        << "|" << std::setw(W) << ((FLAGS::PARITY_OVERFLOW & flag) ? 1 : 0)
+        << "|" << std::setw(W) << ((FLAGS::ADD_SUBTRACT & flag) ? 1 : 0)
+        << "|" << std::setw(W) << ((FLAGS::CARRY & flag) ? 1 : 0)
+        << "|\n";
 
-    if( FLAGS::ADD_SUBTRACT & flag ) {
-        ans += "ADD_SUBTRACT-TRUE\n";
-    } else {
-        ans += "ADD_SUBTRACT-FALSE\n";
-    }
-
-    if( FLAGS::CARRY & flag ) {
-        ans += "CARRY-TRUE\n";
-    } else {
-        ans += "CARRY-FALSE\n";
-    }
-
-    return ans;
+    return oss.str();
 }

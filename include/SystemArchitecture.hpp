@@ -15,13 +15,13 @@ using Adress = uint16_t;
 
 #define QUANTITY_8b_REGISTERS 7
 enum REGISTERS_8b {
-    A = 0b00000001,
-    B = 0b00000010,
-    C = 0b00000100,
-    D = 0b00001000,
-    E = 0b00010000,
-    H = 0b00100000,
-    L = 0b01000000
+    A = 0,
+    B = 1,
+    C = 2,
+    D = 3,
+    E = 4,
+    H = 5,
+    L = 6
 };
 
 #define QUANTITY_16b_REGISTERS 4
