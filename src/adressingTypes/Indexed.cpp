@@ -133,7 +133,9 @@ vector<Word> Indexed::EncodeInstruction( DecodedInstruction * instruction ) {
 }
 
 DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
-    DecodedInstruction decodedInstruction;
+ /*  conflito entre registradores
+ 
+ DecodedInstruction decodedInstruction;
     decodedInstruction.instruction = static_cast<INSTRUCTIONS>( instruction );
 
     switch ( decodedInstruction.instruction ) {
@@ -169,7 +171,7 @@ DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
         default:
             break;
     }
-
+*/
     return decodedInstruction;
 } 
 
