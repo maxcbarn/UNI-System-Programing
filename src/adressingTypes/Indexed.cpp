@@ -172,9 +172,9 @@ DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
             break;
     }
 */
-    return DecodedInstruction;
+    return DecodedInstruction(); 
 } 
 
 InputAdressingTypes * Indexed::MakeInput( DecodedInstruction * instruction ) {
-    return ( InputAdressingTypes * ) new InputIndexed{};
+    return ( InputAdressingTypes * ) new InputIndexed(); // Corrigido: Adicionado parênteses no construtor
 }
