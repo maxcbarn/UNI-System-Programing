@@ -18,7 +18,10 @@ struct InputAdressingTypes {
 
 struct InputImplicit : public InputAdressingTypes {
     REGISTERS_8b register8b;
+    REGISTERS_8b register8b_dest;
     REGISTERS_16b register16b;
+    Adress addres;
+    Word imediate;
 };
 
 struct InputDirect : public InputAdressingTypes {

@@ -28,7 +28,7 @@ void FunctionalUnit::Call( Adress address ) {
 }
 
 void FunctionalUnit::Return() {
-    PopStack( Registers::GetRegisters()->GetProgramCounter() );
+    PopStack();
     Jump( Registers::GetRegisters()->ReadFrom16bRegister( AF ) );
 }
 
@@ -53,10 +53,11 @@ FunctionalUnit * FunctionalUnit::GetFunctionalUnit() {
 void FunctionalUnit::PushStack( REGISTERS_16b registerEnum ) {
     Memory * memory = Memory::GetMemory();
     Registers * registers = Registers::GetRegisters();
+    DoubleWord data = registers->ReadFrom16bRegister( registerEnum );
     registers->DecreaseStackPtr();
-    memory->ModifyMemory( registers->GetStackPtr() , registers->ReadFrom16bRegisterLow( registerEnum ) );
+    memory->ModifyMemory( registers->GetStackPtr() , ( Word )( data & 0x00FF ) );
     registers->DecreaseStackPtr();
-    memory->ModifyMemory( registers->GetStackPtr() , registers->ReadFrom16bRegisterHigh( registerEnum ) );
+    memory->ModifyMemory( registers->GetStackPtr() , ( Word )( data >> 8 ) );
 }
 
 void FunctionalUnit::PushStack( DoubleWord data ) {
@@ -71,19 +72,23 @@ void FunctionalUnit::PushStack( DoubleWord data ) {
 void FunctionalUnit::PopStack( REGISTERS_16b registerEnum ) {
     Memory * memory = Memory::GetMemory();
     Registers * registers = Registers::GetRegisters();
-    registers->WriteTo16bRegisterHigh( registerEnum , memory->ReadMemory( registers->GetStackPtr() ) );
+    DoubleWord dataHigh = memory->ReadMemory( registers->GetStackPtr() );
     registers->IncreaseStackPtr();
-    registers->WriteTo16bRegisterLow( registerEnum , memory->ReadMemory( registers->GetStackPtr() ) );
+    DoubleWord dataLow = memory->ReadMemory( registers->GetStackPtr() );
     registers->IncreaseStackPtr();
+    DoubleWord data = ( dataHigh << 8 ) | dataLow;
+    registers->WriteTo16bRegister( registerEnum, data );
 }   
 
-void FunctionalUnit::PopStack( DoubleWord data ) {
+void FunctionalUnit::PopStack() {
     Memory * memory = Memory::GetMemory();
     Registers * registers = Registers::GetRegisters();
-    registers->WriteTo16bRegisterHigh( AF , ( Word )( data >> 8 ) );
+    DoubleWord dataHigh = memory->ReadMemory( registers->GetStackPtr() );
     registers->IncreaseStackPtr();
-    registers->WriteTo16bRegisterLow( AF , ( Word )( data & 0x00FF ) );
+    DoubleWord dataLow = memory->ReadMemory( registers->GetStackPtr() );
     registers->IncreaseStackPtr();
+    DoubleWord data = ( dataHigh << 8 ) | dataLow;
+    registers->WriteTo16bRegister( REGISTERS_16b::Hl , data );
 }
 
 void FunctionalUnit::Nop() {

@@ -21,7 +21,7 @@ class FunctionalUnit {
         Word Dec( Word data1 );
         void PushStack( DoubleWord data );
         void PushStack( REGISTERS_16b registerEnum );
-        void PopStack( DoubleWord data );
+        void PopStack();
         void PopStack( REGISTERS_16b registerEnum );
         Word Load( Adress address );
         void Store( Adress address , Word data );

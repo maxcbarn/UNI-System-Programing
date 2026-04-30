@@ -6,10 +6,8 @@
 using namespace std;
 
 Registers::Registers() {
-    accumulator = 0;
     flag = 0;
     generalUse8b = vector< Word >( QUANTITY_8b_REGISTERS , 0 );
-    generalUse16b = vector< DoubleWord >( QUANTITY_16b_REGISTERS , 0 );
 }
  
 Registers::~Registers() {
@@ -60,45 +58,56 @@ void Registers::WriteTo8bRegister( REGISTERS_8b registerEnum , Word data ) {
 
 }
 
-Word Registers::ReadFrom16bRegisterLow( REGISTERS_16b registerEnum ) {
-    return ( Word )(generalUse16b[( int )registerEnum] & 0b0000000011111111);
-}
-
-Word Registers::ReadFrom16bRegisterHigh( REGISTERS_16b registerEnum ) {
-    DoubleWord a = generalUse16b[( int )registerEnum] >> 8;
-    return ( Word )(generalUse16b[( int )registerEnum] >> 8);
-}
-
 DoubleWord Registers::ReadFrom16bRegister( REGISTERS_16b registerEnum ) {
-    return ( DoubleWord )generalUse16b[( int )registerEnum];
+    switch ( registerEnum ) {
+        case REGISTERS_16b::AF:
+            return ( ( DoubleWord )generalUse8b[( int )A] << 8 ) | ( DoubleWord )flag;
+            break;
+        case REGISTERS_16b::BC:
+            return ( ( DoubleWord )generalUse8b[( int )B] << 8 ) | ( DoubleWord )generalUse8b[( int )C];
+            break;
+        case REGISTERS_16b::DE:
+            return ( ( DoubleWord )generalUse8b[( int )D] << 8  ) | ( DoubleWord )generalUse8b[( int )E];
+            break;
+        case REGISTERS_16b::Hl:
+            return ( ( DoubleWord )generalUse8b[( int )H] << 8  ) | ( DoubleWord )generalUse8b[( int )L];
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+void Registers::WriteTo16bRegister( REGISTERS_16b registerEnum, DoubleWord data ) {
+    switch ( registerEnum ) {
+        case REGISTERS_16b::AF:
+            return;
+            break;
+        case REGISTERS_16b::BC:
+            WriteTo8bRegister( B, ( Word )( data >> 8 ) );
+            WriteTo8bRegister( C, ( Word )( data & 0xFF ) );
+            break;
+        case REGISTERS_16b::DE:
+            WriteTo8bRegister( D, ( Word )( data >> 8 ) );
+            WriteTo8bRegister( E, ( Word )( data & 0xFF ) );
+            break;
+        case REGISTERS_16b::Hl:
+            WriteTo8bRegister( H, ( Word )( data >> 8 ) );
+            WriteTo8bRegister( L, ( Word )( data & 0xFF ) );
+            break;
+    }
 }
 
 void Registers::WriteToAccumulator( Word data ) {
-    accumulator = data;
+    WriteTo8bRegister( A, data );
 }
 
 Word Registers::ReadFromAccumulator() {
-    return accumulator;
+    return ReadFrom8bRegister( A );
 }
 
 Word Registers::ReadFrom8bRegister( REGISTERS_8b registerEnum ) {
     return generalUse8b[( size_t )registerEnum];
-}
-
-void Registers::WriteTo16bRegister( REGISTERS_16b registerEnum , DoubleWord data ) {
-    generalUse16b[( size_t )registerEnum] = data;
-}
-
-void Registers::WriteTo16bRegisterLow( REGISTERS_16b registerEnum , Word data ) {
-    DoubleWord lowPart = data;
-    DoubleWord highPart = generalUse16b[( int )registerEnum] & 0b1111111100000000 ;
-    generalUse16b[( int )registerEnum] = highPart | lowPart;
-}
-
-void Registers::WriteTo16bRegisterHigh( REGISTERS_16b registerEnum , Word data ) {
-    DoubleWord lowPart = generalUse16b[( int )registerEnum] & 0b0000000011111111;
-    DoubleWord highPart = data << 8;
-    generalUse16b[( int )registerEnum] = highPart | lowPart;
 }
 
 Adress Registers::GetStackPtr() {
