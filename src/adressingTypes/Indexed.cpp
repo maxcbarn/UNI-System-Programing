@@ -65,7 +65,14 @@ void Indexed::LoadRegisterToMemory( InputAdressingTypes * input ) {
 }
 
 void Indexed::LoadMemoryToRegister( InputAdressingTypes * input ) {
+    Registers * regs = Registers::GetRegisters();
+    InputIndexed * in = ( InputIndexed * ) input;
+    
+    Adress baseAddress = regs->ReadFrom16bRegister( in->register16b );
+    Adress finalAddress = baseAddress + in->offset; 
 
+    Word value = FunctionalUnit::GetFunctionalUnit()->Load( finalAddress );
+    regs->WriteTo8bRegister( in->register8b_dest, value );
 }
 
 void Indexed::Add( InputAdressingTypes * input ) {
