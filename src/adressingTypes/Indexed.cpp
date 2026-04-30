@@ -88,7 +88,10 @@ void Indexed::LoadMemoryToRegister( InputAdressingTypes * input ) {
 }
 
 void Indexed::Add( InputAdressingTypes * input ) {
-
+    Registers * regs = Registers::GetRegisters();
+    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
+    Word result = FunctionalUnit::GetFunctionalUnit()->Add(regs->ReadFromAccumulator(), memValue);
+    regs->WriteToAccumulator(result);
 }
 
 void Indexed::Sub( InputAdressingTypes * input ) {
