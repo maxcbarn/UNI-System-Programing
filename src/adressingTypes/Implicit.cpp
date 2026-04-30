@@ -18,11 +18,76 @@ Implicit::~Implicit() {
 }
 
 InputAdressingTypes * Implicit::MakeInput( DecodedInstruction * instruction ) {
-    return ( InputAdressingTypes * ) new InputImplicit{};
+    InputImplicit * input = new InputImplicit{};
+    switch (instruction->instruction) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            input->register8b = instruction->registers8b[ 0 ];
+            break;
+        case JP:
+        case JPOFFSET:
+        case CALL:
+            input->addres = instruction->adresses[ 0 ];
+            break;
+        case RET:
+        case NOP:
+        case HLT:
+            // No additional bytes needed
+            break;
+        case LDREGTOREG:
+            input->register8b = instruction->registers8b[ 0 ];
+            input->register8b = instruction->registers8b[ 1 ];
+            break;
+        case LDVALTOREG:
+            input->register8b = instruction->registers8b[ 0 ];
+            input->imediate = instruction->imediateValue[ 0 ];
+            break;
+        case LDREGTOMEM:
+           input->register8b = instruction->registers8b[ 0 ];
+           break;
+        case LDMEMTOREG:
+            input->register8b = instruction->registers8b[ 0 ];
+            break;
+    }
+    return ( InputAdressingTypes * ) input;
 }
 
 size_t Implicit::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
-    return 0;
+    switch (instruction) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+            return 2;
+        case JP:
+        case JPOFFSET:
+        case CALL:
+            return 3;
+        case RET:
+        case NOP:
+        case HLT:
+            return 1;
+        case LDREGTOREG:
+            return 3;
+        case LDVALTOREG:
+            return 3;
+        case LDREGTOMEM:
+           return 2;
+        case LDMEMTOREG:
+            return 2;
+        default:
+            return 0;
+    }
 }
 
 DecodedInstruction Implicit::DecodeInstruction( Word instruction ) {
@@ -43,7 +108,6 @@ DecodedInstruction Implicit::DecodeInstruction( Word instruction ) {
         case JP:
         case JPOFFSET:
         case CALL:
-
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
@@ -78,8 +142,6 @@ DecodedInstruction Implicit::DecodeInstruction( Word instruction ) {
         default:
             break;
     }
-
-
     return decodedInstruction; 
 }
     
