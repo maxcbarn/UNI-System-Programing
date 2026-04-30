@@ -9,9 +9,31 @@ Indexed::Indexed() : AdressingTypes() {
 Indexed::~Indexed() {
 
 }
-
 size_t Indexed::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
-    return 0;
+    switch ( instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+        case LDMEMTOREG:
+        case LDREGTOMEM:
+            return 2; 
+        case JP:
+        case JPOFFSET:
+        case CALL:
+            return 2; 
+
+        case RET:
+        case NOP:
+        case HLT:
+            return 1;
+        default:
+            return 0;
+    }
 }
 
 void Indexed::Jump( InputAdressingTypes * input ) {
