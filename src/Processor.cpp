@@ -39,8 +39,8 @@ bool Processor::NextInstruction() {
         return false;
     }
     Registers * regs = Registers::GetRegisters();
-    regs->IncreaseProgramCounter();
     Adress pc = regs->GetProgramCounter();
+    regs->IncreaseProgramCounter();
     Word instruction = Memory::GetMemory()->ReadMemory( pc );
     DecodedInstruction decodedInstruction = adressingTypes->DecodeInstruction( instruction );
     InputAdressingTypes * input = adressingTypes->MakeInput( &decodedInstruction );

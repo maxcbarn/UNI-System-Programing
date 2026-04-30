@@ -366,50 +366,50 @@ DecodedInstruction Direct::DecodeInstruction( Word instruction ) {
         case CP:
         case INC:
         case DEC:
-            Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses[ 0 ] |= ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 );
+            Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case JP:
         case JPOFFSET:
         case CALL:
-            Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses[ 0 ] |= ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 );
+            Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case RET:
         case NOP:
         case HLT:
             break;
         case LDREGTOREG:
-            Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDVALTOREG:
-            Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.imediateValue.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDREGTOMEM:
-            Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses[ 0 ] |= ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 );
+            Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDMEMTOREG:
-            Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses[ 0 ] |= ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 );
+            Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         default:
             break;
