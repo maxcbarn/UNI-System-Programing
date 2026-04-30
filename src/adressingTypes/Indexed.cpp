@@ -93,7 +93,10 @@ void Indexed::Add( InputAdressingTypes * input ) {
 }
 
 void Indexed::Sub( InputAdressingTypes * input ) {
-
+    Registers * regs = Registers::GetRegisters();
+    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
+    Word result = FunctionalUnit::GetFunctionalUnit()->Sub(regs->ReadFromAccumulator(), memValue);
+    regs->WriteToAccumulator(result);
 }
 
 void Indexed::Inc( InputAdressingTypes * input ) {
@@ -105,15 +108,20 @@ void Indexed::Dec( InputAdressingTypes * input ) {
 }
 
 void Indexed::And( InputAdressingTypes * input ) {
-
+    Registers * regs = Registers::GetRegisters();
+    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
+    regs->WriteToAccumulator(FunctionalUnit::GetFunctionalUnit()->And(regs->ReadFromAccumulator(), memValue));
 }
 
 void Indexed::Or( InputAdressingTypes * input ) {
 
 }
 
-void Indexed::Xor( InputAdressingTypes * input ) {
 
+void Indexed::Xor( InputAdressingTypes * input ) {
+    Registers * regs = Registers::GetRegisters();
+    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
+    regs->WriteToAccumulator(FunctionalUnit::GetFunctionalUnit()->Xor(regs->ReadFromAccumulator(), memValue));
 }
 
 void Indexed::Cp( InputAdressingTypes * input ) {
