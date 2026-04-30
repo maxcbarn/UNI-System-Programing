@@ -114,7 +114,9 @@ void Indexed::And( InputAdressingTypes * input ) {
 }
 
 void Indexed::Or( InputAdressingTypes * input ) {
-
+    Registers * regs = Registers::GetRegisters();
+    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
+    regs->WriteToAccumulator(FunctionalUnit::GetFunctionalUnit()->Or(regs->ReadFromAccumulator(), memValue));
 }
 
 
