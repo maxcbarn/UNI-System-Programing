@@ -1,9 +1,12 @@
 #include "adressingTypes/Indexed.hpp"
 #include "adressingTypes/InputAdressingTypes.hpp"
 #include "adressingTypes/AdressingTypes.hpp"
+#include "FunctionalUnit.hpp"
 #include "memory/Registers.hpp"
 #include "memory/Memory.hpp"
+#include <iostream>
 
+using namespace std;
 
 Indexed::Indexed() : AdressingTypes() {
 
@@ -12,6 +15,12 @@ Indexed::Indexed() : AdressingTypes() {
 Indexed::~Indexed() {
 
 }
+Adress Indexed::CalculateAddress(InputAdressingTypes * input) {
+    Registers * regs = Registers::GetRegisters();
+    InputIndexed * in = (InputIndexed *) input;
+    return regs->ReadFrom16bRegister(in->register16b) + in->offset;
+}
+
 size_t Indexed::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
     switch ( instruction ) {
         case ADD:
