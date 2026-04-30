@@ -1,6 +1,9 @@
 #include "adressingTypes/Indexed.hpp"
 #include "adressingTypes/InputAdressingTypes.hpp"
 #include "adressingTypes/AdressingTypes.hpp"
+#include "memory/Registers.hpp"
+#include "memory/Memory.hpp"
+
 
 Indexed::Indexed() : AdressingTypes() {
 
@@ -113,8 +116,45 @@ vector<Word> Indexed::EncodeInstruction( DecodedInstruction * instruction ) {
 }
 
 DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
-    return DecodedInstruction();
-}  
+    DecodedInstruction decodedInstruction;
+    decodedInstruction.instruction = static_cast<INSTRUCTIONS>( instruction );
+
+    switch ( decodedInstruction.instruction ) {
+        case ADD:
+        case SUB:
+        case AND:
+        case OR:
+        case XOR:
+        case CP:
+        case INC:
+        case DEC:
+        case LDMEMTOREG:
+        case LDREGTOMEM:
+        case JPOFFSET: 
+
+            decodedInstruction.imediateValue.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers16b.push_back( IX ); 
+
+            break;
+
+        case JP:
+        case CALL:
+            decodedInstruction.registers16b.push_back( IX );
+            break;
+
+        case RET:
+        case NOP:
+        case HLT:
+        
+            break;
+
+        default:
+            break;
+    }
+
+    return decodedInstruction;
+} 
 
 InputAdressingTypes * Indexed::MakeInput( DecodedInstruction * instruction ) {
     return ( InputAdressingTypes * ) new InputIndexed{};
