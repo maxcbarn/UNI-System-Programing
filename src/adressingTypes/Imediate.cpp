@@ -265,7 +265,7 @@ vector<Word> Imediate::EncodeInstruction( DecodedInstruction * instruction ) {
 
 DecodedInstruction Imediate::DecodeInstruction( Word instruction ) {
     DecodedInstruction decodedInstruction;
-    decodedInstruction.instruction = ( INSTRUCTIONS ) instruction;
+    decodedInstruction.instruction = static_cast<INSTRUCTIONS>( instruction );
     switch ( ( INSTRUCTIONS ) instruction ) {
         case ADD:
         case SUB:
