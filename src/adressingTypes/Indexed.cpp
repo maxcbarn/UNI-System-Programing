@@ -1,9 +1,6 @@
 #include "adressingTypes/Indexed.hpp"
 #include "adressingTypes/InputAdressingTypes.hpp"
 #include "adressingTypes/AdressingTypes.hpp"
-#include "FunctionalUnit.hpp"
-#include "memory/Registers.hpp"
-#include "memory/Memory.hpp"
 
 
 Indexed::Indexed() : AdressingTypes() {
@@ -13,11 +10,6 @@ Indexed::Indexed() : AdressingTypes() {
 Indexed::~Indexed() {
 
 }
-/*Adress Indexed::CalculateAddress(InputAdressingTypes * input) {
-    Registers * regs = Registers::GetRegisters();
-    InputIndexed * in = (InputIndexed *) input;
-    return regs->ReadFrom16bRegister(in->register16b) + in->offset;
-}*/
 
 size_t Indexed::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
     switch ( instruction ) {
@@ -75,34 +67,19 @@ void Indexed::LoadRegisterToMemory( InputAdressingTypes * input ) {
 }
 
 void Indexed::LoadMemoryToRegister( InputAdressingTypes * input ) {
-   Registers * regs = Registers::GetRegisters();
-    InputIndexed * in = ( InputIndexed * ) input;
-    
-    Adress baseAddress = regs->ReadFrom16bRegister( in->register16b );
-    Adress finalAddress = baseAddress + in->offset; 
 
-    Word value = FunctionalUnit::GetFunctionalUnit()->Load( finalAddress );
-    regs->WriteTo8bRegister( in->register8b_dest, value );
 }
 
 void Indexed::Add( InputAdressingTypes * input ) {
-   Registers * regs = Registers::GetRegisters();
-    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
-    Word result = FunctionalUnit::GetFunctionalUnit()->Add(regs->ReadFromAccumulator(), memValue);
-    regs->WriteToAccumulator(result);
+   
 }
 
 void Indexed::Sub( InputAdressingTypes * input ) {
-    Registers * regs = Registers::GetRegisters();
-    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
-    Word result = FunctionalUnit::GetFunctionalUnit()->Sub(regs->ReadFromAccumulator(), memValue);
-    regs->WriteToAccumulator(result);
+   
 }
 
 void Indexed::Inc( InputAdressingTypes * input ) {
-    Adress addr = CalculateAddress(input);
-    Word val = Memory::GetMemory()->ReadMemory(addr);
-    Memory::GetMemory()->ModifyMemory(addr, FunctionalUnit::GetFunctionalUnit()->Inc(val));
+ 
 }
 
 void Indexed::Dec( InputAdressingTypes * input ) {
@@ -110,28 +87,20 @@ void Indexed::Dec( InputAdressingTypes * input ) {
 }
 
 void Indexed::And( InputAdressingTypes * input ) {
-    Registers * regs = Registers::GetRegisters();
-    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
-    regs->WriteToAccumulator(FunctionalUnit::GetFunctionalUnit()->And(regs->ReadFromAccumulator(), memValue));
+   
 }
 
 void Indexed::Or( InputAdressingTypes * input ) {
-    Registers * regs = Registers::GetRegisters();
-    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
-    regs->WriteToAccumulator(FunctionalUnit::GetFunctionalUnit()->Or(regs->ReadFromAccumulator(), memValue));
+   
 }
 
 
 void Indexed::Xor( InputAdressingTypes * input ) {
-    Registers * regs = Registers::GetRegisters();
-    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
-    regs->WriteToAccumulator(FunctionalUnit::GetFunctionalUnit()->Xor(regs->ReadFromAccumulator(), memValue));
+  
 }
 
 void Indexed::Cp( InputAdressingTypes * input ) {
-    Registers * regs = Registers::GetRegisters();
-    Word memValue = Memory::GetMemory()->ReadMemory(CalculateAddress(input));
-    FunctionalUnit::GetFunctionalUnit()->Cp(regs->ReadFromAccumulator(), memValue);
+   
 }
 void Indexed::PushStack( InputAdressingTypes * input ) {
 
