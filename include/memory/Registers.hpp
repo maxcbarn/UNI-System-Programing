@@ -38,6 +38,8 @@ class Registers {
         void ClearFlag( FLAGS flag );
         string FlagsToTerminal();
         Adress GetStartMemory();
+        DoubleWord ReadFromEspRegister( REGISTERS_ESP registerEnum );
+        void WriteToEspRegister( REGISTERS_ESP registerEnum, DoubleWord data );
 };
 
 

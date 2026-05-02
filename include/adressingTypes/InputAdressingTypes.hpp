@@ -46,7 +46,9 @@ struct InputIndirectRegister : public InputAdressingTypes {
 };
 
 struct InputIndexed : public InputAdressingTypes {
-
+    REGISTERS_ESP registerEsp;
+    Word offset;
+    REGISTERS_8b register8b;
 };
 
 

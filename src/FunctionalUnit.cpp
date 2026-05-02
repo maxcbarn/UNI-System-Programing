@@ -69,6 +69,27 @@ void FunctionalUnit::PushStack( DoubleWord data ) {
     memory->ModifyMemory( registers->GetStackPtr() , ( Word )( data >> 8 ) );
 }
 
+void FunctionalUnit::PushStack( REGISTERS_ESP registerEnum ) {
+    Memory * memory = Memory::GetMemory();
+    Registers * registers = Registers::GetRegisters();
+    DoubleWord data = registers->ReadFromEspRegister( registerEnum );
+    registers->DecreaseStackPtr();
+    memory->ModifyMemory( registers->GetStackPtr() , ( Word )( data & 0x00FF ) );
+    registers->DecreaseStackPtr();
+    memory->ModifyMemory( registers->GetStackPtr() , ( Word )( data >> 8 ) );
+}
+
+void FunctionalUnit::PopStack( REGISTERS_ESP registerEnum ) {
+    Memory * memory = Memory::GetMemory();
+    Registers * registers = Registers::GetRegisters();
+    DoubleWord dataHigh = memory->ReadMemory( registers->GetStackPtr() );
+    registers->IncreaseStackPtr();
+    DoubleWord dataLow = memory->ReadMemory( registers->GetStackPtr() );
+    registers->IncreaseStackPtr();
+    DoubleWord data = ( dataHigh << 8 ) | dataLow;
+    registers->WriteToEspRegister( registerEnum, data );
+}
+
 void FunctionalUnit::PopStack( REGISTERS_16b registerEnum ) {
     Memory * memory = Memory::GetMemory();
     Registers * registers = Registers::GetRegisters();

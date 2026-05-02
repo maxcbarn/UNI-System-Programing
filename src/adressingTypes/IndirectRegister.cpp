@@ -194,13 +194,13 @@ size_t IndirectRegister::GetInstructionWordQuantity( INSTRUCTIONS instruction ) 
         case CP:
         case INC:
         case DEC:
-            return 3; 
+            return 2; 
         case LDREGTOMEM:
         case LDMEMTOREG:
-            return 4; 
+            return 3; 
         case PUSH:
         case POP:
-            return 3; 
+            return 2; 
         case RET:
         case NOP:
         case HLT:

@@ -23,6 +23,8 @@ class FunctionalUnit {
         void PushStack( REGISTERS_16b registerEnum );
         void PopStack();
         void PopStack( REGISTERS_16b registerEnum );
+        void PushStack( REGISTERS_ESP registerEnum );
+        void PopStack( REGISTERS_ESP registerEnum );
         Word Load( Adress address );
         void Store( Adress address , Word data );
         void Jump( Adress address );

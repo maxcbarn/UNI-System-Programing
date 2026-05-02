@@ -175,3 +175,37 @@ string Registers::FlagsToTerminal() {
 
     return oss.str();
 }
+
+DoubleWord Registers::ReadFromEspRegister( REGISTERS_ESP registerEnum ) {
+    switch ( registerEnum ) {
+        case REGISTERS_ESP::IX:
+            return indexX;
+        case REGISTERS_ESP::IY:
+            return indexY;
+        case REGISTERS_ESP::SP:
+            return stackPtr;
+        case REGISTERS_ESP::PC:
+            return programCounter;
+        default:
+            return 0;
+    }
+}
+
+void Registers::WriteToEspRegister( REGISTERS_ESP registerEnum, DoubleWord data ) {
+    switch ( registerEnum ) {
+        case REGISTERS_ESP::IX:
+            indexX = data;
+            break;
+        case REGISTERS_ESP::IY:
+            indexY = data;
+            break;
+        case REGISTERS_ESP::SP:
+            stackPtr = data;
+            break;
+        case REGISTERS_ESP::PC:
+            programCounter = data;
+            break;
+        default:
+            break;
+    }
+}
