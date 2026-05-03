@@ -33,7 +33,7 @@ User header guards please, use the enums and struct already defined, and if need
 The first word is the opcode of the instruction, decode it to know how many more words would have to be writen, it changes depending on the adressin type.
 
 
-## Others
+## Virtual Machine
 
 Word of 8 bits
 
@@ -49,19 +49,19 @@ Files And What They Do:
  
 - InputAdressingTypes.hpp & InputAdressingTypes.cpp - Defines structs for better inputs of the adressing types, using a base struct for the parameters of the adressing types, and especializing based on what type is being used. 
 
-- Memory.hpp & Memory.cpp - Defines the memory and how to acess, it's a singleton;
+- Memory.hpp & Memory.cpp - Defines the memory and how to acess, it's a singleton; (Done)
 
-- Registers.hpp & Registers.cpp - Defines the registers and how to acess, it's a singleton; (not finished)(indexs)
+- Registers.hpp & Registers.cpp - Defines the registers and how to acess, it's a singleton; (Done)
 
 - FunctionalUnit.hpp & FunctionalUnit.cpp - The functional unit of the system, will recive de data and return data, it will be generic and other class called AdressingTypes will implement how to treat diferent adressint types, it's a singleton; (Done)
 
 - AdressingTypesFactory.hpp & AdressingTypesFactory.cpp - factory for creating the adressing types accordingly to what is going to be used, all the parameters are a struct pointer that will be converted to the type that we want that is a specialized struct, so that we override functions and not overload for better flow, it's a factory and a singleton. (Done)
 
 - AdressingTypes.hpp & AdressingTypes.cpp - This is the base class of the adpaters that will treat the adressing types, it will define the functions that the adressing types has to implement, they will call the functional unit, get the values and store the values accordingly, decode and encode instructions, it's a adapter (Done)
-  - Direct.hpp & Direct.cpp - (not finished)
-  - Implicit.hpp & Implicit.cpp - (not finished)
-  - Indexed.hpp & Indexed.cpp - (not finished)
-  - InddirectRegister.hpp & InddirectRegister.cpp - (not finished)
-  - Direct.hpp & Direct.cpp - (not finished)
+  - Direct.hpp & Direct.cpp - (Done)
+  - Implicit.hpp & Implicit.cpp - (Done)
+  - Indexed.hpp & Indexed.cpp - (Done)
+  - IndirectRegister.hpp & IndirectRegister.cpp - (Done)
+  - Imediate.hpp & Imediate.cpp - (Done)
 
-- Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton (Done)
+- Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton and a facade (Done)
