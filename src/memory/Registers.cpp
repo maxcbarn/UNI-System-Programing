@@ -27,7 +27,7 @@ void Registers::SetProgramSize( size_t size ) {;
 }
 
 void Registers::IncreaseProgramCounter() {
-    if( programCounter >= endProgram ) {
+    if( programCounter > endProgram ) {
         cout << "PROGRAM COUNTER OUT OF BOUNDS" << endl;
         Processor::GetProcessor()->Halt();  
     } else {
