@@ -38,6 +38,16 @@ User header guards please, use the enums and struct already defined, and if need
 
 The first word is the opcode of the instruction, decode it to know how many more words would have to be writen, it changes depending on the adressin type.
 
+the folder instructions contains the files to encode to binary all the instructions of all adressing types.
+
+- AdressingTypesFactoryInstructions.hpp & AdressingTypesFactoryInstructions.cpp - factory for creating the adressing types instructions accordingly to what is going to be used it's a factory and a singleton. (Done)
+
+- AdressingTypesInstructions.hpp & AdressingTypesInstructions.cpp - This is the base class of the adpaters that will treat the adressing types for encoding the instructions outside the processor, it will define the functions that the adressing types has to implement, it's a adapter (Done)
+  - DirectInstructions.hpp & DirectInstructions.cpp - (Done)
+  - ImplicitInstructions.hpp & ImplicitInstructions.cpp - (Done)
+  - IndexedInstructions.hpp & IndexedInstructions.cpp - (Done)
+  - IndirectRegisterInstructions.hpp & IndirectRegisterInstructions.cpp - (Done)
+  - ImediateInstructions.hpp & ImediateInstructions.cpp - (Done)
 
 ## Processor
 
@@ -51,7 +61,6 @@ Numbers are in complement of two
 
 All the files are inside de processor folder in the src and include folder, all the files regrading the function should the inside these folders, they must not communicate with outside implementations, thats the function of the facade, the file processor.cpp and processor.hpp.
 
-
 Files And What They Do:
 
 - InputAdressingTypes.hpp & InputAdressingTypes.cpp - Defines structs for better inputs of the adressing types, using a base struct for the parameters of the adressing types, and especializing based on what type is being used. 
@@ -64,7 +73,7 @@ Files And What They Do:
 
 - AdressingTypesFactory.hpp & AdressingTypesFactory.cpp - factory for creating the adressing types accordingly to what is going to be used, all the parameters are a struct pointer that will be converted to the type that we want that is a specialized struct, so that we override functions and not overload for better flow, it's a factory and a singleton. (Done)
 
-- AdressingTypes.hpp & AdressingTypes.cpp - This is the base class of the adpaters that will treat the adressing types, it will define the functions that the adressing types has to implement, they will call the functional unit, get the values and store the values accordingly, decode and encode instructions, it's a adapter (Done)
+- AdressingTypes.hpp & AdressingTypes.cpp - This is the base class of the adpaters that will treat the adressing types, it will define the functions that the adressing types has to implement, they will call the functional unit, get the values and store the values accordingly, decode instructions, it's a adapter (Done)
   - Direct.hpp & Direct.cpp - (Done)
   - Implicit.hpp & Implicit.cpp - (Done)
   - Indexed.hpp & Indexed.cpp - (Done)
@@ -73,4 +82,4 @@ Files And What They Do:
 
 - Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton and a facade (Done)
 
-#
+## Two Pass Assembler

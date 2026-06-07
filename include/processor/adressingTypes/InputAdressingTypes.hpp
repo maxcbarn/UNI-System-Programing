@@ -3,15 +3,6 @@
 
 #include "SystemArchitecture.hpp"
 
-enum INPUTADRESSINGTYPES {
-    IMPLICIT,
-    IMEDIATE,
-    DIRECT,
-    INDEXED,
-    INDIRECT_REGISTER
-};
-
-
 struct InputAdressingTypes {
     
 };

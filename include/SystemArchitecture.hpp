@@ -74,6 +74,13 @@ enum INSTRUCTIONS {
     LDMEMTOREG = 0b00010011, // real load from memory
 };
 
+enum INPUTADRESSINGTYPES {
+    IMPLICIT,
+    IMEDIATE,
+    DIRECT,
+    INDEXED,
+    INDIRECT_REGISTER
+};
 
 struct DecodedInstruction {
     INSTRUCTIONS instruction;

@@ -2,6 +2,8 @@
 #include "processor/adressingTypes/Implicit.hpp"
 #include "processor/adressingTypes/AdressingTypesFactory.hpp"
 #include "processor/adressingTypes/InputAdressingTypes.hpp"
+#include "instructions/AdressingTypesFactoryInstructions.hpp"
+#include "instructions/AdressingTypesInstructions.hpp"
 #include "SystemArchitecture.hpp"
 #include <iostream>
 
@@ -55,8 +57,9 @@ int main( int argc , char const *argv[] ) {
     processor->Initialize( adressingType );
     vector<DecodedInstruction> program = BuildProgram();
     vector<Word> encodedProgram, aux;
+    AdressingTypesInstructions * instructions = AdressingTypesFactoryInstructions::GetAdressingTypesFactoryInstructions()->GetAdressingTypeInstructions( adressingType );
     for ( size_t i = 0 ; i < program.size() ; i++) {
-        aux = AdressingTypesFactory::GetAdressingTypesFactory()->GetAdressingType( adressingType )->EncodeInstruction( &program[i] );
+        aux = instructions->EncodeInstruction( &program[i] );
         encodedProgram.insert( encodedProgram.end(), aux.begin(), aux.end() );
     }
     

@@ -49,35 +49,6 @@ InputAdressingTypes * Imediate::MakeInput( DecodedInstruction * instruction ) {
     return ( InputAdressingTypes * ) input;
 }
 
-size_t Imediate::GetInstructionWordQuantity( INSTRUCTIONS instruction ) {
-    switch ( instruction ) {
-        case ADD:
-        case SUB:
-        case AND:
-        case OR:
-        case XOR:
-        case CP:
-        case INC:
-        case DEC:
-            return 2;
-        case JP:
-        case JPOFFSET:
-        case CALL:
-            return 3; 
-        case RET:
-        case NOP:
-        case HLT:
-            return 1;
-        case LDVALTOREG:
-            return 3; 
-        case PUSH:
-        case POP:
-            return 3; 
-        default:
-            return 0;
-    }
-}
-
 void Imediate::Jump( InputAdressingTypes * input ) {
     Adress address = ( ( InputImediate * ) input )->address;
     cout << "JP nn INSTRUCTION (Imediate)" << endl;
@@ -223,44 +194,6 @@ void Imediate::PopStack( InputAdressingTypes * input ) {
     REGISTERS_16b register16b = ( ( InputImediate * )input )->register16b;
     FunctionalUnit::GetFunctionalUnit()->PopStack( register16b );
     cout << "RESULT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom16bRegister( register16b ) ) << endl;
-}
-
-vector<Word> Imediate::EncodeInstruction( DecodedInstruction * instruction ) {
-    vector<Word> encodedInstruction;
-    encodedInstruction.push_back( ( Word ) instruction->instruction );
-    switch ( instruction->instruction ) {
-        case ADD:
-        case SUB:
-        case AND:
-        case OR:
-        case XOR:
-        case CP:
-        case INC:
-        case DEC:
-            encodedInstruction.push_back( ( Word ) instruction->imediateValue[ 0 ] );
-            break;
-        case JP:
-        case JPOFFSET:
-        case CALL:
-            encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] & 0x00FF ) );
-            encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] >> 8 ) );
-            break;
-        case LDVALTOREG:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
-            encodedInstruction.push_back( ( Word ) instruction->imediateValue[ 0 ] );
-            break;
-        case PUSH:
-        case POP:
-            encodedInstruction.push_back( ( Word ) instruction->registers16b[ 0 ] );
-            break;
-        case RET:
-        case NOP:
-        case HLT:
-            break;
-        default:
-            break;
-    }
-    return encodedInstruction;
 }
 
 DecodedInstruction Imediate::DecodeInstruction( Word instruction ) {
