@@ -1,4 +1,4 @@
-#include "memory/Memory.hpp"
+#include "processor/memory/Memory.hpp"
 #include <cmath>
 #include <tuple>
 

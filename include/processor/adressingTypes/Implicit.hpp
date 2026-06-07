@@ -2,8 +2,8 @@
 #define IMPLITCIT_HPP
 
 #include "SystemArchitecture.hpp"
-#include "AdressingTypes.hpp"
-#include "adressingTypes/InputAdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
+#include "processor/adressingTypes/InputAdressingTypes.hpp"
 
 using namespace std;
 

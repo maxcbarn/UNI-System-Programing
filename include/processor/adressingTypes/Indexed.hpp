@@ -1,17 +1,17 @@
-#ifndef DIRECT_HPP
-#define DIRECT_HPP
+#ifndef INDEXED_HPP
+#define INDEXED_HPP
 
-#include "adressingTypes/AdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
 
 using namespace std;
 
-class Direct : public AdressingTypes
+class Indexed : public AdressingTypes
 {
 private:
     
 public:
-    Direct();
-    ~Direct();
+    Indexed();
+    ~Indexed();
     void Add( InputAdressingTypes * input ) override;
     void Sub( InputAdressingTypes * input ) override;
     void Inc( InputAdressingTypes * input ) override;
@@ -33,7 +33,7 @@ public:
     void PushStack( InputAdressingTypes * input ) override;
     void PopStack( InputAdressingTypes * input ) override;
     vector<Word> EncodeInstruction( DecodedInstruction * instruction ) override;
-    DecodedInstruction DecodeInstruction( Word instruction ) override;    
+    DecodedInstruction DecodeInstruction( Word instruction ) override;  
     InputAdressingTypes * MakeInput( DecodedInstruction * instruction ) override;
     size_t GetInstructionWordQuantity( INSTRUCTIONS instruction ) override;
 };

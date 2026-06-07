@@ -1,9 +1,9 @@
-#include "adressingTypes/AdressingTypesFactory.hpp"
-#include "adressingTypes/Implicit.hpp"
-#include "adressingTypes/Imediate.hpp"
-#include "adressingTypes/Direct.hpp"
-#include "adressingTypes/Indexed.hpp"
-#include "adressingTypes/IndirectRegister.hpp"
+#include "processor/adressingTypes/AdressingTypesFactory.hpp"
+#include "processor/adressingTypes/Implicit.hpp"
+#include "processor/adressingTypes/Imediate.hpp"
+#include "processor/adressingTypes/Direct.hpp"
+#include "processor/adressingTypes/Indexed.hpp"
+#include "processor/adressingTypes/IndirectRegister.hpp"
 
 AdressingTypesFactory::AdressingTypesFactory() {
 }

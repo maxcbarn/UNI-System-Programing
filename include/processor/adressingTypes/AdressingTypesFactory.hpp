@@ -1,8 +1,8 @@
 #ifndef ADRESSINGTYPESFACTORY_HPP
 #define ADRESSINGTYPESFACTORY_HPP
 
-#include "adressingTypes/AdressingTypes.hpp"
-#include "adressingTypes/InputAdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
+#include "processor/adressingTypes/InputAdressingTypes.hpp"
 
 class AdressingTypesFactory
 {

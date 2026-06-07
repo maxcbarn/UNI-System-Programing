@@ -1,11 +1,11 @@
 // make print input, instruction, data, result and flags
-#include "adressingTypes/Implicit.hpp"
-#include "FunctionalUnit.hpp"
-#include "memory/Registers.hpp"
-#include "memory/Memory.hpp"
+#include "processor/adressingTypes/Implicit.hpp"
+#include "processor/FunctionalUnit.hpp"
+#include "processor/memory/Registers.hpp"
+#include "processor/memory/Memory.hpp"
 #include <iostream>
-#include "adressingTypes/InputAdressingTypes.hpp"
-#include "adressingTypes/AdressingTypes.hpp"
+#include "processor/adressingTypes/InputAdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
 
 using namespace std;
 

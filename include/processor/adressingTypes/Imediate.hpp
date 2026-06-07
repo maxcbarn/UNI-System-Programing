@@ -1,18 +1,18 @@
-#ifndef INDEXED_HPP
-#define INDEXED_HPP
+#ifndef IMEDIATE_HPP
+#define IMEDIATE_HPP
 
-#include "adressingTypes/AdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
 
 using namespace std;
 
-class Indexed : public AdressingTypes
+class Imediate : public AdressingTypes
 {
 private:
     
 public:
-    Indexed();
-    ~Indexed();
-    void Add( InputAdressingTypes * input ) override;
+    Imediate();
+    ~Imediate();
+    void Add( InputAdressingTypes * input ) override;   
     void Sub( InputAdressingTypes * input ) override;
     void Inc( InputAdressingTypes * input ) override;
     void Dec( InputAdressingTypes * input ) override;

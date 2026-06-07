@@ -1,8 +1,8 @@
 #ifndef PROCESSOR_HPP
 #define PROCESSOR_HPP
 
-#include "adressingTypes/AdressingTypes.hpp"
-#include "adressingTypes/InputAdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
+#include "processor/adressingTypes/InputAdressingTypes.hpp"
 
 using namespace std;
 

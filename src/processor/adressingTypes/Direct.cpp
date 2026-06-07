@@ -1,9 +1,9 @@
-#include "adressingTypes/Direct.hpp"
-#include "adressingTypes/InputAdressingTypes.hpp"
-#include "adressingTypes/AdressingTypes.hpp"
-#include "FunctionalUnit.hpp"
-#include "memory/Registers.hpp"
-#include "memory/Memory.hpp"
+#include "processor/adressingTypes/Direct.hpp"
+#include "processor/adressingTypes/InputAdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
+#include "processor/FunctionalUnit.hpp"
+#include "processor/memory/Registers.hpp"
+#include "processor/memory/Memory.hpp"
 #include <iostream>
 
 using namespace std;

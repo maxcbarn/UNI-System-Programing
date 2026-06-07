@@ -1,7 +1,7 @@
 #ifndef INDIRECTREGISTER_HPP
 #define INDIRECTREGISTER_HPP
 
-#include "adressingTypes/AdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
 
 using namespace std;
 

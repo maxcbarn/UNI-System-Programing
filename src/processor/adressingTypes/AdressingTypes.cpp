@@ -1,8 +1,7 @@
-#include "adressingTypes/AdressingTypes.hpp"
-
+#include "processor/adressingTypes/AdressingTypes.hpp"
+#include "processor/Processor.hpp"
+#include "processor/FunctionalUnit.hpp"
 #include <iostream>
-#include "Processor.hpp"
-#include "FunctionalUnit.hpp"
 
 
 using namespace std;

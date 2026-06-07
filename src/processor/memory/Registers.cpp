@@ -1,7 +1,7 @@
-#include "memory/Registers.hpp"
+#include "processor/memory/Registers.hpp"
 #include "SystemArchitecture.hpp"
-#include "memory/Memory.hpp"
-#include "Processor.hpp"
+#include "processor/memory/Memory.hpp"
+#include "processor/Processor.hpp"
 #include <iostream>
 #include <iomanip>
 #include <sstream>

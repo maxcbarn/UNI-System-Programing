@@ -1,7 +1,7 @@
-#include "Processor.hpp"
-#include "adressingTypes/Implicit.hpp"
-#include "adressingTypes/AdressingTypesFactory.hpp"
-#include "adressingTypes/InputAdressingTypes.hpp"
+#include "processor/Processor.hpp"
+#include "processor/adressingTypes/Implicit.hpp"
+#include "processor/adressingTypes/AdressingTypesFactory.hpp"
+#include "processor/adressingTypes/InputAdressingTypes.hpp"
 #include "SystemArchitecture.hpp"
 #include <iostream>
 

@@ -1,7 +1,7 @@
-#include "Processor.hpp"
-#include "adressingTypes/AdressingTypesFactory.hpp"
-#include "memory/Memory.hpp"
-#include "memory/Registers.hpp"
+#include "processor/Processor.hpp"
+#include "processor/adressingTypes/AdressingTypesFactory.hpp"
+#include "processor/memory/Memory.hpp"
+#include "processor/memory/Registers.hpp"
 #include <iostream>
 
 using namespace std;

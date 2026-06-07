@@ -1,10 +1,10 @@
-#include "adressingTypes/Imediate.hpp"
-#include "FunctionalUnit.hpp"
-#include "memory/Registers.hpp"
+#include "processor/adressingTypes/Imediate.hpp"
+#include "processor/FunctionalUnit.hpp"
+#include "processor/memory/Registers.hpp"
 #include <iostream>
-#include "adressingTypes/InputAdressingTypes.hpp"
-#include "adressingTypes/AdressingTypes.hpp"
-#include "memory/Memory.hpp"
+#include "processor/adressingTypes/InputAdressingTypes.hpp"
+#include "processor/adressingTypes/AdressingTypes.hpp"
+#include "processor/memory/Memory.hpp"
 
 using namespace std;
 

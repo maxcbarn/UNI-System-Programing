@@ -26,6 +26,12 @@ User header guards please, use the enums and struct already defined, and if need
 
 # Implementation
 
+
+## Commom Files
+
+- SystemArchitecture.hpp & SystemArchitecture.cpp - Setup types for the architecture, enums for better organization of registers, instructions, and important definitions for the project.
+
+
 ## Instructions
 
 | opcode | 0......n ( Registers or Imediate Values in Differente words )
@@ -33,7 +39,7 @@ User header guards please, use the enums and struct already defined, and if need
 The first word is the opcode of the instruction, decode it to know how many more words would have to be writen, it changes depending on the adressin type.
 
 
-## Virtual Machine
+## Processor
 
 Word of 8 bits
 
@@ -43,10 +49,11 @@ Memory size of 64KB
 
 Numbers are in complement of two
 
+All the files are inside de processor folder in the src and include folder, all the files regrading the function should the inside these folders, they must not communicate with outside implementations, thats the function of the facade, the file processor.cpp and processor.hpp.
+
+
 Files And What They Do:
 
-- SystemArchitecture.hpp & SystemArchitecture.cpp - Setup types for the architecture, enums for better organization of registers, instructions, and important definitions for the project.
- 
 - InputAdressingTypes.hpp & InputAdressingTypes.cpp - Defines structs for better inputs of the adressing types, using a base struct for the parameters of the adressing types, and especializing based on what type is being used. 
 
 - Memory.hpp & Memory.cpp - Defines the memory and how to acess, it's a singleton; (Done)
@@ -65,3 +72,5 @@ Files And What They Do:
   - Imediate.hpp & Imediate.cpp - (Done)
 
 - Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton and a facade (Done)
+
+#

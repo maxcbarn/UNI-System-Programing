@@ -1,6 +1,6 @@
-#include "FunctionalUnit.hpp"
-#include "memory/Memory.hpp"
-#include "memory/Registers.hpp"
+#include "processor/FunctionalUnit.hpp"
+#include "processor/memory/Memory.hpp"
+#include "processor/memory/Registers.hpp"
 #include <bit> 
 #include <cstdint>
 
