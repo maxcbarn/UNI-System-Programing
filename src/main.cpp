@@ -5,6 +5,7 @@
 #include "instructions/AdressingTypesFactoryInstructions.hpp"
 #include "instructions/AdressingTypesInstructions.hpp"
 #include "SystemArchitecture.hpp"
+#include "assembler/Tables.hpp"
 #include <iostream>
 
 
@@ -52,6 +53,13 @@ vector<DecodedInstruction> BuildProgram() {
 
 
 int main( int argc , char const *argv[] ) {
+    Tables * tables = Tables::GetTables();
+    tables->CreateTables( IMPLICIT );
+    tables->ShowOpcodeTable();
+    tables->ShowRegisterTable();
+
+    return 0;
+
     Processor * processor = Processor::GetProcessor();  
     INPUTADRESSINGTYPES adressingType = IMPLICIT;
     processor->Initialize( adressingType );

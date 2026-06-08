@@ -64,7 +64,7 @@ void FunctionalUnit::PushStack( REGISTERS registerEnum ) {
     Memory * memory = Memory::GetMemory();
     Registers * registers = Registers::GetRegisters();
     DoubleWord data = 0;
-    if( registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::Hl ) {
+    if( registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::HL ) {
         data =registers->ReadFrom16bRegister( registerEnum);
     } else if( registerEnum >= REGISTERS::PC && registerEnum <= REGISTERS::IY )  {
         data = registers->ReadFromEspRegister( registerEnum );
@@ -84,7 +84,7 @@ void FunctionalUnit::PopStack( REGISTERS registerEnum ) {
         DoubleWord dataLow = memory->ReadMemory( registers->GetStackPtr() );
         registers->IncreaseStackPtr();
         DoubleWord data = ( dataHigh << 8 ) | dataLow;
-    if( registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::Hl ) {
+    if( registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::HL ) {
         registers->WriteTo16bRegister( registerEnum, data );
     } else if( registerEnum >= REGISTERS::PC && registerEnum <= REGISTERS::IY )  {
         registers->WriteToEspRegister( registerEnum, data );
@@ -99,7 +99,7 @@ void FunctionalUnit::PopStack() {
     DoubleWord dataLow = memory->ReadMemory( registers->GetStackPtr() );
     registers->IncreaseStackPtr();
     DoubleWord data = ( dataHigh << 8 ) | dataLow;
-    registers->WriteTo16bRegister( REGISTERS::Hl , data );
+    registers->WriteTo16bRegister( REGISTERS::HL , data );
 }
 
 void FunctionalUnit::Nop() {

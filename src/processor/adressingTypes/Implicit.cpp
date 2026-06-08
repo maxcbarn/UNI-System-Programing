@@ -173,7 +173,7 @@ void Implicit::LoadValueToRegister( InputAdressingTypes * input ) {
 void Implicit::LoadRegisterToMemory( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     REGISTERS src = ( ( InputImplicit * )input )->register8b;
-    Adress address = regs->ReadFrom16bRegister( Hl );
+    Adress address = regs->ReadFrom16bRegister( HL );
     Word value = regs->ReadFrom8bRegister( src );
     cout << "LD (HL), r INSTRUCTION" << endl;
     cout << "SOURCE REGISTER VALUE: " << TwoComplementViwer( value ) << endl;
@@ -185,7 +185,7 @@ void Implicit::LoadRegisterToMemory( InputAdressingTypes * input ) {
 void Implicit::LoadMemoryToRegister( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     REGISTERS dest = ( ( InputImplicit * )input )->register8b_dest;
-    Adress address = regs->ReadFrom16bRegister( Hl );
+    Adress address = regs->ReadFrom16bRegister( HL );
     cout << "LD r, (HL) INSTRUCTION" << endl;
     cout << "SOURCE ADDRESS (HL): 0x" << hex << address << dec << endl;
     Word value = FunctionalUnit::GetFunctionalUnit()->Load( address );

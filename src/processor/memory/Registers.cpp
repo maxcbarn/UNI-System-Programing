@@ -66,7 +66,7 @@ void Registers::WriteTo8bRegister( REGISTERS registerEnum , Word data ) {
 }
 
 DoubleWord Registers::ReadFrom16bRegister( REGISTERS registerEnum ) {
-    if ( !(registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::Hl) ) {
+    if ( !(registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::HL) ) {
         cout << "INVALID 16b REGISTER" << " REGISTER: " << ( int )registerEnum << endl;
         return 0;
     }
@@ -82,7 +82,7 @@ DoubleWord Registers::ReadFrom16bRegister( REGISTERS registerEnum ) {
         case REGISTERS::DE:
             return ( ( DoubleWord )generalUse8b[( int )REGISTERS::D] << 8  ) | ( DoubleWord )generalUse8b[( int )REGISTERS::E];
             break;
-        case REGISTERS::Hl:
+        case REGISTERS::HL:
             return ( ( DoubleWord )generalUse8b[( int )REGISTERS::H] << 8  ) | ( DoubleWord )generalUse8b[( int )REGISTERS::L];
             break;
         default:
@@ -92,7 +92,7 @@ DoubleWord Registers::ReadFrom16bRegister( REGISTERS registerEnum ) {
 }
 
 void Registers::WriteTo16bRegister( REGISTERS registerEnum, DoubleWord data ) {
-    if ( !(registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::Hl) ) {
+    if ( !(registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::HL) ) {
         cout << "INVALID 16b REGISTER" << " REGISTER: " << ( int )registerEnum << endl;
         return;
     }
@@ -108,7 +108,7 @@ void Registers::WriteTo16bRegister( REGISTERS registerEnum, DoubleWord data ) {
             WriteTo8bRegister( REGISTERS::D, ( Word )( data >> 8 ) );
             WriteTo8bRegister( REGISTERS::E, ( Word )( data & 0xFF ) );
             break;
-        case REGISTERS::Hl:
+        case REGISTERS::HL:
             WriteTo8bRegister( REGISTERS::H, ( Word )( data >> 8 ) );
             WriteTo8bRegister( REGISTERS::L, ( Word )( data & 0xFF ) );
             break;
