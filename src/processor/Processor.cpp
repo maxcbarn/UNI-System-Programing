@@ -81,6 +81,30 @@ bool Processor::NextInstruction() {
         case POP:
             adressingTypes->PopStack( input );
             break;
+        case JP:
+            adressingTypes->Jump( input );
+            break;
+        case JPOFFSET:
+            adressingTypes->JumpOffset( input );
+            break;
+        case CALL:
+            adressingTypes->Call( input );
+            break;
+        case RET:
+            adressingTypes->Return( input );
+            break;
+        case LDREGTOREG:
+            adressingTypes->LoadRegisterToResgister( input );
+            break;
+        case LDVALTOREG:
+            adressingTypes->LoadValueToRegister( input );
+            break;
+        case LDREGTOMEM:
+            adressingTypes->LoadRegisterToMemory( input );
+            break;
+        case LDMEMTOREG:
+            adressingTypes->LoadMemoryToRegister( input );
+            break;
         default:
             cout << "INSTRUCTION NOT FOUND" << endl;
             break;
