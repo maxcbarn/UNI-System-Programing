@@ -1,79 +1,45 @@
+/*
+ * ETAPA 2 — Montador de Dois Passos
+ *
+ * Ponto de entrada do sistema. Recebe um arquivo .asm pela linha de
+ * comando, passa pelo Assembler (Lexer -> Parser -> Passo1 -> Passo2)
+ * para gerar os bytes, e entrega para a VM executar instrucao a instrucao.
+ *
+ * Como executar: ./App <arquivo.asm>
+ */
+
 #include "processor/Processor.hpp"
-#include "processor/adressingTypes/Implicit.hpp"
-#include "processor/adressingTypes/AdressingTypesFactory.hpp"
-#include "processor/adressingTypes/InputAdressingTypes.hpp"
-#include "instructions/AdressingTypesFactoryInstructions.hpp"
-#include "instructions/AdressingTypesInstructions.hpp"
+#include "assembler/Assembler.hpp"
 #include "SystemArchitecture.hpp"
 #include <iostream>
 
-
-using std::vector;
-
-static DecodedInstruction Make0(INSTRUCTIONS op) {
-    DecodedInstruction d{};
-    d.instruction = op;
-    return d;
-}
-
-static DecodedInstruction Make8(INSTRUCTIONS op, REGISTERS_8b r) {
-    DecodedInstruction d{};
-    d.instruction = op;
-    d.registers8b.push_back(r);
-    return d;
-}
-
-static DecodedInstruction Make16(INSTRUCTIONS op, REGISTERS_16b r) {
-    DecodedInstruction d{};
-    d.instruction = op;
-    d.registers16b.push_back(r);
-    return d;
-}
-
-
-vector<DecodedInstruction> BuildProgram() {
-    vector<DecodedInstruction> program;
-
-    program.push_back(Make0(NOP));
-    program.push_back(Make8(ADD, B));
-    program.push_back(Make8(SUB, C));
-    program.push_back(Make8(AND, D));
-    program.push_back(Make8(OR, E));
-    program.push_back(Make8(XOR, H));
-    program.push_back(Make8(CP, L));
-    program.push_back(Make8(INC, B));
-    program.push_back(Make8(DEC, C));
-    program.push_back(Make16(PUSH, BC));
-    program.push_back(Make16(POP, DE));
-    program.push_back(Make0(HLT));
-
-    return program;
-}
-
-
-int main( int argc , char const *argv[] ) {
-    Processor * processor = Processor::GetProcessor();  
-    INPUTADRESSINGTYPES adressingType = IMPLICIT;
-    processor->Initialize( adressingType );
-    vector<DecodedInstruction> program = BuildProgram();
-    vector<Word> encodedProgram, aux;
-    AdressingTypesInstructions * instructions = AdressingTypesFactoryInstructions::GetAdressingTypesFactoryInstructions()->GetAdressingTypeInstructions( adressingType );
-    for ( size_t i = 0 ; i < program.size() ; i++) {
-        aux = instructions->EncodeInstruction( &program[i] );
-        encodedProgram.insert( encodedProgram.end(), aux.begin(), aux.end() );
+int main(int argc, char const* argv[]) {
+    if (argc < 2) {
+        cerr << "Uso: ./App <arquivo.asm>" << endl;
+        return 1;
     }
-    
-    processor->LoadProgram( encodedProgram );
 
+    // Lexer + Parser + Passo1 (tabela de simbolos) + Passo2 (resolucao)
+    // Retorna os bytes prontos para carregar na VM
+    Assembler assembler;
+    vector<Word> program = assembler.Assemble(argv[1]);
 
-    cout << "Press Enter To Next Instruction...";
+    if (program.empty()) {
+        cerr << "Falha na montagem. Verifique os erros acima." << endl;
+        return 1;
+    }
+
+    // Carrega os bytes na memoria da VM e executa instrucao a instrucao
+    Processor* processor = Processor::GetProcessor();
+    processor->Initialize(IMPLICIT);
+    processor->LoadProgram(program);
+
+    cout << "\nPressione Enter para executar a proxima instrucao..." << endl;
     cin.get();
-    while ( processor->NextInstruction() ) {
-        cout << "Press Enter To Next Instruction...";
+    while (processor->NextInstruction()) {
+        cout << "Pressione Enter para executar a proxima instrucao..." << endl;
         cin.get();
     }
 
     return 0;
 }
-
-

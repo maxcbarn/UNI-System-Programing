@@ -41,11 +41,11 @@ InputAdressingTypes * Implicit::MakeInput( DecodedInstruction * instruction ) {
             // No additional bytes needed
             break;
         case LDREGTOREG:
-            input->register8b = instruction->registers8b[ 0 ];
+            input->register8b_dest = instruction->registers8b[ 0 ];
             input->register8b = instruction->registers8b[ 1 ];
             break;
         case LDVALTOREG:
-            input->register8b = instruction->registers8b[ 0 ];
+            input->register8b_dest = instruction->registers8b[ 0 ];
             input->imediate = instruction->imediateValue[ 0 ];
             break;
         case LDREGTOMEM:
