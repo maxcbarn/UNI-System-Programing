@@ -228,7 +228,7 @@ DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
         case CP:
         case INC:
         case DEC:
-            decodedInstruction.registersEsp.push_back( (REGISTERS_ESP) mem->ReadMemory( regs->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( (REGISTERS) mem->ReadMemory( regs->GetProgramCounter() ) );
             regs->IncreaseProgramCounter();
             
             decodedInstruction.imediateValue.push_back( mem->ReadMemory( regs->GetProgramCounter() ) );
@@ -237,10 +237,10 @@ DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
 
         case LDMEMTOREG:
         case LDREGTOMEM:
-            decodedInstruction.registers8b.push_back( (REGISTERS_8b) mem->ReadMemory( regs->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( (REGISTERS) mem->ReadMemory( regs->GetProgramCounter() ) );
             regs->IncreaseProgramCounter();
             
-            decodedInstruction.registersEsp.push_back( (REGISTERS_ESP) mem->ReadMemory( regs->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( (REGISTERS) mem->ReadMemory( regs->GetProgramCounter() ) );
             regs->IncreaseProgramCounter();
             
             decodedInstruction.imediateValue.push_back( mem->ReadMemory( regs->GetProgramCounter() ) );
@@ -249,7 +249,7 @@ DecodedInstruction Indexed::DecodeInstruction( Word instruction ) {
 
         case PUSH:
         case POP:
-            decodedInstruction.registersEsp.push_back( (REGISTERS_ESP) mem->ReadMemory( regs->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( (REGISTERS) mem->ReadMemory( regs->GetProgramCounter() ) );
             regs->IncreaseProgramCounter();
             break;
             
@@ -276,18 +276,18 @@ InputAdressingTypes * Indexed::MakeInput( DecodedInstruction * instruction ) {
         case CP:
         case INC:
         case DEC:
-            input->registerEsp = instruction->registersEsp[0];
+            input->registerEsp = instruction->registers[0];
             input->offset = instruction->imediateValue[0];
             break;
         case LDMEMTOREG:
         case LDREGTOMEM:
-            input->register8b = instruction->registers8b[0];
-            input->registerEsp = instruction->registersEsp[0];
+            input->register8b = instruction->registers[0];
+            input->registerEsp = instruction->registers[1];
             input->offset = instruction->imediateValue[0];
             break;
         case PUSH:
         case POP:
-            input->registerEsp = instruction->registersEsp[0];
+            input->registerEsp = instruction->registers[0];
             break;
         default:
             break;

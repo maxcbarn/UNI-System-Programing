@@ -50,23 +50,23 @@ vector<Word> IndirectRegisterInstructions::EncodeInstruction( DecodedInstruction
         case CP:
         case INC:
         case DEC:
-            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] & 0x00FF ) );
-            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] >> 8 ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers[ 0 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers[ 1 ] >> 8 ) );
             break;
         case LDREGTOMEM:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
-            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] & 0x00FF ) );
-            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] >> 8 ) );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
+            encodedInstruction.push_back( ( Word )( instruction->registers[ 1 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers[ 2 ] >> 8 ) );
             break;
         case LDMEMTOREG:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
-            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] & 0x00FF ) );
-            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] >> 8 ) );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
+            encodedInstruction.push_back( ( Word )( instruction->registers[ 1 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers[ 2 ] >> 8 ) );
             break;
         case PUSH:
         case POP:
-            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] & 0x00FF ) );
-            encodedInstruction.push_back( ( Word )( instruction->registers16b[ 0 ] >> 8 ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers[ 0 ] & 0x00FF ) );
+            encodedInstruction.push_back( ( Word )( instruction->registers[ 1 ] >> 8 ) );
             break;
         case RET:
         case NOP:

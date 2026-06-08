@@ -57,24 +57,33 @@ void Registers::ResetRegisters() {
     registers = new Registers();
 }
 
-void Registers::WriteTo8bRegister( REGISTERS_8b registerEnum , Word data ) {
+void Registers::WriteTo8bRegister( REGISTERS registerEnum , Word data ) {
+    if ( registerEnum >= REGISTERS::AF ) {
+        cout << "INVALID 8b REGISTER" << endl;
+        return;
+    }
     generalUse8b[( int )registerEnum] = data;
-
 }
 
-DoubleWord Registers::ReadFrom16bRegister( REGISTERS_16b registerEnum ) {
+DoubleWord Registers::ReadFrom16bRegister( REGISTERS registerEnum ) {
+    if ( !(registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::Hl) ) {
+        cout << "INVALID 16b REGISTER" << " REGISTER: " << ( int )registerEnum << endl;
+        return 0;
+    }
+
     switch ( registerEnum ) {
-        case REGISTERS_16b::AF:
-            return ( ( DoubleWord )generalUse8b[( int )A] << 8 ) | ( DoubleWord )flag;
+        case REGISTERS::AF:
+            return ( ( DoubleWord )generalUse8b[( int )REGISTERS::A] << 8 ) | ( DoubleWord )flag;
             break;
-        case REGISTERS_16b::BC:
-            return ( ( DoubleWord )generalUse8b[( int )B] << 8 ) | ( DoubleWord )generalUse8b[( int )C];
+        case REGISTERS::BC:
+            cout << "READING BC REGISTER: " << ( ( DoubleWord )generalUse8b[( int )REGISTERS::B] ) << "    " << ( DoubleWord )generalUse8b[( int )REGISTERS::C] << endl;
+            return ( ( DoubleWord )generalUse8b[( int )REGISTERS::B] << 8 ) | ( DoubleWord )generalUse8b[( int )REGISTERS::C];
             break;
-        case REGISTERS_16b::DE:
-            return ( ( DoubleWord )generalUse8b[( int )D] << 8  ) | ( DoubleWord )generalUse8b[( int )E];
+        case REGISTERS::DE:
+            return ( ( DoubleWord )generalUse8b[( int )REGISTERS::D] << 8  ) | ( DoubleWord )generalUse8b[( int )REGISTERS::E];
             break;
-        case REGISTERS_16b::Hl:
-            return ( ( DoubleWord )generalUse8b[( int )H] << 8  ) | ( DoubleWord )generalUse8b[( int )L];
+        case REGISTERS::Hl:
+            return ( ( DoubleWord )generalUse8b[( int )REGISTERS::H] << 8  ) | ( DoubleWord )generalUse8b[( int )REGISTERS::L];
             break;
         default:
             return 0;
@@ -82,35 +91,43 @@ DoubleWord Registers::ReadFrom16bRegister( REGISTERS_16b registerEnum ) {
     }
 }
 
-void Registers::WriteTo16bRegister( REGISTERS_16b registerEnum, DoubleWord data ) {
+void Registers::WriteTo16bRegister( REGISTERS registerEnum, DoubleWord data ) {
+    if ( !(registerEnum >= REGISTERS::AF && registerEnum <= REGISTERS::Hl) ) {
+        cout << "INVALID 16b REGISTER" << " REGISTER: " << ( int )registerEnum << endl;
+        return;
+    }
     switch ( registerEnum ) {
-        case REGISTERS_16b::AF:
+        case REGISTERS::AF:
             return;
             break;
-        case REGISTERS_16b::BC:
-            WriteTo8bRegister( B, ( Word )( data >> 8 ) );
-            WriteTo8bRegister( C, ( Word )( data & 0xFF ) );
+        case REGISTERS::BC:
+            WriteTo8bRegister( REGISTERS::B, ( Word )( data >> 8 ) );
+            WriteTo8bRegister( REGISTERS::C, ( Word )( data & 0xFF ) );
             break;
-        case REGISTERS_16b::DE:
-            WriteTo8bRegister( D, ( Word )( data >> 8 ) );
-            WriteTo8bRegister( E, ( Word )( data & 0xFF ) );
+        case REGISTERS::DE:
+            WriteTo8bRegister( REGISTERS::D, ( Word )( data >> 8 ) );
+            WriteTo8bRegister( REGISTERS::E, ( Word )( data & 0xFF ) );
             break;
-        case REGISTERS_16b::Hl:
-            WriteTo8bRegister( H, ( Word )( data >> 8 ) );
-            WriteTo8bRegister( L, ( Word )( data & 0xFF ) );
+        case REGISTERS::Hl:
+            WriteTo8bRegister( REGISTERS::H, ( Word )( data >> 8 ) );
+            WriteTo8bRegister( REGISTERS::L, ( Word )( data & 0xFF ) );
             break;
     }
 }
 
 void Registers::WriteToAccumulator( Word data ) {
-    WriteTo8bRegister( A, data );
+    WriteTo8bRegister( REGISTERS::A, data );
 }
 
 Word Registers::ReadFromAccumulator() {
-    return ReadFrom8bRegister( A );
+    return ReadFrom8bRegister( REGISTERS::A );
 }
 
-Word Registers::ReadFrom8bRegister( REGISTERS_8b registerEnum ) {
+Word Registers::ReadFrom8bRegister( REGISTERS registerEnum ) {
+    if ( registerEnum >= REGISTERS::AF ) {
+        cout << "INVALID 8b REGISTER" << endl;
+        return 0;
+    }
     return generalUse8b[( size_t )registerEnum];
 }
 
@@ -176,33 +193,41 @@ string Registers::FlagsToTerminal() {
     return oss.str();
 }
 
-DoubleWord Registers::ReadFromEspRegister( REGISTERS_ESP registerEnum ) {
+DoubleWord Registers::ReadFromEspRegister( REGISTERS registerEnum ) {
+    if( registerEnum < REGISTERS::PC ) {
+        cout << "INVALID ESP REGISTER" << endl;
+        return 0; 
+    }
     switch ( registerEnum ) {
-        case REGISTERS_ESP::IX:
+        case REGISTERS::IX:
             return indexX;
-        case REGISTERS_ESP::IY:
+        case REGISTERS::IY:
             return indexY;
-        case REGISTERS_ESP::SP:
+        case REGISTERS::SP:
             return stackPtr;
-        case REGISTERS_ESP::PC:
+        case REGISTERS::PC:
             return programCounter;
         default:
             return 0;
     }
 }
 
-void Registers::WriteToEspRegister( REGISTERS_ESP registerEnum, DoubleWord data ) {
+void Registers::WriteToEspRegister( REGISTERS registerEnum, DoubleWord data ) {
+    if( registerEnum < REGISTERS::PC ) {
+        cout << "INVALID ESP REGISTER" << endl;
+        return; 
+    }
     switch ( registerEnum ) {
-        case REGISTERS_ESP::IX:
+        case REGISTERS::IX:
             indexX = data;
             break;
-        case REGISTERS_ESP::IY:
+        case REGISTERS::IY:
             indexY = data;
             break;
-        case REGISTERS_ESP::SP:
+        case REGISTERS::SP:
             stackPtr = data;
             break;
-        case REGISTERS_ESP::PC:
+        case REGISTERS::PC:
             programCounter = data;
             break;
         default:

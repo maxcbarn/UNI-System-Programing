@@ -16,17 +16,17 @@ static DecodedInstruction Make0(INSTRUCTIONS op) {
     return d;
 }
 
-static DecodedInstruction Make8(INSTRUCTIONS op, REGISTERS_8b r) {
+static DecodedInstruction Make8(INSTRUCTIONS op, REGISTERS r) {
     DecodedInstruction d{};
     d.instruction = op;
-    d.registers8b.push_back(r);
+    d.registers.push_back(r);
     return d;
 }
 
-static DecodedInstruction Make16(INSTRUCTIONS op, REGISTERS_16b r) {
+static DecodedInstruction Make16(INSTRUCTIONS op, REGISTERS r) {
     DecodedInstruction d{};
     d.instruction = op;
-    d.registers16b.push_back(r);
+    d.registers.push_back(r);
     return d;
 }
 
@@ -44,7 +44,7 @@ vector<DecodedInstruction> BuildProgram() {
     program.push_back(Make8(INC, B));
     program.push_back(Make8(DEC, C));
     program.push_back(Make16(PUSH, BC));
-    program.push_back(Make16(POP, DE));
+    program.push_back(Make16(POP, BC));
     program.push_back(Make0(HLT));
 
     return program;

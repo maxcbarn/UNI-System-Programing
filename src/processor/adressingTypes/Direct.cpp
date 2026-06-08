@@ -44,8 +44,8 @@ void Direct::Return( InputAdressingTypes * input ) {
 
 void Direct::LoadRegisterToResgister( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b src = ( ( InputDirect * ) input )->register8b;
-    REGISTERS_8b dest = ( ( InputDirect * ) input )->register8b_dest;
+    REGISTERS src = ( ( InputDirect * ) input )->register8b;
+    REGISTERS dest = ( ( InputDirect * ) input )->register8b_dest;
     cout << "LD r, r' INSTRUCTION (Direct)" << endl;
     cout << "SOURCE VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( src ) ) << " DESTINATION VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( dest ) ) << endl;
     Word value = regs->ReadFrom8bRegister( src );
@@ -55,7 +55,7 @@ void Direct::LoadRegisterToResgister( InputAdressingTypes * input ) {
 
 void Direct::LoadValueToRegister( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b dest = ( ( InputDirect * ) input )->register8b_dest;
+    REGISTERS dest = ( ( InputDirect * ) input )->register8b_dest;
     Word value = ( ( InputDirect * ) input )->imediate;
     cout << "LD r, n INSTRUCTION (Direct)" << endl;
     cout << "IMMEDIATE VALUE: " << TwoComplementViwer( value ) << endl;
@@ -65,7 +65,7 @@ void Direct::LoadValueToRegister( InputAdressingTypes * input ) {
 
 void Direct::LoadRegisterToMemory( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b src = ( ( InputDirect * ) input )->register8b;
+    REGISTERS src = ( ( InputDirect * ) input )->register8b;
     Adress address = ( ( InputDirect * ) input )->address;
     Word value = regs->ReadFrom8bRegister( src );
     cout << "LD (nn), r INSTRUCTION (Direct)" << endl;
@@ -77,7 +77,7 @@ void Direct::LoadRegisterToMemory( InputAdressingTypes * input ) {
 
 void Direct::LoadMemoryToRegister( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b dest = ( ( InputDirect * ) input )->register8b_dest;
+    REGISTERS dest = ( ( InputDirect * ) input )->register8b_dest;
     Adress address = ( ( InputDirect * ) input )->address;
     cout << "LD r, (nn) INSTRUCTION (Direct)" << endl;
     cout << "SOURCE ADDRESS: 0x" << hex << address << dec << endl;
@@ -109,20 +109,24 @@ InputAdressingTypes * Direct::MakeInput( DecodedInstruction * instruction ) {
         case HLT:
             break;
         case LDREGTOREG:
-            input->register8b = instruction->registers8b[ 0 ];
-            input->register8b_dest = instruction->registers8b[ 1 ];
+            input->register8b = instruction->registers[ 0 ];
+            input->register8b_dest = instruction->registers[ 1 ];
             break;
         case LDVALTOREG:
-            input->register8b_dest = instruction->registers8b[ 0 ];
+            input->register8b_dest = instruction->registers[ 0 ];
             input->imediate = instruction->imediateValue[ 0 ];
             break;
         case LDREGTOMEM:
-            input->register8b = instruction->registers8b[ 0 ];
+            input->register8b = instruction->registers[ 0 ];
             input->address = instruction->adresses[ 0 ];
             break;
         case LDMEMTOREG:
-            input->register8b_dest = instruction->registers8b[ 0 ];
+            input->register8b_dest = instruction->registers[ 0 ];
             input->address = instruction->adresses[ 0 ];
+            break;
+        case PUSH:
+        case POP:
+            input->register16b = instruction->registers[ 0 ];
             break;
     }
     return ( InputAdressingTypes * ) input;
@@ -254,7 +258,7 @@ void Direct::Cp( InputAdressingTypes * input ) {
 
 void Direct::PushStack( InputAdressingTypes * input ) {
     Registers* regs = Registers::GetRegisters();
-    REGISTERS_16b register16b = ((InputDirect*)input)->register16b;
+    REGISTERS register16b = ((InputDirect*)input)->register16b;
 
     cout << "PUSH INSTRUCTION (Direct)" << endl;
     cout << "INPUT REGISTER VALUE: " << TwoComplementViwer(regs->ReadFrom16bRegister(register16b)) << endl;
@@ -264,7 +268,7 @@ void Direct::PushStack( InputAdressingTypes * input ) {
 
 void Direct::PopStack( InputAdressingTypes * input ) {
     Registers* regs = Registers::GetRegisters();
-    REGISTERS_16b register16b = ((InputDirect*)input)->register16b;
+    REGISTERS register16b = ((InputDirect*)input)->register16b;
 
     FunctionalUnit::GetFunctionalUnit()->PopStack(register16b);
 
@@ -302,19 +306,19 @@ DecodedInstruction Direct::DecodeInstruction( Word instruction ) {
         case HLT:
             break;
         case LDREGTOREG:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDVALTOREG:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.imediateValue.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDREGTOMEM:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
@@ -322,11 +326,16 @@ DecodedInstruction Direct::DecodeInstruction( Word instruction ) {
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDMEMTOREG:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.adresses[ 0 ] |= ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            break;
+        case PUSH:
+        case POP:
+            decodedInstruction.registers.push_back( ( REGISTERS )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         default:

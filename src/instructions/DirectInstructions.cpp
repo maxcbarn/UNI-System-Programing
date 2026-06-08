@@ -40,6 +40,9 @@ size_t DirectInstructions::GetInstructionWordQuantity( INSTRUCTIONS instruction 
             return 4;
         case LDMEMTOREG:
             return 4;
+        case PUSH:
+        case POP:
+            return 2;
         default:
             return 0;
     }
@@ -72,22 +75,26 @@ vector<Word> DirectInstructions::EncodeInstruction( DecodedInstruction * instruc
         case HLT:
             break;
         case LDREGTOREG:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 1 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 1 ] );
             break;
         case LDVALTOREG:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
             encodedInstruction.push_back( ( Word ) instruction->imediateValue[ 0 ] );
             break;
         case LDREGTOMEM:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
             encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] & 0x00FF ) );
             encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] >> 8 ) );
             break;
         case LDMEMTOREG:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
             encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] & 0x00FF ) );
             encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] >> 8 ) );
+            break;
+        case PUSH:
+        case POP:
+            encodedInstruction.push_back( ( Word )instruction->registers[ 0 ] );
             break;
         default:
             break;

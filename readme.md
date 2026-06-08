@@ -38,7 +38,7 @@ User header guards please, use the enums and struct already defined, and if need
 
 The first word is the opcode of the instruction, decode it to know how many more words would have to be writen, it changes depending on the adressin type.
 
-the folder instructions contains the files to encode to binary all the instructions of all adressing types.
+All the files are inside de instructions folder in the src and include folder, they must use the factory to get a instance of the class that you want and use the functionalities implemented.
 
 - AdressingTypesFactoryInstructions.hpp & AdressingTypesFactoryInstructions.cpp - factory for creating the adressing types instructions accordingly to what is going to be used it's a factory and a singleton. (Done)
 
@@ -83,3 +83,7 @@ Files And What They Do:
 - Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton and a facade (Done)
 
 ## Two Pass Assembler
+
+All the files are inside de assembler folder in the src and include folder, all the files regrading the function should the inside these folders, they must not communicate with outside implementations, thats the function of the facade, the file Assembler.cpp and Assembler.hpp.
+
+- Assembler.hpp & Assembler.cpp - Wrapper of all functions of the Assembler, interface that will interact with the Assembler, recive program tranform into binary, give the output of the symble table and other debug features, it's a singleton and a facade (Not Finished)

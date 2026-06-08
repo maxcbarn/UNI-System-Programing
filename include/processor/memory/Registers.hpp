@@ -21,12 +21,12 @@ class Registers {
         ~Registers();
         static Registers * GetRegisters();
         static void ResetRegisters();
-        void WriteTo8bRegister( REGISTERS_8b registerEnum , Word data );
+        void WriteTo8bRegister( REGISTERS registerEnum , Word data );
         void WriteToAccumulator( Word data );
         Word ReadFromAccumulator();
-        Word ReadFrom8bRegister( REGISTERS_8b registerEnum );
-        DoubleWord ReadFrom16bRegister( REGISTERS_16b registerEnum );
-        void WriteTo16bRegister( REGISTERS_16b registerEnum, DoubleWord data );
+        Word ReadFrom8bRegister( REGISTERS registerEnum );
+        DoubleWord ReadFrom16bRegister( REGISTERS registerEnum );
+        void WriteTo16bRegister( REGISTERS registerEnum, DoubleWord data );
         Adress GetStackPtr();
         bool IncreaseStackPtr();
         bool DecreaseStackPtr();
@@ -38,8 +38,8 @@ class Registers {
         void ClearFlag( FLAGS flag );
         string FlagsToTerminal();
         Adress GetStartMemory();
-        DoubleWord ReadFromEspRegister( REGISTERS_ESP registerEnum );
-        void WriteToEspRegister( REGISTERS_ESP registerEnum, DoubleWord data );
+        DoubleWord ReadFromEspRegister( REGISTERS registerEnum );
+        void WriteToEspRegister( REGISTERS registerEnum, DoubleWord data );
 };
 
 

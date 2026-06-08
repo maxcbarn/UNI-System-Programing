@@ -28,7 +28,7 @@ InputAdressingTypes * Implicit::MakeInput( DecodedInstruction * instruction ) {
         case CP:
         case INC:
         case DEC:
-            input->register8b = instruction->registers8b[ 0 ];
+            input->register8b = instruction->registers[ 0 ];
             break;
         case JP:
         case JPOFFSET:
@@ -41,18 +41,22 @@ InputAdressingTypes * Implicit::MakeInput( DecodedInstruction * instruction ) {
             // No additional bytes needed
             break;
         case LDREGTOREG:
-            input->register8b = instruction->registers8b[ 0 ];
-            input->register8b = instruction->registers8b[ 1 ];
+            input->register8b = instruction->registers[ 0 ];
+            input->register8b = instruction->registers[ 1 ];
             break;
         case LDVALTOREG:
-            input->register8b = instruction->registers8b[ 0 ];
+            input->register8b = instruction->registers[ 0 ];
             input->imediate = instruction->imediateValue[ 0 ];
             break;
         case LDREGTOMEM:
-           input->register8b = instruction->registers8b[ 0 ];
+           input->register8b = instruction->registers[ 0 ];
            break;
         case LDMEMTOREG:
-            input->register8b = instruction->registers8b[ 0 ];
+            input->register8b = instruction->registers[ 0 ];
+            break;
+        case PUSH:
+        case POP:
+            input->register16b = instruction->registers[ 0 ];
             break;
     }
     return ( InputAdressingTypes * ) input;
@@ -70,7 +74,7 @@ DecodedInstruction Implicit::DecodeInstruction( Word instruction ) {
         case CP:
         case INC:
         case DEC:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case JP:
@@ -88,23 +92,28 @@ DecodedInstruction Implicit::DecodeInstruction( Word instruction ) {
             // No additional bytes needed
             break;
         case LDREGTOREG:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDVALTOREG:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.imediateValue.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDREGTOMEM:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDMEMTOREG:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            Registers::GetRegisters()->IncreaseProgramCounter();
+            break;
+        case PUSH:
+        case POP:
+            decodedInstruction.registers.push_back( ( REGISTERS )Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         default:
@@ -142,8 +151,8 @@ void Implicit::Return( InputAdressingTypes * input ) {
 
 void Implicit::LoadRegisterToResgister( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b src = ( ( InputImplicit * )input )->register8b;
-    REGISTERS_8b dest = ( ( InputImplicit * )input )->register8b_dest;
+    REGISTERS src = ( ( InputImplicit * )input )->register8b;
+    REGISTERS dest = ( ( InputImplicit * )input )->register8b_dest;
     cout << "LD r, r' INSTRUCTION" << endl;
     cout << "SOURCE VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( src ) ) << "DESTINATION VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( dest ) ) << endl;
     Word value = regs->ReadFrom8bRegister( src );
@@ -153,7 +162,7 @@ void Implicit::LoadRegisterToResgister( InputAdressingTypes * input ) {
 
 void Implicit::LoadValueToRegister( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b dest = ( ( InputImplicit * )input )->register8b_dest;
+    REGISTERS dest = ( ( InputImplicit * )input )->register8b_dest;
     Word value = ( ( InputImplicit * )input )->imediate;
     cout << "LD r, n INSTRUCTION" << endl;
     cout << "IMMEDIATE VALUE: " << TwoComplementViwer( value ) << endl;
@@ -163,7 +172,7 @@ void Implicit::LoadValueToRegister( InputAdressingTypes * input ) {
 
 void Implicit::LoadRegisterToMemory( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b src = ( ( InputImplicit * )input )->register8b;
+    REGISTERS src = ( ( InputImplicit * )input )->register8b;
     Adress address = regs->ReadFrom16bRegister( Hl );
     Word value = regs->ReadFrom8bRegister( src );
     cout << "LD (HL), r INSTRUCTION" << endl;
@@ -175,7 +184,7 @@ void Implicit::LoadRegisterToMemory( InputAdressingTypes * input ) {
 
 void Implicit::LoadMemoryToRegister( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b dest = ( ( InputImplicit * )input )->register8b_dest;
+    REGISTERS dest = ( ( InputImplicit * )input )->register8b_dest;
     Adress address = regs->ReadFrom16bRegister( Hl );
     cout << "LD r, (HL) INSTRUCTION" << endl;
     cout << "SOURCE ADDRESS (HL): 0x" << hex << address << dec << endl;
@@ -186,7 +195,7 @@ void Implicit::LoadMemoryToRegister( InputAdressingTypes * input ) {
 
 void Implicit::Add( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
+    REGISTERS register8b = ( ( InputImplicit * )input )->register8b;
     cout << "ADD INSTRUCTION" << endl;
     cout << "ACCUMULATOR VALUE: " << TwoComplementViwer( regs->ReadFromAccumulator() ) << " | INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( register8b ) ) << endl;
     Word result = FunctionalUnit::GetFunctionalUnit()->Add( regs->ReadFromAccumulator() , regs->ReadFrom8bRegister( register8b ) );
@@ -197,7 +206,7 @@ void Implicit::Add( InputAdressingTypes * input ) {
  
 void Implicit::Sub( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
+    REGISTERS register8b = ( ( InputImplicit * )input )->register8b;
     cout << "SUB INSTRUCTION" << endl;
     cout << "ACCUMULATOR VALUE: " << TwoComplementViwer( regs->ReadFromAccumulator() ) << " | INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( register8b ) ) << endl;
     Word result = FunctionalUnit::GetFunctionalUnit()->Sub( regs->ReadFromAccumulator() , regs->ReadFrom8bRegister( register8b ) );
@@ -209,7 +218,7 @@ void Implicit::Sub( InputAdressingTypes * input ) {
 void Implicit::Inc( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "INC INSTRUCTION" << endl;
-    REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
+    REGISTERS register8b = ( ( InputImplicit * )input )->register8b;
     cout << "INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( register8b ) ) << endl;
     Word result = FunctionalUnit::GetFunctionalUnit()->Inc( regs->ReadFrom8bRegister( register8b ) );
     regs->WriteTo8bRegister( register8b , result );
@@ -220,7 +229,7 @@ void Implicit::Inc( InputAdressingTypes * input ) {
 void Implicit::Dec( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "DEC INSTRUCTION" << endl;
-    REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
+    REGISTERS register8b = ( ( InputImplicit * )input )->register8b;
     cout << "INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( register8b ) ) << endl;
     Word result = FunctionalUnit::GetFunctionalUnit()->Dec( regs->ReadFrom8bRegister( register8b ) );
     regs->WriteTo8bRegister( register8b , result );
@@ -231,7 +240,7 @@ void Implicit::Dec( InputAdressingTypes * input ) {
 void Implicit::And( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "AND INSTRUCTION" << endl;
-    REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
+    REGISTERS register8b = ( ( InputImplicit * )input )->register8b;
     cout << "ACCUMULATOR VALUE: " << TwoComplementViwer( regs->ReadFromAccumulator() ) << " | INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( register8b ) ) << endl;
     Word result = FunctionalUnit::GetFunctionalUnit()->And( regs->ReadFromAccumulator() , regs->ReadFrom8bRegister( register8b ) );
     regs->WriteToAccumulator( result );
@@ -242,7 +251,7 @@ void Implicit::And( InputAdressingTypes * input ) {
 void Implicit::Or( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "OR INSTRUCTION" << endl;
-    REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
+    REGISTERS register8b = ( ( InputImplicit * )input )->register8b;
     cout << "ACCUMULATOR VALUE: " << TwoComplementViwer( regs->ReadFromAccumulator() ) << " | INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( register8b ) ) << endl;
     Word result = FunctionalUnit::GetFunctionalUnit()->Or( regs->ReadFromAccumulator() , regs->ReadFrom8bRegister( register8b ) );
     regs->WriteToAccumulator( result );
@@ -253,7 +262,7 @@ void Implicit::Or( InputAdressingTypes * input ) {
 void Implicit::Xor( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "XOR INSTRUCTION" << endl;
-    REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
+    REGISTERS register8b = ( ( InputImplicit * )input )->register8b;
     cout << "ACCUMULATOR VALUE: " << TwoComplementViwer( regs->ReadFromAccumulator() ) << " | INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( register8b ) ) << endl;
     Word result = FunctionalUnit::GetFunctionalUnit()->Xor( regs->ReadFromAccumulator() , regs->ReadFrom8bRegister( register8b ) );
     regs->WriteToAccumulator( result );
@@ -264,7 +273,7 @@ void Implicit::Xor( InputAdressingTypes * input ) {
 void Implicit::Cp( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "CP INSTRUCTION" << endl;
-    REGISTERS_8b register8b = ( ( InputImplicit * )input )->register8b;
+    REGISTERS register8b = ( ( InputImplicit * )input )->register8b;
     cout << "ACCUMULATOR VALUE: " << TwoComplementViwer( regs->ReadFromAccumulator() ) << " | INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom8bRegister( register8b ) ) << endl;
     FunctionalUnit::GetFunctionalUnit()->Cp( regs->ReadFromAccumulator() , regs->ReadFrom8bRegister( register8b ) );
     cout << regs->FlagsToTerminal();
@@ -273,7 +282,7 @@ void Implicit::Cp( InputAdressingTypes * input ) {
 void Implicit::PushStack( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "PUSH INSTRUCTION" << endl;
-    REGISTERS_16b register16b = ( ( InputImplicit * )input )->register16b;
+    REGISTERS register16b = ( ( InputImplicit * )input )->register16b;
     cout << "INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom16bRegister( register16b ) ) << endl;
     FunctionalUnit::GetFunctionalUnit()->PushStack( register16b );
 }
@@ -281,7 +290,7 @@ void Implicit::PushStack( InputAdressingTypes * input ) {
 void Implicit::PopStack( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "POP INSTRUCTION" << endl;
-    REGISTERS_16b register16b = ( ( InputImplicit * )input )->register16b;
+    REGISTERS register16b = ( ( InputImplicit * )input )->register16b;
     FunctionalUnit::GetFunctionalUnit()->PopStack( register16b );
     cout << "RESULT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom16bRegister( register16b ) ) << endl;
 }

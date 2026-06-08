@@ -65,12 +65,12 @@ vector<Word> ImediateInstructions::EncodeInstruction( DecodedInstruction * instr
             encodedInstruction.push_back( ( Word )( instruction->adresses[ 0 ] >> 8 ) );
             break;
         case LDVALTOREG:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
             encodedInstruction.push_back( ( Word ) instruction->imediateValue[ 0 ] );
             break;
         case PUSH:
         case POP:
-            encodedInstruction.push_back( ( Word ) instruction->registers16b[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
             break;
         case RET:
         case NOP:

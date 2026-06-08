@@ -8,38 +8,38 @@ struct InputAdressingTypes {
 };
 
 struct InputImplicit : public InputAdressingTypes {
-    REGISTERS_8b register8b;
-    REGISTERS_8b register8b_dest;
-    REGISTERS_16b register16b;
+    REGISTERS register8b;
+    REGISTERS register8b_dest;
+    REGISTERS register16b;
     Adress addres;
     Word imediate;
 };
 
 struct InputDirect : public InputAdressingTypes {
-    REGISTERS_8b register8b;
-    REGISTERS_8b register8b_dest;
-    REGISTERS_16b register16b;
+    REGISTERS register8b;
+    REGISTERS register8b_dest;
+    REGISTERS register16b;
     Adress address;
     Word imediate;
 };
 
 struct InputImediate : public InputAdressingTypes {
     Word value;
-    REGISTERS_8b register8b_dest;
-    REGISTERS_16b register16b;
+    REGISTERS register8b_dest;
+    REGISTERS register16b;
     Adress address;
 };
 
 struct InputIndirectRegister : public InputAdressingTypes {
-    REGISTERS_16b register16b;
-    REGISTERS_8b register8b;
-    REGISTERS_8b register8b_dest;
+    REGISTERS register16b;
+    REGISTERS register8b;
+    REGISTERS register8b_dest;
 };
 
 struct InputIndexed : public InputAdressingTypes {
-    REGISTERS_ESP registerEsp;
+    REGISTERS registerEsp;
     Word offset;
-    REGISTERS_8b register8b;
+    REGISTERS register8b;
 };
 
 

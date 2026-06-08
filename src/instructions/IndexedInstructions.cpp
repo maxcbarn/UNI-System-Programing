@@ -50,14 +50,14 @@ vector<Word> IndexedInstructions::EncodeInstruction( DecodedInstruction * instru
         case CP:
         case INC:
         case DEC:
-            encodedInstruction.push_back( ( Word ) instruction->registersEsp[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
             encodedInstruction.push_back( ( Word ) instruction->imediateValue[ 0 ] );
             break;
 
         case LDMEMTOREG:
         case LDREGTOMEM:
-            encodedInstruction.push_back( ( Word ) instruction->registers8b[ 0 ] );
-            encodedInstruction.push_back( ( Word ) instruction->registersEsp[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 0 ] );
+            encodedInstruction.push_back( ( Word ) instruction->registers[ 1 ] );
             encodedInstruction.push_back( ( Word ) instruction->imediateValue[ 0 ] );
             break;
 

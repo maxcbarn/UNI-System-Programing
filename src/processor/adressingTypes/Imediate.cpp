@@ -36,12 +36,12 @@ InputAdressingTypes * Imediate::MakeInput( DecodedInstruction * instruction ) {
             input->address = instruction->adresses[ 0 ];
             break;
         case LDVALTOREG:
-            input->register8b_dest = instruction->registers8b[ 0 ];
+            input->register8b_dest = instruction->registers[ 0 ];
             input->value = instruction->imediateValue[ 0 ];
             break;
         case PUSH:
         case POP:
-            input->register16b = instruction->registers16b[ 0 ];
+            input->register16b = instruction->registers[ 0 ];
             break;
         default:
             break;
@@ -81,7 +81,7 @@ void Imediate::LoadRegisterToResgister( InputAdressingTypes * input ) {
 
 void Imediate::LoadValueToRegister( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
-    REGISTERS_8b dest = ( ( InputImediate * ) input )->register8b_dest;
+    REGISTERS dest = ( ( InputImediate * ) input )->register8b_dest;
     Word value = ( ( InputImediate * ) input )->value;
     cout << "LD r, n INSTRUCTION (Imediate)" << endl;
     cout << "IMMEDIATE VALUE: " << TwoComplementViwer( value ) << endl;
@@ -183,7 +183,7 @@ void Imediate::Cp( InputAdressingTypes * input ) {
 void Imediate::PushStack( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "PUSH INSTRUCTION" << endl;
-    REGISTERS_16b register16b = ( ( InputImediate * )input )->register16b;
+    REGISTERS register16b = ( ( InputImediate * )input )->register16b;
     cout << "INPUT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom16bRegister( register16b ) ) << endl;
     FunctionalUnit::GetFunctionalUnit()->PushStack( register16b );
 }
@@ -191,7 +191,7 @@ void Imediate::PushStack( InputAdressingTypes * input ) {
 void Imediate::PopStack( InputAdressingTypes * input ) {
     Registers * regs = Registers::GetRegisters();
     cout << "POP INSTRUCTION" << endl;
-    REGISTERS_16b register16b = ( ( InputImediate * )input )->register16b;
+    REGISTERS register16b = ( ( InputImediate * )input )->register16b;
     FunctionalUnit::GetFunctionalUnit()->PopStack( register16b );
     cout << "RESULT REGISTER VALUE: " << TwoComplementViwer( regs->ReadFrom16bRegister( register16b ) ) << endl;
 }
@@ -220,18 +220,17 @@ DecodedInstruction Imediate::DecodeInstruction( Word instruction ) {
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case LDVALTOREG:
-            decodedInstruction.registers8b.push_back( ( REGISTERS_8b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             decodedInstruction.imediateValue.push_back( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case PUSH:
         case POP:
-            decodedInstruction.registers16b.push_back( ( REGISTERS_16b ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
+            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers16b[ 0 ] = ( REGISTERS_16b )( ( int )decodedInstruction.registers16b[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
+            decodedInstruction.registers[ 0 ] = ( REGISTERS )( ( int )decodedInstruction.registers[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
-            break;
             break;
         case RET:
         case NOP:

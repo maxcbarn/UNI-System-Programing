@@ -14,31 +14,26 @@ using DoubleWord = uint16_t;
 using Adress = uint16_t;
 
 #define QUANTITY_8b_REGISTERS 7
-enum REGISTERS_8b {
-    A = 0,
-    B = 1,
-    C = 2,
-    D = 3,
-    E = 4,
-    H = 5,
-    L = 6
-};
-
 #define QUANTITY_16b_REGISTERS 4
-enum REGISTERS_16b {
-    AF = 0b00000001,
-    BC = 0b00000010,
-    DE = 0b00000100,
-    Hl = 0b00001000
+#define QUANTITY_ESP_REGISTERS 4
+enum REGISTERS {
+    A = 0b00000000,
+    B = 0b00000001,
+    C = 0b00000010,
+    D = 0b00000011,
+    E = 0b00000100,
+    H = 0b00000101,
+    L = 0b00000110,
+    AF = 0b00000111,
+    BC = 0b00001000,
+    DE = 0b00001001,
+    Hl = 0b00001010,
+    PC = 0b00001011,
+    SP = 0b00001100,
+    IX = 0b00001101,
+    IY = 0b00001110
 };
 
-#define QUANTITY_ESP_REGISTERS 4
-enum REGISTERS_ESP {
-    PC,
-    SP,
-    IX,
-    IY
-};
 
 enum FLAGS {
     CARRY = 0b00000001,
@@ -84,16 +79,16 @@ enum INPUTADRESSINGTYPES {
 
 struct DecodedInstruction {
     INSTRUCTIONS instruction;
-    vector< REGISTERS_8b > registers8b; // first one is the first on the instruction and so on
-    vector< REGISTERS_16b > registers16b; // first one is the first on the instruction and so on
+    vector< REGISTERS > registers; // first one is the first on the instruction and so on
     vector< Word > imediateValue; // first one is the first on the instruction and so on
     vector< Adress > adresses; // first one is the first on the instruction and so on
-    vector< REGISTERS_ESP > registersEsp;
 };
-
 
 int TwoComplementViwer( Word data );
 int TwoComplementViwer( DoubleWord data );
 bool EvenParity( Word value );
+
+
+
 
 #endif
