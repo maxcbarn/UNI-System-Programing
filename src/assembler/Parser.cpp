@@ -253,10 +253,14 @@ ParsedLine Parser::ParseLine(const vector<Token>& toks) {
         };
         pline.instruction = opMap.at(mnem);
         pline.addrMode    = IMPLICIT;
-        if (!ops.empty() && ops[0].type == TokenType::REGISTER_8B)
-            pline.reg8b_src = ToReg(ops[0]);
-        else
+
+        if (ops.size() >= 2 && ops[0].type == TokenType::REGISTER_8B && ops[1].type == TokenType::REGISTER_8B) {
+            pline.reg8b_src = ToReg(ops[1]); // Usa o segundo operando 
+        } else if (ops.size() == 1 && ops[0].type == TokenType::REGISTER_8B) {
+            pline.reg8b_src = ToReg(ops[0]); // Usa o primeiro operando 
+        } else {
             cerr << "[PARSER ERROR] linha " << pline.lineNumber << ": " << mnem << " exige registrador 8b\n";
+        }
         return pline;
     }
 

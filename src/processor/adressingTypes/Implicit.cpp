@@ -42,17 +42,17 @@ InputAdressingTypes * Implicit::MakeInput( DecodedInstruction * instruction ) {
             break;
         case LDREGTOREG:
             input->register8b = instruction->registers[ 0 ];
-            input->register8b = instruction->registers[ 1 ];
+            input->register8b_dest = instruction->registers[ 1 ];
             break;
         case LDVALTOREG:
-            input->register8b = instruction->registers[ 0 ];
+            input->register8b_dest = instruction->registers[ 0 ];
             input->imediate = instruction->imediateValue[ 0 ];
             break;
         case LDREGTOMEM:
            input->register8b = instruction->registers[ 0 ];
            break;
         case LDMEMTOREG:
-            input->register8b = instruction->registers[ 0 ];
+            input->register8b_dest = instruction->registers[ 0 ];
             break;
         case PUSH:
         case POP:
