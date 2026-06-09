@@ -11,7 +11,6 @@
 // ---------------------------------------------------------------
 
 void Assembler::PassOne(const vector<ParsedLine>& lines) {
-    symbolTable.clear();
     uint16_t locationCounter = 0;
 
     cout << "\n=== PASSO 1 — Tabela de Simbolos ===" << endl;
@@ -34,7 +33,7 @@ void Assembler::PassOne(const vector<ParsedLine>& lines) {
         int size = Parser::GetInstructionSize(line);
         locationCounter += size;
     }
-
+    
     cout << "====================================\n" << endl;
 }
 
@@ -156,7 +155,7 @@ vector<Word> Assembler::Assemble(const string& filepath) {
     symbolTable.clear();
 
     // Lexer: texto -> tokens
-    Lexer lexer;
+    Lexer lexer;    
     vector<Token> tokens = lexer.Tokenize(filepath);
 
     if (tokens.empty() || tokens[0].type == TokenType::END_OF_FILE) {

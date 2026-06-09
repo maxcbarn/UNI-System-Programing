@@ -40,9 +40,7 @@ private:
     ParsedLine ParseLine(const vector<Token>& lineTokens);
     ParsedLine ParseLD(const vector<Token>& ops, const string& label, int lineNum);
 
-    static REGISTERS     ToReg8b(const Token& tok);
-    static REGISTERS     ToReg16b(const Token& tok);
-    static REGISTERS     ToRegEsp(const Token& tok);
+    static REGISTERS ToReg(const Token& tok);
     static uint16_t      ToValue(const Token& tok);
 
     // Resultado de analisar um token INDIRECT como "(HL)", "(IX+5)", "(1234)"

@@ -1,14 +1,11 @@
-/*
- * Como executar: ./App <arquivo.asm>
- */
-
 #include "processor/Processor.hpp"
 #include "assembler/Assembler.hpp"
 #include "SystemArchitecture.hpp"
-#include "assembler/Tables.hpp"
 #include <iostream>
 
+
 int main(int argc, char const* argv[]) {
+
     if (argc < 2) {
         cerr << "Uso: ./App <arquivo.asm>" << endl;
         return 1;

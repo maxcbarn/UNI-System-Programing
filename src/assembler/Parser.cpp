@@ -7,7 +7,7 @@
 // Conversores de Token para tipos da arquitetura
 // ---------------------------------------------------------------
 
-REGISTERS Parser::ToReg8b(const Token& tok) {
+REGISTERS Parser::ToReg(const Token& tok) {
     if (tok.value == "A") return A;
     if (tok.value == "B") return B;
     if (tok.value == "C") return C;
@@ -15,27 +15,18 @@ REGISTERS Parser::ToReg8b(const Token& tok) {
     if (tok.value == "E") return E;
     if (tok.value == "H") return H;
     if (tok.value == "L") return L;
-    cerr << "[PARSER ERROR] linha " << tok.line << ": registrador 8b desconhecido: " << tok.value << endl;
-    return A;
-}
-
-REGISTERS Parser::ToReg16b(const Token& tok) {
     if (tok.value == "AF") return AF;
     if (tok.value == "BC") return BC;
     if (tok.value == "DE") return DE;
     if (tok.value == "HL") return HL;
-    cerr << "[PARSER ERROR] linha " << tok.line << ": registrador 16b desconhecido: " << tok.value << endl;
-    return BC;
-}
-
-REGISTERS Parser::ToRegEsp(const Token& tok) {
     if (tok.value == "IX") return IX;
     if (tok.value == "IY") return IY;
     if (tok.value == "SP") return SP;
     if (tok.value == "PC") return PC;
-    cerr << "[PARSER ERROR] linha " << tok.line << ": registrador especial desconhecido: " << tok.value << endl;
-    return IX;
+    cerr << "[PARSER ERROR] linha " << tok.line << ": registrador desconhecido: " << tok.value << endl;
+    return A;
 }
+
 
 uint16_t Parser::ToValue(const Token& tok) {
     const string& s = tok.value;
@@ -136,8 +127,8 @@ ParsedLine Parser::ParseLD(const vector<Token>& ops, const string& label, int li
     if (dest.type == TokenType::REGISTER_8B && src.type == TokenType::REGISTER_8B) {
         pline.instruction = LDREGTOREG;
         pline.addrMode    = IMPLICIT;
-        pline.reg8b_dest  = ToReg8b(dest);
-        pline.reg8b_src   = ToReg8b(src);
+        pline.reg8b_dest  = ToReg(dest);
+        pline.reg8b_src   = ToReg(src);
         return pline;
     }
 
@@ -145,14 +136,14 @@ ParsedLine Parser::ParseLD(const vector<Token>& ops, const string& label, int li
     if (dest.type == TokenType::REGISTER_8B && src.type == TokenType::NUMBER) {
         pline.instruction = LDVALTOREG;
         pline.addrMode    = IMEDIATE;
-        pline.reg8b_dest  = ToReg8b(dest);
+        pline.reg8b_dest  = ToReg(dest);
         pline.value       = ToValue(src);
         return pline;
     }
 
     // LD reg8b, (...)  →  LDMEMTOREG com modo dependendo do tipo de indireto
     if (dest.type == TokenType::REGISTER_8B && src.type == TokenType::INDIRECT) {
-        pline.reg8b_dest = ToReg8b(dest);
+        pline.reg8b_dest = ToReg(dest);
         pline.instruction = LDMEMTOREG;
         auto ind = ParseIndirect(src.value);
 
@@ -175,7 +166,7 @@ ParsedLine Parser::ParseLD(const vector<Token>& ops, const string& label, int li
 
     // LD (...), reg8b  →  LDREGTOMEM com modo dependendo do tipo de indireto
     if (dest.type == TokenType::INDIRECT && src.type == TokenType::REGISTER_8B) {
-        pline.reg8b_src = ToReg8b(src);
+        pline.reg8b_src = ToReg(src);
         pline.instruction = LDREGTOMEM;
         auto ind = ParseIndirect(dest.value);
 
@@ -247,7 +238,7 @@ ParsedLine Parser::ParseLine(const vector<Token>& toks) {
         pline.instruction = (mnem == "PUSH") ? PUSH : POP;
         pline.addrMode    = IMPLICIT;
         if (!ops.empty() && ops[0].type == TokenType::REGISTER_16B)
-            pline.reg16b = ToReg16b(ops[0]);
+            pline.reg16b = ToReg(ops[0]);
         else
             cerr << "[PARSER ERROR] linha " << pline.lineNumber << ": " << mnem << " exige registrador 16b\n";
         return pline;
@@ -263,7 +254,7 @@ ParsedLine Parser::ParseLine(const vector<Token>& toks) {
         pline.instruction = opMap.at(mnem);
         pline.addrMode    = IMPLICIT;
         if (!ops.empty() && ops[0].type == TokenType::REGISTER_8B)
-            pline.reg8b_src = ToReg8b(ops[0]);
+            pline.reg8b_src = ToReg(ops[0]);
         else
             cerr << "[PARSER ERROR] linha " << pline.lineNumber << ": " << mnem << " exige registrador 8b\n";
         return pline;
