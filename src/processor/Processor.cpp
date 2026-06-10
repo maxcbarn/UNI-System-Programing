@@ -39,77 +39,90 @@ bool Processor::NextInstruction() {
         return false;
     }
     Registers * regs = Registers::GetRegisters();
+
     Adress pc = regs->GetProgramCounter();
     regs->IncreaseProgramCounter();
-    Word instruction = Memory::GetMemory()->ReadMemory( pc );
-    DecodedInstruction decodedInstruction = adressingTypes->DecodeInstruction( instruction );
-    InputAdressingTypes * input = adressingTypes->MakeInput( &decodedInstruction );
+    Word modeByte  = Memory::GetMemory()->ReadMemory( pc );
+
+    pc = regs->GetProgramCounter();
+    regs->IncreaseProgramCounter();
+    Word instrByte = Memory::GetMemory()->ReadMemory( pc );
+
+    AdressingTypes* currentAdressingType =
+        AdressingTypesFactory::GetAdressingTypesFactory()->GetAdressingType(
+            (INPUTADRESSINGTYPES) modeByte
+        );
+
+    DecodedInstruction decodedInstruction = currentAdressingType->DecodeInstruction( instrByte );
+    InputAdressingTypes * input = currentAdressingType->MakeInput( &decodedInstruction );
+
     switch ( decodedInstruction.instruction ) {
         case NOP:
-            adressingTypes->Nop();
+            currentAdressingType->Nop();
             break;
         case HLT:
-            adressingTypes->Halt();
+            currentAdressingType->Halt();
             break;
         case ADD:
-            adressingTypes->Add( input );
+            currentAdressingType->Add( input );
             break;
         case SUB:
-            adressingTypes->Sub( input );
+            currentAdressingType->Sub( input );
             break;
         case AND:
-            adressingTypes->And( input );
+            currentAdressingType->And( input );
             break;
         case OR:
-            adressingTypes->Or( input );
+            currentAdressingType->Or( input );
             break;
         case XOR:
-            adressingTypes->Xor( input );
+            currentAdressingType->Xor( input );
             break;
         case CP:
-            adressingTypes->Cp( input );
+            currentAdressingType->Cp( input );
             break;
         case INC:
-            adressingTypes->Inc( input );
+            currentAdressingType->Inc( input );
             break;
         case DEC:
-            adressingTypes->Dec( input );
+            currentAdressingType->Dec( input );
             break;
         case PUSH:
-            adressingTypes->PushStack( input );
+            currentAdressingType->PushStack( input );
             break;
         case POP:
-            adressingTypes->PopStack( input );
+            currentAdressingType->PopStack( input );
             break;
         case JP:
-            adressingTypes->Jump( input );
+            currentAdressingType->Jump( input );
             break;
         case JPOFFSET:
-            adressingTypes->JumpOffset( input );
+            currentAdressingType->JumpOffset( input );
             break;
         case CALL:
-            adressingTypes->Call( input );
+            currentAdressingType->Call( input );
             break;
         case RET:
-            adressingTypes->Return( input );
+            currentAdressingType->Return( input );
             break;
         case LDREGTOREG:
-            adressingTypes->LoadRegisterToResgister( input );
+            currentAdressingType->LoadRegisterToResgister( input );
             break;
         case LDVALTOREG:
-            adressingTypes->LoadValueToRegister( input );
+            currentAdressingType->LoadValueToRegister( input );
             break;
         case LDREGTOMEM:
-            adressingTypes->LoadRegisterToMemory( input );
+            currentAdressingType->LoadRegisterToMemory( input );
             break;
         case LDMEMTOREG:
-            adressingTypes->LoadMemoryToRegister( input );
+            currentAdressingType->LoadMemoryToRegister( input );
             break;
         default:
             cout << "INSTRUCTION NOT FOUND" << endl;
             break;
     }
     delete input;
+    delete currentAdressingType;
     return true;
 }
 

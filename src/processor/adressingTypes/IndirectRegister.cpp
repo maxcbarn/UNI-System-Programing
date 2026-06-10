@@ -196,32 +196,17 @@ DecodedInstruction IndirectRegister::DecodeInstruction( Word instruction ) {
         case CP:
         case INC:
         case DEC:
-            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers[ 0 ] = ( REGISTERS )( ( int )decodedInstruction.registers[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers.push_back(HL);
             break;
         case LDREGTOMEM:
-            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers[ 0 ] = ( REGISTERS )( ( int )decodedInstruction.registers[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
-            break;
         case LDMEMTOREG:
             decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers[ 0 ] = ( REGISTERS )( ( int )decodedInstruction.registers[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
+            decodedInstruction.registers.push_back( HL );
             break;
         case PUSH:
         case POP:
             decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers[ 0 ] = ( REGISTERS )( ( int )decodedInstruction.registers[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case RET:

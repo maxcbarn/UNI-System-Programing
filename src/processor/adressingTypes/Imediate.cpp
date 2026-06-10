@@ -229,8 +229,6 @@ DecodedInstruction Imediate::DecodeInstruction( Word instruction ) {
         case POP:
             decodedInstruction.registers.push_back( ( REGISTERS ) Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) );
             Registers::GetRegisters()->IncreaseProgramCounter();
-            decodedInstruction.registers[ 0 ] = ( REGISTERS )( ( int )decodedInstruction.registers[ 0 ] | ( Memory::GetMemory()->ReadMemory( Registers::GetRegisters()->GetProgramCounter() ) << 8 ) );
-            Registers::GetRegisters()->IncreaseProgramCounter();
             break;
         case RET:
         case NOP:

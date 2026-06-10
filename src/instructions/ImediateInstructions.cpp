@@ -38,7 +38,7 @@ size_t ImediateInstructions::GetInstructionWordQuantity( INSTRUCTIONS instructio
             return 3; 
         case PUSH:
         case POP:
-            return 3; 
+            return 2; 
         default:
             return 0;
     }

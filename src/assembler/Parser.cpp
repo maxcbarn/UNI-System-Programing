@@ -1,4 +1,6 @@
 #include "assembler/Parser.hpp"
+#include "instructions/AdressingTypesFactoryInstructions.hpp"
+#include "instructions/AdressingTypesInstructions.hpp"
 #include <iostream>
 #include <map>
 #include <stdexcept>
@@ -81,29 +83,17 @@ Parser::IndirectResult Parser::ParseIndirect(const string& s) {
 }
 
 // ---------------------------------------------------------------
-// Tamanho em bytes de cada instrucao (usado no Passo 1)
+// Pega o tamanho em bytes de cada instrução
 // ---------------------------------------------------------------
 
 int Parser::GetInstructionSize(const ParsedLine& line) {
-    switch (line.instruction) {
-        case NOP:
-        case HLT:
-        case RET:
-            return 1;
-
-        case ADD: case SUB: case AND: case OR:
-        case XOR: case CP:  case INC: case DEC:
-        case PUSH: case POP:
-            return 2;
-
-        case JP: case JPOFFSET: case CALL:
-        case LDREGTOREG: case LDVALTOREG:
-        case LDREGTOMEM: case LDMEMTOREG:
-            return 3;
-
-        default:
-            return 0;
-    }
+    AdressingTypesFactoryInstructions* factory =
+        AdressingTypesFactoryInstructions::GetAdressingTypesFactoryInstructions();
+    AdressingTypesInstructions* encoder =
+        factory->GetAdressingTypeInstructions(line.addrMode);
+    int size = (int)encoder->GetInstructionWordQuantity(line.instruction) + 1;
+    delete encoder;
+    return size;
 }
 
 // ---------------------------------------------------------------

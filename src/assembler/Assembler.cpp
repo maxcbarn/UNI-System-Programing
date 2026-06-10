@@ -85,6 +85,7 @@ vector<DecodedInstruction> Assembler::PassTwo(const vector<ParsedLine>& lines) {
 DecodedInstruction Assembler::ToDecodedInstruction(const ParsedLine& line) {
     DecodedInstruction d{};
     d.instruction = line.instruction;
+    d.addrMode    = line.addrMode; 
 
     switch (line.addrMode) {
         case IMPLICIT:
@@ -126,7 +127,7 @@ DecodedInstruction Assembler::ToDecodedInstruction(const ParsedLine& line) {
                 d.registers.push_back(line.reg8b_dest);
             else if (line.instruction == LDREGTOMEM)
                 d.registers.push_back(line.reg8b_src);
-            d.registers.push_back(IX); // HL e tratado internamente pelo addressing type
+            d.registers.push_back(HL); 
             break;
 
         case INDEXED:
@@ -179,13 +180,14 @@ vector<Word> Assembler::Assemble(const string& filepath) {
         AdressingTypesFactoryInstructions::GetAdressingTypesFactoryInstructions();
 
     for (auto& instr : decoded) {
-        // Escolhe o encoder correto baseado no modo de enderecamento da ParsedLine
-        // Por ora usa IMPLICIT como padrao — o grupo pode refinar por instrucao
         AdressingTypesInstructions* encoder =
-            factory->GetAdressingTypeInstructions(IMPLICIT);
+            factory->GetAdressingTypeInstructions(instr.addrMode);
 
+        program.push_back( (Word) instr.addrMode );
+        
         vector<Word> encoded = encoder->EncodeInstruction(&instr);
         program.insert(program.end(), encoded.begin(), encoded.end());
+        delete encoder;
     }
 
     cout << "Montagem concluida: " << program.size() << " bytes gerados." << endl;
