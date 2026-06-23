@@ -3,6 +3,7 @@
 
 #include "assembler/Lexer.hpp"
 #include "assembler/Parser.hpp"
+#include "assembler/MacroProcessor.hpp"
 #include "SystemArchitecture.hpp"
 #include <string>
 #include <vector>

@@ -82,6 +82,42 @@ Files And What They Do:
 
 - Processor.hpp & Processor.cpp - Wrapper of all functions of the processor, interface that will interact with the processor, recive program and store it into memory, call next instruction, halt, reset memory and registers, it's a singleton and a facade (Done)
 
+## Macro Processor
+ 
+All the files are inside the assembler folder in the src and include folder, alongside the assembler files. The macro processor runs as a pre-processing step before assembly, triggered by the assembler facade, and produces an expanded `.asm` file that is then fed into the two-pass assembler.
+ 
+The macro processor is implemented in a **single pass**: macro definitions are registered and macro calls are expanded as the source file is read top to bottom, with no second scan required.
+ 
+Supported features:
+- **Simple macros** — parameterized macros with positional argument substitution.
+- **Nested macro definitions** — a macro body may contain a definition of another macro. The inner macro is registered only when the outer macro is expanded, scoping it to that expansion context.
+- **Nested macro calls** — a macro body may call other macros. Those calls are expanded recursively during expansion.
+Files:
+ 
+- **MacroProcessor.hpp & MacroProcessor.cpp** — single-pass macro pre-processor. Reads a `.asm` source file, processes all `MACRO`/`ENDM` blocks, expands all macro calls (including nested definitions and nested calls), and writes the result to a new `_expanded.asm` file, returning its path to the assembler. (Done)
+  Key internal components:
+  - `MacroDefinition` struct — stores the macro name, formal parameter list, and body lines.
+  - `macroScopes` — a stack of hash maps, one scope per expansion level, enabling inner macros defined during expansion to be scoped correctly and not leak into the outer context.
+  - `ProcessLines` — core single-pass loop. Detects `MACRO`/`ENDM` blocks and pushes them onto a `defStack` to handle nesting during definition. Detects and expands macro calls inline.
+  - `ExpandMacro` — substitutes actual arguments for formal parameters in the macro body, pushes a new scope, recursively calls `ProcessLines` on the substituted body, then pops the scope.
+  - `FindMacro` — searches scopes from innermost to outermost, enabling inner macros to shadow outer ones during expansion.
+Macro syntax supported in `.asm` source files:
+ 
+```asm
+; Definition (both forms accepted)
+MACRO_NAME MACRO &PARAM1, &PARAM2
+    LD &PARAM1, &PARAM2
+ENDM
+ 
+MACRO_NAME: MACRO &PARAM1, &PARAM2
+    LD &PARAM1, &PARAM2
+ENDM
+ 
+; Call
+MACRO_NAME A, 10
+```
+
+
 ## Two Pass Assembler
 
 All the files are inside the assembler folder in the src and include folder, all the files regarding the function should be inside these folders, they must not communicate with outside implementations, that's the function of the facade, the file Assembler.cpp and Assembler.hpp.
@@ -91,6 +127,8 @@ All the files are inside the assembler folder in the src and include folder, all
 - Parser.hpp & Parser.cpp - Receives the token list from the Lexer and produces a list of `ParsedLine` structs, one per source line. Groups tokens by line number, identifies optional labels, dispatches to specialized handlers per mnemonic, and handles the full variety of `LD` formats through a dedicated `ParseLD` method. Resolves indirect operands (`(HL)`, `(IX+d)`, `(IY+d)`, direct address) via `ParseIndirect`. Stores unresolved label references (`JP LOOP`) as a symbol name in `symbolRef` with `hasSymbol = true`, to be resolved in Pass Two. Provides `GetInstructionSize` as a static helper used by the assembler to advance the location counter during Pass One. (Done)
 
 - Assembler.hpp & Assembler.cpp - Facade and entry point for the two-pass assembly process. Receives the path to a `.asm` file and returns the encoded binary as a `vector<Word>` ready to be loaded into the processor.
+
+  - **Macro Pre-processing**: Before assembly begins, `MacroProcessor::Process` is called on the input file. The expanded `_expanded.asm` file it produces is used as the input for both assembly passes. Any macro errors are collected and reported alongside assembler errors.
 
   - **Pass One** (`PassOne`): Iterates over all `ParsedLine` entries and maintains a location counter starting at `0x0000`. Each time a label is found, its name and current address are stored in `symbolTable`. The counter advances by the byte size of each instruction as reported by `Parser::GetInstructionSize`. Duplicate labels are recorded as errors.
 

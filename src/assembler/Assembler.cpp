@@ -155,9 +155,21 @@ vector<Word> Assembler::Assemble(const string& filepath) {
     errors.clear();
     symbolTable.clear();
 
+    MacroProcessor macroProcessor;
+    string expandedFile = macroProcessor.Process(filepath);
+    if (expandedFile.empty()) {
+        for (const auto& e : macroProcessor.errors)
+            errors.push_back(e);
+        cerr << "Falha no pre-processamento de macros." << endl;
+        return {};
+    }
+    for (const auto& e : macroProcessor.errors)
+        errors.push_back(e);
+
+
     // Lexer: texto -> tokens
     Lexer lexer;    
-    vector<Token> tokens = lexer.Tokenize(filepath);
+    vector<Token> tokens = lexer.Tokenize(expandedFile);
 
     if (tokens.empty() || tokens[0].type == TokenType::END_OF_FILE) {
         errors.push_back("Arquivo vazio ou nao encontrado: " + filepath);
