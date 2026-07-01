@@ -36,6 +36,7 @@
 ENTRY  main          ; exporta ponto de entrada
 EXTRN  putchar       ; importado de moduleB
 
+main:
         NOP                  ; padding de alinhamento
 
         LD  A, 0x50          ; IX nao e carregavel diretamente via LD
@@ -62,6 +63,7 @@ EXTRN  putchar       ; importado de moduleB
 ; ----------------------------------------------------------------
 ; Loop principal: le array[D] e chama putchar
 ; ----------------------------------------------------------------
+loop:
         ; Carrega array[indice] usando IX + offset fixo 0,1,2
         ; Como o Parser so aceita offset literal no token INDIRECT,
         ; usamos as tres posicoes explicitamente via JP seletivo.
@@ -90,6 +92,7 @@ EXTRN  putchar       ; importado de moduleB
 
         NOP                  ; ponto de observacao
 
+done:
         HLT                  ; fim do programa
 
 

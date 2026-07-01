@@ -271,8 +271,11 @@ vector<string> MacroProcessor::ProcessLines(const vector<string>& lines, int nes
             continue;
         }
 
-        if (cmdIdx < tokens.size() && ToUpper(tokens[cmdIdx]) != "ENDM")
+        if (hasLabel && cmdIdx >= tokens.size()) {
+            output.push_back(labelStr);
+        } else if (cmdIdx < tokens.size()) {
             output.push_back(raw);
+        }
     }
 
     for (const auto& def : defStack) {
