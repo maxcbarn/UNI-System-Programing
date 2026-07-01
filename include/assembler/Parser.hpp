@@ -8,6 +8,12 @@
 
 using namespace std;
 
+enum class DirectiveType {
+    NONE,
+    ENTRY,   
+    EXTRN  
+};
+
 // Representa uma linha do .asm ja interpretada pelo parser
 struct ParsedLine {
     string              label;          // rotulo definido nesta linha (vazio se nenhum)
@@ -26,7 +32,12 @@ struct ParsedLine {
     bool            hasSymbol  = false; // true se symbolRef precisa ser resolvido no passo 2
 
     int             lineNumber = 0;
+    bool            isDirective     = false;
+    DirectiveType   directiveType   = DirectiveType::NONE;
+    vector<string>  directiveSymbols; 
 };
+
+
 
 class Parser {
 public:
@@ -39,6 +50,7 @@ public:
 private:
     ParsedLine ParseLine(const vector<Token>& lineTokens);
     ParsedLine ParseLD(const vector<Token>& ops, const string& label, int lineNum);
+    ParsedLine ParseDirective(const vector<Token>& toks, int startIdx, DirectiveType dtype, const string& label, int lineNum);
 
     static REGISTERS ToReg(const Token& tok);
     static uint16_t      ToValue(const Token& tok);

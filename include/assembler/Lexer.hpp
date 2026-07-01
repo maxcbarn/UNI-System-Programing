@@ -17,7 +17,8 @@ enum class TokenType {
     SYMBOL,         // ex: "LOOP", "FIM" — referencia a rotulo ainda nao resolvida
     INDIRECT,       // ex: (HL), (1234), (IX+5), (IY-3)
     COMMA,          // ,
-    END_OF_FILE
+    END_OF_FILE,
+    DIRECTIVE
 };
 
 struct Token {
@@ -40,6 +41,7 @@ private:
     bool IsRegister16b(const string& word);
     bool IsRegisterEsp(const string& word);
     bool IsNumber(const string& word);
+    bool IsDirective(const string& word);
 
     string ToUpper(const string& str);
     string StripComment(const string& line);
