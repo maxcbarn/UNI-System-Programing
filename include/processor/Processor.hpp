@@ -3,6 +3,8 @@
 
 #include "processor/adressingTypes/AdressingTypes.hpp"
 #include "processor/adressingTypes/InputAdressingTypes.hpp"
+#include "assembler/AssemblerObj.hpp"
+#include "assembler/Linker.hpp"
 
 using namespace std;
 
@@ -19,7 +21,7 @@ class Processor {
         void Halt();
         void Initialize( INPUTADRESSINGTYPES adressingTypes );
         bool NextInstruction();
-        void LoadProgram( vector<Word> program );
+        void LoadProgram( LinkedModule result, Linker::Mode mode );
         vector<Word> ReadParameter( size_t wordQuantity );
 };
 

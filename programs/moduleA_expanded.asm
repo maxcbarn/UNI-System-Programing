@@ -1,98 +1,113 @@
 ; ================================================================
 ; moduleA.asm  —  Programa principal
 ;
-; Funcao: le tres bytes de um array na memoria (via (IX+offset))
-;         e chama "putchar" (definido em moduleB) para cada um.
+; Restricao: TODAS as instrucoes devem ser modo IMPLICIT.
+; Instrucoes permitidas:
+;   NOP, HLT, RET
+;   PUSH reg16, POP reg16
+;   LD reg, reg
+;   ADD reg, SUB reg, AND reg, OR reg, XOR reg, CP reg
+;   INC reg, DEC reg
 ;
-; Registradores por convencao:
-;   A  — byte a ser "enviado" (argumento para putchar)
-;   B  — contador de iteracoes
-;   IX — ponteiro base do array na memoria
+; Logica:
+;   Constroi tres valores nos registradores usando XOR+INC,
+;   processa cada um (simula chamada a putchar inline),
+;   calcula a soma dos tres e verifica com SUB.
 ;
-; Instrucoes usadas (todas suportadas pelo Parser):
-;   LD reg, imediato     LDVALTOREG / IMEDIATE
-;   LD reg, (IX+off)     LDMEMTOREG / INDEXED
-;   LD reg, reg          LDREGTOREG / IMPLICIT
-;   LD (IX+off), reg     LDREGTOMEM / INDEXED
-;   ADD reg              ADD        / IMPLICIT
-;   DEC reg              DEC        / IMPLICIT
-;   PUSH reg16           PUSH       / IMPLICIT
-;   POP  reg16           POP        / IMPLICIT
-;   CALL label           CALL       / DIRECT  (externo)
-;   JP   label           JP         / DIRECT  (local)
-;   NOP                  NOP        / IMPLICIT
-;   HLT                  HLT        / IMPLICIT
+; Registradores:
+;   A — acumulador / argumento corrente
+;   B — primeiro valor  (= 3)
+;   C — segundo valor   (= 5)
+;   D — terceiro valor  (= 7)
+;   E — resultado da soma (= 15)
+;   H — saida simulada (eco do valor enviado)
+;   L — confirmacao de eco
 ; ================================================================
 
-
-
-; ----------------------------------------------------------------
-; Prepara o array em memoria usando modo indexado (IX)
-; Array: [0x41, 0x42, 0x43]  →  'A', 'B', 'C'
-; Armazenamos em enderecos relativos a IX = 0x50
-; ----------------------------------------------------------------
-
-
-ENTRY  main          ; exporta ponto de entrada
-EXTRN  putchar       ; importado de moduleB
+        ENTRY  main
+        EXTRN  putchar
 
 main:
-        NOP                  ; padding de alinhamento
+        NOP                  ; inicio do modulo
 
-        LD  A, 0x50          ; IX nao e carregavel diretamente via LD
-        LD  H, A             ; guarda high-byte de base em H (convencao)
-        LD  L, 0             ; low-byte = 0  →  HL aponta para 0x5000? nao,
-                             ; IX e setado via encoder; aqui simulamos o base
+        ; ── Constroi primeiro valor em B (= 3) ──────────────
+        XOR  A               ; A = 0  (XOR A,A sempre zero)
+        INC  A               ; A = 1
+        INC  A               ; A = 2
+        INC  A               ; A = 3
+        LD   B, A            ; B = 3
 
-        ; Escreve os tres bytes do array via IX+offset
-        LD  A, 0x41          ; 'A'
-        LD  (IX+0), A        ; array[0] = 'A'
+        ; ── Constroi segundo valor em C (= 5) ───────────────
+        XOR  A               ; A = 0
+        INC  A               ; A = 1
+        INC  A               ; A = 2
+        INC  A               ; A = 3
+        INC  A               ; A = 4
+        INC  A               ; A = 5
+        LD   C, A            ; C = 5
 
-        LD  A, 0x42          ; 'B'
-        LD  (IX+1), A        ; array[1] = 'B'
+        ; ── Constroi terceiro valor em D (= 7) ──────────────
+        XOR  A               ; A = 0
+        INC  A               ; A = 1
+        INC  A               ; A = 2
+        INC  A               ; A = 3
+        INC  A               ; A = 4
+        INC  A               ; A = 5
+        INC  A               ; A = 6
+        INC  A               ; A = 7
+        LD   D, A            ; D = 7
 
-        LD  A, 0x43          ; 'C'
-        LD  (IX+2), A        ; array[2] = 'C'
-
-        ; Contador de iteracoes
-        LD  B, 3             ; 3 caracteres a enviar
-
-        ; Indice atual (acumulado em D)
-        LD  D, 0             ; D = indice = 0
-
-; ----------------------------------------------------------------
-; Loop principal: le array[D] e chama putchar
-; ----------------------------------------------------------------
-loop:
-        ; Carrega array[indice] usando IX + offset fixo 0,1,2
-        ; Como o Parser so aceita offset literal no token INDIRECT,
-        ; usamos as tres posicoes explicitamente via JP seletivo.
-        ; (Arquitetura nao tem desvio condicional — usamos estrutura
-        ;  equivalente com DEC + JP para simular loop contavel.)
-
-        LD  A, (IX+0)        ; le array[0] na primeira passagem
-        PUSH BC              ; salva contador
-        CALL putchar         ; envia A para "saida"
-        POP  BC              ; restaura contador
-
-        LD  A, (IX+1)        ; le array[1]
-        PUSH BC
-        CALL putchar
+        ; ── Processa B: simula putchar(B) ────────────────────
+        LD   A, B            ; A = 3 (argumento)
+        PUSH BC              ; preserva BC
+        PUSH DE              ; preserva DE
+        LD   H, A            ; H = A  (saida simulada, eco)
+        LD   L, H            ; L = H  (confirmacao)
+        POP  DE
         POP  BC
 
-        LD  A, (IX+2)        ; le array[2]
+        ; ── Processa C: simula putchar(C) ────────────────────
+        LD   A, C            ; A = 5
         PUSH BC
-        CALL putchar
+        PUSH DE
+        LD   H, A
+        LD   L, H
+        POP  DE
         POP  BC
 
-        ; Soma verificacao: A = 0x41 + 0x42 + 0x43 = 0xC6
-        LD  A, 0x41
-        ADD B                ; A = 0x41 + B  (B=0 apos POPs, resultado = 0x41)
-        LD  E, A             ; guarda em E para debug
+        ; ── Processa D: simula putchar(D) ────────────────────
+        LD   A, D            ; A = 7
+        PUSH BC
+        PUSH DE
+        LD   H, A
+        LD   L, H
+        POP  DE
+        POP  BC
+
+        ; ── Soma de verificacao: B + C + D = 3+5+7 = 15 ─────
+        LD   A, B            ; A = 3
+        ADD  C               ; A = 8
+        ADD  D               ; A = 15
+        LD   E, A            ; E = 15
+
+        ; ── Confirma resultado com SUB ────────────────────────
+        LD   H, A            ; H = 15
+        SUB  H               ; A = 0  (15 - 15)
+        LD   L, A            ; L = 0
+
+        ; ── Exercita AND / OR / XOR ──────────────────────────
+        LD   A, B            ; A = 3  (0b00000011)
+        AND  C               ; A = 1  (3 AND 5)
+        OR   D               ; A = 7  (1 OR 7)
+        XOR  D               ; A = 0  (7 XOR 7)
+
+        ; ── DEC regressivo ────────────────────────────────────
+        LD   A, B            ; A = 3
+        DEC  A               ; A = 2
+        DEC  A               ; A = 1
+        DEC  A               ; A = 0
 
         NOP                  ; ponto de observacao
 
 done:
-        HLT                  ; fim do programa
-
-
+        HLT

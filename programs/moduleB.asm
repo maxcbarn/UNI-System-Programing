@@ -1,71 +1,75 @@
 ; ================================================================
 ; moduleB.asm  —  Biblioteca de saida
 ;
+; Restricao: TODAS as instrucoes devem ser modo IMPLICIT.
+;
 ; Exporta:
-;   putchar  — recebe byte em A, "envia para saida" (copia para
-;              endereco de memoria fixo 0x00FF que representa um
-;              registrador de saida mapeado em memoria), retorna.
+;   putchar  — recebe valor em A, copia para H (saida simulada),
+;              preserva todos os registradores, retorna.
 ;
-;   identity — recebe byte em A, devolve o mesmo valor em A.
-;              Demonstra: PUSH/POP, LD reg,reg, RET.
+;   identity — recebe valor em A, devolve o mesmo em A.
+;              Demonstra PUSH/POP, XOR, INC, DEC, LD reg,reg.
 ;
-; Importa: nada (modulo folha — sem dependencias externas)
+; Importa: nada.
 ;
-; Instrucoes usadas:
-;   LD  (0x00FF), A      LDREGTOMEM / DIRECT   — escrita em mem
-;   LD  A, (0x00FF)      LDMEMTOREG / DIRECT   — leitura de mem
-;   LD  reg, reg         LDREGTOREG / IMPLICIT
-;   LD  reg, imediato    LDVALTOREG / IMEDIATE
-;   PUSH reg16           PUSH       / IMPLICIT
-;   POP  reg16           POP        / IMPLICIT
-;   INC  reg             INC        / IMPLICIT
-;   DEC  reg             DEC        / IMPLICIT
-;   XOR  reg             XOR        / IMPLICIT
-;   RET                  RET        / IMPLICIT
-;   NOP                  NOP        / IMPLICIT
+; Convencao de chamada:
+;   Argumento em A.
+;   putchar  nao modifica B, C, D, E, L.
+;   identity nao modifica nenhum registrador alem de A (que preserva).
 ; ================================================================
 
-        ENTRY  putchar       ; exporta putchar
-        ENTRY  identity      ; exporta identity
+        ENTRY  putchar
+        ENTRY  identity
 
 ; ----------------------------------------------------------------
 ; putchar
 ;
-; Argumento : A  — byte a enviar
-; Retorno   : nenhum (A preservado)
-; Efeito    : escreve A no endereco 0x00FF (porta de saida simulada)
-;
-; Convencao de chamada: caller usa PUSH/POP para preservar
-; registradores que precisar; esta rotina nao modifica B,C,D,E,H,L.
+; Entrada : A = byte a enviar
+; Saida   : H = copia de A  (porta de saida simulada)
+;           A preservado
 ; ----------------------------------------------------------------
-putchar: 
-        ; Escreve o byte de saida no endereco de I/O mapeado em memoria
-        LD  (0x00FF), A      ; porta de saida = A
+putchar:
+        ; Salva A na pilha via AF para nao perder o argumento
+        PUSH AF              ; salva A (e flags)
 
-        ; Leitura de volta para confirmar escrita (simulacao de eco)
-        LD  B, A             ; salva A em B (B = valor enviado)
-        LD  A, (0x00FF)      ; releitura da porta
-        LD  A, B             ; restaura A original
+        ; Copia A para H — H representa a porta de saida simulada
+        LD   H, A            ; H = A  (escrita na porta)
 
-        RET                  ; retorna ao caller
+        ; Eco: confirma que a escrita foi feita copiando H para L
+        LD   L, H            ; L = H  (leitura de confirmacao)
+
+        ; Verifica que L == A usando XOR e restaurando em seguida
+        PUSH BC              ; preserva BC
+        LD   B, A            ; B = A  (copia do argumento)
+        XOR  B               ; A = A XOR B = 0  (confirma igualdade)
+        LD   A, B            ; restaura A = argumento original
+        POP  BC              ; restaura BC
+
+        POP  AF              ; restaura A e flags originais
+        RET
 
 ; ----------------------------------------------------------------
 ; identity
 ;
-; Argumento : A  — qualquer byte
-; Retorno   : A  — mesmo valor recebido
-; Demonstra : PUSH AF / POP AF, XOR para zerar, INC/DEC
+; Entrada : A = qualquer valor
+; Saida   : A = mesmo valor recebido  (funcao identidade)
+; Efeitos : B zerado temporariamente e restaurado
 ; ----------------------------------------------------------------
 identity:
-        PUSH AF              ; salva A e flags na pilha
+        PUSH AF              ; salva A original
 
-        ; Zera B usando XOR e depois incrementa para mostrar INC/DEC
-        XOR  B               ; B = B XOR B = 0
-        INC  B               ; B = 1
-        DEC  B               ; B = 0  (volta a zero)
+        ; Exercita INC / DEC / XOR com B sem afetar A
+        PUSH BC              ; preserva BC
+        LD   B, A            ; B = A
+        XOR  B               ; A = 0  (B XOR B)
+        INC  B               ; B = A + 1
+        DEC  B               ; B = A  (restaura)
+        LD   A, B            ; A = B = valor original
+        POP  BC              ; restaura BC
 
-        ; Operacao identidade: carrega valor da pilha de volta
-        POP  AF              ; restaura A original
+        ; CP: compara A consigo mesmo (resultado deve ser zero)
+        CP   A               ; flags: Z=1, N=1, C=0
 
         NOP                  ; padding
-        RET                  ; devolve A inalterado
+        POP  AF              ; restaura A e flags originais
+        RET

@@ -2,6 +2,8 @@
 #include "processor/adressingTypes/AdressingTypesFactory.hpp"
 #include "processor/memory/Memory.hpp"
 #include "processor/memory/Registers.hpp"
+#include "assembler/AssemblerObj.hpp"
+#include "assembler/Linker.hpp"
 #include <iostream>
 
 using namespace std;
@@ -138,11 +140,43 @@ vector<Word> Processor::ReadParameter( size_t wordQuantity ) {
     return parameters;
 }
 
-void Processor::LoadProgram( vector<Word> program ) {
+void Processor::LoadProgram( LinkedModule result, Linker::Mode mode ) {
+    vector<Word> program = result.image;
+ 
+    if ( mode == Linker::Mode::RELOCATABLE ) {
+        cout << "In what position should the program be loaded? 0x" << hex << result.loadAddress << dec << endl;
+        uint16_t loadAddress;
+        cin >> hex >> loadAddress;
+ 
+        for ( uint16_t relocOffset : result.relocTable ) {
+            if ( (size_t)relocOffset + 1 >= program.size() ) continue; 
+
+            uint16_t oldValue = (uint16_t)program[relocOffset] | ((uint16_t)program[relocOffset + 1] << 8);
+ 
+
+            uint16_t newValue = oldValue + loadAddress;
+            program[relocOffset] = (Word)(newValue & 0xFF);
+            program[relocOffset + 1] = (Word)((newValue >> 8) & 0xFF);
+ 
+            cout << "  [reloc] offset 0x" << hex << relocOffset << ": 0x" << oldValue << " -> 0x" << newValue << dec << endl;
+        }
+
+        result.loadAddress = loadAddress;
+    }
+    
+    
     Memory * memory = Memory::GetMemory();
     Registers * regs = Registers::GetRegisters();
+    regs->SetProgramCounter( result.loadAddress );
+
+    
+    cout << "Start PC: 0x" << hex << regs->GetProgramCounter() << dec << endl;
+
+
     for( size_t index = 0 ; index < program.size() ; index++ ) {
-        memory->ModifyMemory( index , program[index] );
+        memory->ModifyMemory( result.loadAddress + index , program[index] );
     }
-    regs->SetProgramSize( program.size() - 1 );
+    regs->SetProgramSize( program.size() - 1 + result.loadAddress );
+ 
+ 
 }
