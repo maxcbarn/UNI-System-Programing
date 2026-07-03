@@ -49,5 +49,18 @@ main:
         LD   E, (0x0090)      ; E deve conter o mesmo valor de 0x0080
         LD   (0x0094), E      ; grava resultado de verificacao
 
-loop:
-        HLT                   ; loop infinito — substitui HLT (100% DIRECT)
+        JP   halt             ; jump para não executar o codigo abaixo
+
+        LD   C, (0x0082)      ; le entrada 3
+        LD   (0x0092), C      ; grava saida 3
+
+        LD   D, (0x0083)      ; le entrada 4
+        LD   (0x0093), D      ; grava saida 4
+
+        LD   E, (0x0090)      ; E deve conter o mesmo valor de 0x0080
+        LD   (0x0094), E      ; grava resultado de verificacao
+
+
+
+halt:
+        HLT

@@ -144,11 +144,10 @@ void AssemblerObj::PassTwo(const vector<ParsedLine>& lines, ObjectModule& mod) {
                 // Referencia externa: valor provisorio 0, registra o uso
                 resolved.value = 0x0000;
 
-                // O campo de 16 bits do endereco fica em:
-                //   lc + 1  (o primeiro byte e o opcode/addrMode)
-                // Isso depende do layout exato do encoder.
-                // Usamos lc+1 como convencao; ajuste se necessario.
-                uint16_t useOffset = lc + 1;
+                // Layout de mod.text por instrucao: [addrMode][instrByte][operandos...]
+                // O campo de 16 bits do endereco comeca apos os DOIS bytes
+                // de cabecalho (addrMode + instrByte), ou seja, em lc + 2.
+                uint16_t useOffset = lc + 2;
 
                 for (auto& ext : mod.externTable) {
                     if (ext.name == line.symbolRef) {
@@ -173,8 +172,8 @@ void AssemblerObj::PassTwo(const vector<ParsedLine>& lines, ObjectModule& mod) {
                          << " -> 0x" << hex << resolved.value << dec << endl;
 
                     // Endereco interno → precisa de relocacao
-                    // O campo fica em lc+1 (apos o byte de modo)
-                    mod.relocTable.push_back(lc + 1);
+                    // O campo fica em lc+2 (apos addrMode + instrByte)
+                    mod.relocTable.push_back(lc + 2);
                 }
             }
         }

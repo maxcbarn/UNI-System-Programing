@@ -142,7 +142,8 @@ vector<Word> Processor::ReadParameter( size_t wordQuantity ) {
 
 void Processor::LoadProgram( LinkedModule result, Linker::Mode mode ) {
     vector<Word> program = result.image;
- 
+
+
     if ( mode == Linker::Mode::RELOCATABLE ) {
         cout << "In what position should the program be loaded? 0x" << hex << result.loadAddress << dec << endl;
         uint16_t loadAddress;

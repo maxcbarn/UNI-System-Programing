@@ -87,7 +87,7 @@ int main(int argc, char const* argv[]) {
         for (const auto& e : linker.errors)
         cerr << "  " << e << endl;
     } else {
-        cout << "=== Imagem RELOCATABLE (carregavel em 0x" << hex << loadAddress << dec << ") ===" << endl;
+        cout << "=== Imagem RELOCATABLE ===" << endl;
         HexDump(resultRelocatable.image, loadAddress);
     }
     
